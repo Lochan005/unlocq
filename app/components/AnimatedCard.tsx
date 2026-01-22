@@ -32,8 +32,8 @@ export default function AnimatedCard({
         delay: delay,
       }}
       onClick={onClick}
-      className={`rounded-xl p-6 bg-gray-800 ${
-        !disableHover ? "hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]" : ""
+      className={`rounded-xl p-6 bg-white/70 backdrop-blur-sm ${
+        !disableHover ? "hover:shadow-[0_0_20px_rgba(177,156,215,0.3)]" : ""
       } transition-[box-shadow] duration-200 ease-in-out ${className}`}
     >
       {children}

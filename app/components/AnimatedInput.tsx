@@ -102,7 +102,7 @@ export default function AnimatedInput({
       {/* Label */}
       <motion.label
         htmlFor={label.toLowerCase().replace(/\s+/g, "-")}
-        className="block text-sm text-gray-400 mb-1 pointer-events-none"
+        className="block text-sm text-gray-600 mb-1 pointer-events-none"
         animate={{
           y: isFloating ? -4 : 0,
           fontSize: isFloating ? "0.75rem" : "0.875rem",
@@ -124,7 +124,7 @@ export default function AnimatedInput({
         <div className="relative">
           {/* Prefix */}
           {prefix && (
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg select-none z-10">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg select-none z-10">
               {prefix}
             </span>
           )}
@@ -139,8 +139,8 @@ export default function AnimatedInput({
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={`
-              w-full bg-gray-800 border rounded-lg px-4 py-3
-              text-white text-lg font-medium
+              w-full bg-white border rounded-lg px-4 py-3
+              text-gray-800 text-lg font-medium
               focus:outline-none transition-colors duration-200
               ${prefix ? "pl-10" : ""}
               ${suffix ? "pr-10" : ""}
@@ -148,21 +148,21 @@ export default function AnimatedInput({
                 error
                   ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
                   : isFocused
-                  ? "border-green-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20"
-                  : "border-gray-600"
+                  ? "border-[#B19CD7] focus:border-[#B19CD7] focus:ring-2 focus:ring-[#B19CD7]/20"
+                  : "border-gray-300"
               }
             `}
             animate={{
               boxShadow: isFocused && !error
-                ? "0 0 0 3px rgba(34, 197, 94, 0.1)"
-                : "0 0 0 0px rgba(34, 197, 94, 0)",
+                ? "0 0 0 3px rgba(177, 156, 215, 0.1)"
+                : "0 0 0 0px rgba(177, 156, 215, 0)",
             }}
             transition={transitionPresets.quick}
           />
 
           {/* Suffix */}
           {suffix && (
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg select-none z-10">
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg select-none z-10">
               {suffix}
             </span>
           )}

@@ -9,10 +9,10 @@ export default function Header() {
   const pathname = usePathname();
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/lump-sum", label: "Lump Sum" },
-    { href: "/monthly-extra", label: "Monthly Extra" },
-    { href: "/refinance", label: "Refinance" },
+    { href: "/about-us", label: "About us" },
+    { href: "/rewards", label: "Rewards" },
+    { href: "/get-in-touch", label: "Get in Touch" },
+    { href: "/blog", label: "Blog" },
   ];
 
   const isActive = (href: string) => {
@@ -23,12 +23,12 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-800 h-[60px]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-purple-200 h-[60px]">
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-bold text-green-400 hover:text-green-300 transition-colors"
+          className="text-2xl font-bold text-[#B19CD7] hover:text-[#EBE8FC] transition-colors"
         >
           UnlocQ
         </Link>
@@ -41,13 +41,13 @@ export default function Header() {
               href={link.href}
               className={`px-3 py-2 text-sm font-medium transition-colors relative ${
                 isActive(link.href)
-                  ? "text-green-400"
-                  : "text-gray-300 hover:text-white"
+                  ? "text-[#B19CD7]"
+                  : "text-gray-700 hover:text-[#B19CD7]"
               }`}
             >
               {link.label}
               {isActive(link.href) && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-400"></span>
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#B19CD7]"></span>
               )}
             </Link>
           ))}
@@ -57,7 +57,7 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-gray-300 hover:text-white transition-colors p-2"
+          className="md:hidden text-gray-700 hover:text-[#B19CD7] transition-colors p-2"
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
@@ -88,17 +88,17 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-gray-900 border-t border-gray-800">
+        <div className="md:hidden bg-white/95 backdrop-blur-sm border-t border-purple-200">
           <nav className="flex flex-col">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`px-4 py-3 text-sm font-medium transition-colors border-b border-gray-800 ${
+                className={`px-4 py-3 text-sm font-medium transition-colors border-b border-purple-100 ${
                   isActive(link.href)
-                    ? "text-green-400 bg-gray-800"
-                    : "text-gray-300 hover:text-white hover:bg-gray-800"
+                    ? "text-[#B19CD7] bg-purple-50"
+                    : "text-gray-700 hover:text-[#B19CD7] hover:bg-purple-50"
                 }`}
               >
                 {link.label}

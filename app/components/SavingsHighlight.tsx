@@ -74,15 +74,15 @@ export default function SavingsHighlight({
         }
       >
         {/* Label */}
-        <p className="text-sm text-gray-400 uppercase tracking-wider mb-2">
+        <p className="text-sm text-gray-600 uppercase tracking-wider mb-2">
           {label}
         </p>
 
         {/* Number with glow */}
-        <div className="relative inline-block glow-green rounded-lg px-6 py-3">
+        <div className="relative inline-block glow-purple rounded-lg px-6 py-3 bg-white/50 backdrop-blur-sm">
           <AnimatedNumber
             value={value}
-            className="text-4xl md:text-5xl font-bold text-green-500"
+            className="text-4xl md:text-5xl font-bold text-[#B19CD7]"
           />
         </div>
       </motion.div>

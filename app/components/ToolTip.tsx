@@ -137,7 +137,7 @@ export default function Tooltip({
             transition={{ duration: 0.15 }}
           >
             {/* Tooltip content */}
-            <div className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg shadow-lg max-w-[200px] whitespace-normal">
+            <div className="bg-white/95 backdrop-blur-sm text-gray-800 border border-purple-200 text-sm px-3 py-2 rounded-lg shadow-lg max-w-[200px] whitespace-normal">
               {content}
             </div>
 

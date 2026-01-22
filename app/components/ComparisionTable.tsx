@@ -70,22 +70,22 @@ export default function ComparisonTable({
       variants={containerVariants}
       initial="initial"
       animate="animate"
-      className={`bg-gray-800 rounded-xl overflow-hidden ${className}`}
+      className={`bg-white/70 backdrop-blur-sm rounded-xl overflow-hidden border border-purple-200 ${className}`}
     >
       <table className="w-full">
         {/* Header */}
         <thead>
           <motion.tr
             variants={rowVariants}
-            className="bg-gray-700/50 border-b border-gray-700"
+            className="bg-purple-50 border-b border-purple-200"
           >
-            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
               Metric
             </th>
-            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
               {beforeLabel}
             </th>
-            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
               {afterLabel}
             </th>
           </motion.tr>
@@ -97,16 +97,16 @@ export default function ComparisonTable({
             <motion.tr
               key={index}
               variants={rowVariants}
-              className={`border-b border-gray-700 ${
-                row.highlight ? "bg-gray-700/30" : ""
+              className={`border-b border-purple-100 ${
+                row.highlight ? "bg-purple-50" : ""
               }`}
               animate={
                 highlightedRows.has(index)
                   ? {
                       backgroundColor: [
-                        "rgba(55, 65, 81, 0.3)",
-                        "rgba(34, 197, 94, 0.2)",
-                        "rgba(55, 65, 81, 0.3)",
+                        "rgba(177, 156, 215, 0.1)",
+                        "rgba(177, 156, 215, 0.3)",
+                        "rgba(177, 156, 215, 0.1)",
                       ],
                       transition: {
                         duration: 0.6,
@@ -116,15 +116,15 @@ export default function ComparisonTable({
                   : {}
               }
             >
-              <td className="py-4 px-4 text-gray-300 font-medium">
+              <td className="py-4 px-4 text-gray-700 font-medium">
                 {row.label}
               </td>
-              <td className="py-4 px-4 text-gray-300">
+              <td className="py-4 px-4 text-gray-700">
                 {typeof row.before === "number"
                   ? `₹${row.before.toLocaleString("en-IN")}`
                   : row.before}
               </td>
-              <td className="py-4 px-4 text-green-500 font-semibold">
+              <td className="py-4 px-4 text-[#B19CD7] font-semibold">
                 {typeof row.after === "number"
                   ? `₹${row.after.toLocaleString("en-IN")}`
                   : row.after}

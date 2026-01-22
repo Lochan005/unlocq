@@ -58,15 +58,15 @@ const CustomPieTooltip = ({ active, payload }: any) => {
 
   return (
     <div
-      className="bg-gray-900/80 backdrop-blur-sm border border-white/10 rounded-lg p-2 shadow-xl max-w-[160px]"
+      className="bg-white/90 backdrop-blur-sm border border-purple-200 rounded-lg p-2 shadow-xl max-w-[160px]"
       style={{
         filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))",
         zIndex: 100,
         position: "relative",
       }}
     >
-      <p className="text-white text-xs font-medium mb-1">{name}</p>
-      <p className="text-white text-sm font-semibold">{formatIndianCurrency(value)}</p>
+      <p className="text-gray-700 text-xs font-medium mb-1">{name}</p>
+      <p className="text-gray-800 text-sm font-semibold">{formatIndianCurrency(value)}</p>
       <p className="text-gray-400 text-xs mt-0.5">{percentage.toFixed(1)}%</p>
     </div>
   );
@@ -78,20 +78,20 @@ const CustomBarTooltip = ({ active, payload, label }: any) => {
 
   return (
     <div
-      className="bg-gray-900/80 backdrop-blur-sm border border-white/10 rounded-lg p-2 shadow-xl max-w-[160px]"
+      className="bg-white/90 backdrop-blur-sm border border-purple-200 rounded-lg p-2 shadow-xl max-w-[160px]"
       style={{
         filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))",
       }}
     >
-      <p className="text-white text-xs font-medium mb-1.5">{label}</p>
+      <p className="text-gray-700 text-xs font-medium mb-1.5">{label}</p>
       {payload.map((entry: any, index: number) => (
         <div key={index} className="flex items-center gap-1.5 mb-0.5 last:mb-0">
           <div
             className="w-2 h-2 rounded flex-shrink-0"
             style={{ backgroundColor: entry.color }}
           />
-          <span className="text-gray-400 text-xs capitalize">{entry.name}:</span>
-          <span className="text-white text-sm font-semibold">{formatIndianCurrency(entry.value || 0)}</span>
+          <span className="text-gray-600 text-xs capitalize">{entry.name}:</span>
+          <span className="text-gray-800 text-sm font-semibold">{formatIndianCurrency(entry.value || 0)}</span>
         </div>
       ))}
     </div>
@@ -150,7 +150,7 @@ export function AnimatedPieChart({
       transition={{ delay, duration: 0.5 }}
     >
       {title && (
-        <h3 className="text-white text-lg font-semibold mb-4">{title}</h3>
+        <h3 className="text-gray-800 text-lg font-semibold mb-4">{title}</h3>
       )}
       <div 
         className="relative"
@@ -226,7 +226,7 @@ export function AnimatedPieChart({
               zIndex: 10,
             }}
           >
-            <p className="text-white font-bold text-lg md:text-xl lg:text-2xl text-center">
+            <p className="text-gray-800 font-bold text-lg md:text-xl lg:text-2xl text-center">
               {formatIndianCurrency(totalToPay)}
             </p>
             <p className="text-gray-400 text-xs text-center mt-1">
@@ -258,8 +258,8 @@ export function AnimatedPieChart({
                   boxShadow: `0 0 4px ${entry.color}60`,
                 }}
               />
-              <span className="text-gray-300 font-medium">{entry.name}</span>
-              <span className="text-white font-semibold">{formatINR(entry.value)}</span>
+              <span className="text-gray-700 font-medium">{entry.name}</span>
+              <span className="text-gray-800 font-semibold">{formatINR(entry.value)}</span>
               <span className="text-gray-500">{percentage.toFixed(1)}%</span>
             </div>
           );
@@ -305,7 +305,7 @@ export function AnimatedBarChart({
       transition={{ delay }}
     >
       {title && (
-        <h3 className="text-white text-lg font-semibold mb-4">{title}</h3>
+        <h3 className="text-gray-800 text-lg font-semibold mb-4">{title}</h3>
       )}
       <ResponsiveContainer width="100%" height={250}>
         <BarChart

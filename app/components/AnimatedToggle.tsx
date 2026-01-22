@@ -26,12 +26,12 @@ export default function AnimatedToggle({
 
   return (
     <div
-      className={`relative flex bg-gray-800 rounded-lg p-1 ${className}`}
+      className={`relative flex bg-white/70 backdrop-blur-sm rounded-lg p-1 border border-purple-200 ${className}`}
     >
       {/* Sliding indicator */}
       <motion.div
         layoutId="toggle-indicator"
-        className="absolute bg-green-600 rounded-md h-full"
+        className="absolute bg-[#B19CD7] rounded-md h-full"
         style={{
           width: `${indicatorWidth}%`,
           left: `${selectedIndex * indicatorWidth}%`,
@@ -51,7 +51,7 @@ export default function AnimatedToggle({
             ${
               selected === option.value
                 ? "text-white font-semibold"
-                : "text-gray-400"
+                : "text-gray-600"
             }
           `}
           whileTap={{ scale: 0.97 }}

@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased bg-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased bg-gradient-purple min-h-screen`}
       >
         <Header />
         <main className="min-h-screen pt-16 pb-8">

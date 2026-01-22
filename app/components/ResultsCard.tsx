@@ -27,9 +27,9 @@ export default function ResultsCard({
 }: ResultsCardProps) {
   // Trend indicator styles
   const trendStyles = {
-    positive: "text-green-400",
+    positive: "text-[#B19CD7]",
     negative: "text-red-400",
-    neutral: "text-white",
+    neutral: "text-gray-800",
   };
 
   const trendIcons = {
@@ -41,7 +41,7 @@ export default function ResultsCard({
   // Variant-specific rendering
   if (variant === "highlight") {
     return (
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-4 md:p-6 shadow-lg">
+      <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-200 p-4 md:p-6 shadow-lg">
         <div className="text-center">
           <div className="text-sm md:text-base text-gray-400 font-medium uppercase tracking-wide mb-2">
             {title}
@@ -59,7 +59,7 @@ export default function ResultsCard({
             )}
           </div>
           {subtitle && (
-            <div className="text-sm md:text-base text-gray-200 font-medium mt-2">
+            <div className="text-sm md:text-base text-gray-700 font-medium mt-2">
               {subtitle}
             </div>
           )}
@@ -70,21 +70,21 @@ export default function ResultsCard({
 
   if (variant === "comparison") {
     return (
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-4 md:p-6 shadow-lg">
+      <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-200 p-4 md:p-6 shadow-lg">
         <div className="text-sm md:text-base font-semibold text-white mb-4">
           {title}
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
-            <div className="text-xs md:text-sm text-gray-400 mb-2">
+            <div className="text-xs md:text-sm text-gray-600 mb-2">
               {beforeLabel}
             </div>
-            <div className="text-lg md:text-xl font-semibold text-gray-300">
+            <div className="text-lg md:text-xl font-semibold text-gray-700">
               {beforeValue || "-"}
             </div>
           </div>
           <div className="text-center border-l border-gray-700 pl-4">
-            <div className="text-xs md:text-sm text-gray-400 mb-2">
+            <div className="text-xs md:text-sm text-gray-600 mb-2">
               {afterLabel}
             </div>
             <div
@@ -100,7 +100,7 @@ export default function ResultsCard({
           </div>
         </div>
         {subtitle && (
-          <div className="mt-4 text-xs md:text-sm text-gray-400 text-center">
+          <div className="mt-4 text-xs md:text-sm text-gray-600 text-center">
             {subtitle}
           </div>
         )}
@@ -126,7 +126,7 @@ export default function ResultsCard({
           )}
         </div>
         {subtitle && (
-          <div className="mt-2 text-xs md:text-sm text-gray-300">
+          <div className="mt-2 text-xs md:text-sm text-gray-700">
             {subtitle}
           </div>
         )}

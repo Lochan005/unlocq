@@ -358,7 +358,7 @@ export default function MonthlyExtraPage() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-900 flex flex-col items-center px-2 py-4 md:py-8"
+      className="min-h-screen flex flex-col items-center px-2 py-4 md:py-8"
       {...fadeIn}
     >
       {/* Header Section */}
@@ -372,7 +372,7 @@ export default function MonthlyExtraPage() {
         </div>
 
         {/* Description */}
-        <div className="bg-gray-800 rounded-lg p-4 mb-6">
+        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 mb-6 border border-purple-200">
           <p className="text-sm text-gray-300">
             Pay extra every month on top of your EMI to reduce your loan tenure. This strategy helps you pay off your loan faster and save on interest while maintaining a consistent monthly payment schedule.
           </p>
@@ -446,7 +446,7 @@ export default function MonthlyExtraPage() {
                   <p className="text-sm text-gray-400 uppercase tracking-wider mb-2">
                     Tenure Reduced
                   </p>
-                  <div className="flex items-center justify-center gap-2 text-green-500">
+                  <div className="flex items-center justify-center gap-2 text-[#B19CD7]">
                     <AnimatedNumber
                       value={result.tenureReduced}
                       prefix=""

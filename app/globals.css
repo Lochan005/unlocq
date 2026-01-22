@@ -30,15 +30,19 @@ body {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-.text-gradient-green {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+.text-gradient-purple {
+  background: linear-gradient(135deg, #B19CD7 0%, #EBE8FC 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.glow-green {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+.glow-purple {
+  box-shadow: 0 0 20px rgba(177, 156, 215, 0.3);
+}
+
+.bg-gradient-purple {
+  background: linear-gradient(180deg, #EBE8FC 0%, #B19CD7 100%);
 }
 
 .shimmer-bg {
@@ -68,6 +72,6 @@ body {
   filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
 }
 
-.chart-glow-green {
-  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.4));
+.chart-glow-purple {
+  filter: drop-shadow(0 0 8px rgba(177, 156, 215, 0.4));
 }

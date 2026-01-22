@@ -90,7 +90,7 @@ function MoneyInput({
           type="text"
           name={id}
           id={id}
-          className={`w-full rounded-lg pl-10 pr-4 py-3 bg-gray-900 text-white text-lg font-medium focus:outline-none focus:ring-2 ${
+          className={`w-full rounded-lg pl-10 pr-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
             error
               ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
               : "focus:ring-green-600 border-2 border-transparent"
@@ -143,7 +143,7 @@ function RateInput({
           step="0.01"
           name={id}
           id={id}
-          className={`w-full rounded-lg pr-10 pl-4 py-3 bg-gray-900 text-white text-lg font-medium focus:outline-none focus:ring-2 ${
+          className={`w-full rounded-lg pr-10 pl-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
             error
               ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
               : "focus:ring-green-600 border-2 border-transparent"
@@ -195,7 +195,7 @@ function MonthsInput({
           type="number"
           name={id}
           id={id}
-          className={`w-full rounded-lg pr-16 pl-4 py-3 bg-gray-900 text-white text-lg font-medium focus:outline-none focus:ring-2 ${
+          className={`w-full rounded-lg pr-16 pl-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
             error
               ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
               : "focus:ring-green-600 border-2 border-transparent"
@@ -589,7 +589,7 @@ export default function RefinancePage() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-900 flex flex-col items-center px-2 py-4 md:py-8"
+      className="min-h-screen flex flex-col items-center px-2 py-4 md:py-8"
       {...fadeIn}
     >
       {/* Header Section */}
@@ -603,7 +603,7 @@ export default function RefinancePage() {
         </div>
 
         {/* Description */}
-        <div className="bg-gray-800 rounded-lg p-4 mb-6">
+        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 mb-6 border border-purple-200">
           <p className="text-sm text-gray-300">
             Compare prepay vs refinance options to find the best strategy. See how different combinations of prepayment and refinancing can save you money.
           </p>
@@ -615,7 +615,7 @@ export default function RefinancePage() {
         {/* Input Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Current Loan Card */}
-          <div className="bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-purple-200">
             <h2 className="text-xl font-semibold text-white mb-4">Current Loan</h2>
             <LoanInputs
               principal={principal}
@@ -631,7 +631,7 @@ export default function RefinancePage() {
           </div>
 
           {/* Prepayment Card */}
-          <div className="bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-purple-200">
             <h2 className="text-xl font-semibold text-white mb-4">Prepayment (Optional)</h2>
             <MoneyInput
               label="Prepayment Amount"
@@ -649,7 +649,7 @@ export default function RefinancePage() {
           </div>
 
           {/* Refinance Options Card */}
-          <div className="bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-purple-200">
             <h2 className="text-xl font-semibold text-white mb-4">Refinance Options</h2>
             <div className="space-y-4">
               <RateInput
@@ -697,7 +697,7 @@ export default function RefinancePage() {
 
         {/* Results Section */}
         {isValid && refinanceResult && (
-          <div className="bg-gray-800 rounded-2xl shadow-lg p-6">
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-purple-200">
             <h2 className="text-xl font-semibold text-white mb-6">Comparison Results</h2>
 
             {/* Summary */}
@@ -710,7 +710,7 @@ export default function RefinancePage() {
                 <div className="text-base text-gray-400 font-medium uppercase tracking-wide mb-2">
                   Best Option
                 </div>
-                <div className="text-xl font-bold text-green-400">
+                <div className="text-xl font-bold text-[#B19CD7]">
                   {refinanceResult.bestOption === 'stay' ? 'Stay - Do Nothing' : `Option ${refinanceResult.bestOption}`}
                 </div>
               </div>
@@ -730,7 +730,7 @@ export default function RefinancePage() {
                   onClick={() => setExpandedCard(expandedCard === 'stay' ? null : 'stay')}
                   className={`w-full bg-gray-700 rounded-lg p-4 border-2 text-left transition-all hover:bg-gray-600 relative ${
                     refinanceResult.bestOption === 'stay'
-                      ? 'border-green-500 glow-green scale-[1.02]'
+                      ? 'border-[#B19CD7] glow-purple scale-[1.02]'
                       : 'border-gray-600'
                   }`}
                 >
@@ -798,7 +798,7 @@ export default function RefinancePage() {
                   onClick={() => setExpandedCard(expandedCard === 'A' ? null : 'A')}
                   className={`w-full bg-gray-700 rounded-lg p-4 border-2 text-left transition-all hover:bg-gray-600 relative ${
                     refinanceResult.bestOption === 'A'
-                      ? 'border-green-500 glow-green scale-[1.02]'
+                      ? 'border-[#B19CD7] glow-purple scale-[1.02]'
                       : 'border-gray-600'
                   }`}
                 >
@@ -835,7 +835,7 @@ export default function RefinancePage() {
                     <span className="font-semibold">{refinanceResult.optionA.status}</span>
                   </div>
                 ) : (
-                  <div className="flex justify-between text-green-400 text-sm">
+                  <div className="flex justify-between text-[#B19CD7] text-sm">
                     <span className="font-semibold">Savings:</span>
                     <span className="font-bold">
                       <AnimatedNumber
@@ -880,7 +880,7 @@ export default function RefinancePage() {
                   onClick={() => setExpandedCard(expandedCard === 'B' ? null : 'B')}
                   className={`w-full bg-gray-700 rounded-lg p-4 border-2 text-left transition-all hover:bg-gray-600 relative ${
                     refinanceResult.bestOption === 'B'
-                      ? 'border-green-500 glow-green scale-[1.02]'
+                      ? 'border-[#B19CD7] glow-purple scale-[1.02]'
                       : 'border-gray-600'
                   }`}
                 >
@@ -917,7 +917,7 @@ export default function RefinancePage() {
                     <span className="font-semibold">{refinanceResult.optionB.status}</span>
                   </div>
                 ) : (
-                  <div className="flex justify-between text-green-400 text-sm">
+                  <div className="flex justify-between text-[#B19CD7] text-sm">
                     <span className="font-semibold">Savings:</span>
                     <span className="font-bold">
                       <AnimatedNumber
@@ -962,7 +962,7 @@ export default function RefinancePage() {
                   onClick={() => setExpandedCard(expandedCard === 'C' ? null : 'C')}
                   className={`w-full bg-gray-700 rounded-lg p-4 border-2 text-left transition-all hover:bg-gray-600 relative ${
                     refinanceResult.bestOption === 'C'
-                      ? 'border-green-500 glow-green scale-[1.02]'
+                      ? 'border-[#B19CD7] glow-purple scale-[1.02]'
                       : 'border-gray-600'
                   }`}
                 >
@@ -999,7 +999,7 @@ export default function RefinancePage() {
                     <span className="font-semibold">{refinanceResult.optionC.status}</span>
                   </div>
                 ) : (
-                  <div className="flex justify-between text-green-400 text-sm">
+                  <div className="flex justify-between text-[#B19CD7] text-sm">
                     <span className="font-semibold">Savings:</span>
                     <span className="font-bold">
                       <AnimatedNumber

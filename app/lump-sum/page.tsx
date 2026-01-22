@@ -88,7 +88,7 @@ function MoneyInput({
           type="text"
           name={id}
           id={id}
-          className={`w-full rounded-lg pl-10 pr-4 py-3 bg-gray-900 text-white text-lg font-medium focus:outline-none focus:ring-2 ${
+          className={`w-full rounded-lg pl-10 pr-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
             error
               ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
               : "focus:ring-green-600 border-2 border-transparent"
@@ -463,7 +463,7 @@ export default function LumpSumPage() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-900 flex flex-col items-center px-2 py-4 md:py-8"
+      className="min-h-screen flex flex-col items-center px-2 py-4 md:py-8"
       {...fadeIn}
     >
       {/* Header Section */}
@@ -489,7 +489,7 @@ export default function LumpSumPage() {
         </div>
 
         {/* Description */}
-        <div className="bg-gray-800 rounded-lg p-4 mb-6">
+        <div className="bg-white/70 backdrop-blur-sm rounded-lg p-4 mb-6 border border-purple-200">
           <p className="text-sm text-gray-300">
             {scenario === '1A' 
               ? "Pay off your loan faster by keeping the same EMI. Your prepayment reduces the loan tenure, saving you interest."
@@ -565,7 +565,7 @@ export default function LumpSumPage() {
                   <p className="text-sm text-gray-400 uppercase tracking-wider mb-2">
                     Tenure Reduced
                   </p>
-                  <div className="flex items-center justify-center gap-2 text-green-500">
+                  <div className="flex items-center justify-center gap-2 text-[#B19CD7]">
                     <AnimatedNumber
                       value={reduceTenureResult.tenureReduced}
                       prefix=""
