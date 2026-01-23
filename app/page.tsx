@@ -63,41 +63,84 @@ export default function Home() {
     return new Decimal(interestRate).div(12).div(100);
   }, [interestRate]);
 
-  const simulateLoan = (params: {
-    startingPrincipal: Decimal;
-    paymentForMonth: (month: number) => Decimal;
+  /**
+   * UNIFIED SIMULATION ENGINE
+   * 
+   * Simulates loan amortization with proper partial last-month handling.
+   * Both baseline and scenario must use this to ensure apples-to-apples comparison.
+   * 
+   * Key principles:
+   * - EMI is ALWAYS constant (we never lower it even if principal drops)
+   * - Last month payment is capped to (balance + interest) - no overpay
+   * - Extra payments based on strategy: ONE_TIME (month 1 only) or 2_YEAR (months 1-24)
+   */
+  const simulateLoanUnified = (params: {
+    principal: Decimal;
+    emi: Decimal;
+    rate: Decimal;
+    extraPayment: Decimal;
+    strategy: "BASELINE" | "ONE_TIME" | "2_YEAR";
     maxMonths?: number;
   }) => {
-    const { startingPrincipal, paymentForMonth, maxMonths = 1000 } = params;
+    const {
+      principal,
+      emi,
+      rate,
+      extraPayment,
+      strategy,
+      maxMonths = 1200,
+    } = params;
 
-    let balance = startingPrincipal;
-    let totalInterestPaid = new Decimal(0);
-    let monthsPassed = 0;
+    if (principal.lte(0) || emi.lte(0) || rate.lt(0)) {
+      return {
+        ok: false as const,
+        months: 0,
+        totalInterest: new Decimal(0),
+      };
+    }
 
-    while (balance.gt(0) && monthsPassed < maxMonths) {
-      monthsPassed++;
+    let balance = principal;
+    let totalInterest = new Decimal(0);
+    let monthsElapsed = 0;
 
-      const interestForMonth = balance.mul(monthlyRate);
-      totalInterestPaid = totalInterestPaid.add(interestForMonth);
+    while (balance.gt(0) && monthsElapsed < maxMonths) {
+      monthsElapsed++;
 
-      let payment = paymentForMonth(monthsPassed);
+      // Calculate interest for this month
+      const interest = balance.mul(rate);
+      totalInterest = totalInterest.add(interest);
 
-      // If payment doesn't cover interest, loan will never amortize
-      if (payment.lte(interestForMonth)) {
-        return {
-          ok: false as const,
-          months: monthsPassed,
-          totalInterestPaid,
-        };
+      // Determine extra payment based on strategy
+      let extra = new Decimal(0);
+      if (strategy === "ONE_TIME" && monthsElapsed === 1) {
+        extra = extraPayment;
+      } else if (strategy === "2_YEAR" && monthsElapsed <= 24) {
+        extra = extraPayment;
       }
+      // BASELINE: extra stays 0
 
-      // Don't overpay in the final month
-      const totalOwed = balance.add(interestForMonth);
+      // CORE LOGIC: Payment is ALWAYS (Original EMI + Extra)
+      // We never lower the EMI, even if principal drops.
+      let payment = emi.add(extra);
+
+      // Handle Last Month (Crucial for accuracy)
+      // Cap payment to (balance + interest) - no overpaying
+      const totalOwed = balance.add(interest);
       if (payment.gt(totalOwed)) {
         payment = totalOwed;
       }
 
-      const principalPaid = payment.sub(interestForMonth);
+      // If payment doesn't cover interest, loan will never amortize
+      if (payment.lte(interest)) {
+        return {
+          ok: false as const,
+          months: monthsElapsed,
+          totalInterest,
+        };
+      }
+
+      // Calculate principal component and reduce balance
+      const principalPaid = payment.sub(interest);
       balance = balance.sub(principalPaid);
 
       if (balance.lt(0)) {
@@ -105,68 +148,21 @@ export default function Home() {
       }
     }
 
-    return {
-      ok: balance.lte(0) as boolean,
-      months: monthsPassed,
-      totalInterestPaid,
-    };
-  };
-
-  // Baseline (constant EMI over user-provided remaining tenure)
-  // I_baseline = (EMI × N) - P
-  const baseline = useMemo(() => {
-    if (
-      outstandingBalance === null ||
-      currentEMI === null ||
-      remainingTenure === null ||
-      interestRate === null
-    ) {
+    // Safety: if we hit maxMonths without paying off, return failure
+    if (balance.gt(0)) {
       return {
         ok: false as const,
-        tenureMonths: 0,
-        totalInterest: new Decimal(0),
-      };
-    }
-
-    const P = new Decimal(outstandingBalance);
-    const EMI = new Decimal(currentEMI);
-    const N = new Decimal(remainingTenure);
-    const R = monthlyRate;
-
-    if (P.lte(0) || EMI.lte(0) || N.lte(0) || R.lt(0)) {
-      return {
-        ok: false as const,
-        tenureMonths: 0,
-        totalInterest: new Decimal(0),
-      };
-    }
-
-    // If EMI doesn't even cover first-month interest, loan never amortizes.
-    if (R.gt(0) && EMI.lte(P.mul(R))) {
-      return {
-        ok: false as const,
-        tenureMonths: N.toNumber(),
-        totalInterest: new Decimal(0),
-      };
-    }
-
-    const totalPaid = EMI.mul(N);
-    const totalInterest = totalPaid.sub(P);
-
-    if (totalInterest.lt(0)) {
-      return {
-        ok: false as const,
-        tenureMonths: N.toNumber(),
-        totalInterest: new Decimal(0),
+        months: monthsElapsed,
+        totalInterest,
       };
     }
 
     return {
       ok: true as const,
-      tenureMonths: N.toNumber(),
+      months: monthsElapsed,
       totalInterest,
     };
-  }, [outstandingBalance, currentEMI, remainingTenure, interestRate, monthlyRate]);
+  };
 
   // Output 1: Interest saved by making ONE extra payment right now
   const calculateOneTimePaymentSavings = useMemo(() => {
@@ -174,7 +170,6 @@ export default function Home() {
       outstandingBalance === null ||
       currentEMI === null ||
       extraMonthlyPayment === null ||
-      remainingTenure === null ||
       interestRate === null
     ) {
       return { savings: 0, tenureReduced: 0, newTenure: 0 };
@@ -184,65 +179,47 @@ export default function Home() {
     const EMI = new Decimal(currentEMI);
     const E = new Decimal(extraMonthlyPayment);
     const R = monthlyRate;
-    const N = new Decimal(remainingTenure);
+
+    // 1. Simulate BASELINE (no extra payments)
+    const baseline = simulateLoanUnified({
+      principal: P,
+      emi: EMI,
+      rate: R,
+      extraPayment: new Decimal(0),
+      strategy: "BASELINE",
+    });
 
     if (!baseline.ok) {
       return { savings: 0, tenureReduced: 0, newTenure: 0 };
     }
 
     if (E.lte(0)) {
-      return { savings: 0, tenureReduced: 0, newTenure: baseline.tenureMonths };
+      return { savings: 0, tenureReduced: 0, newTenure: baseline.months };
     }
 
-    // I_baseline = (EMI × N) - P
-    const I_baseline = EMI.mul(N).sub(P);
-    if (I_baseline.lte(0)) {
-      return { savings: 0, tenureReduced: 0, newTenure: baseline.tenureMonths };
-    }
-
-    // Edge: prepay clears loan
-    if (E.gte(P)) {
-      return {
-        savings: Math.max(0, I_baseline.toNumber()),
-        tenureReduced: Math.max(0, N.toNumber()),
-        newTenure: 0,
-      };
-    }
-
-    // P_new = P - E
-    const P_new = P.sub(E);
-
-    // IMPORTANT: Avoid the "round-up trap".
-    // We keep EMI constant, but the final month is a PARTIAL payment (not a full EMI).
-    // So we compute post-prepayment interest via amortization simulation which caps the last payment.
-    const postPrepay = simulateLoan({
-      startingPrincipal: P_new,
-      paymentForMonth: () => EMI,
-      maxMonths: 2000,
+    // 2. Simulate ONE_TIME scenario (extra only in month 1)
+    const scenario = simulateLoanUnified({
+      principal: P,
+      emi: EMI,
+      rate: R,
+      extraPayment: E,
+      strategy: "ONE_TIME",
     });
 
-    if (!postPrepay.ok) {
-      return { savings: 0, tenureReduced: 0, newTenure: baseline.tenureMonths };
+    if (!scenario.ok) {
+      return { savings: 0, tenureReduced: 0, newTenure: baseline.months };
     }
 
-    const I_new = postPrepay.totalInterestPaid;
-    const savings = I_baseline.sub(I_new);
-    const tenureReduced = N.toNumber() - postPrepay.months;
+    // 3. Calculate savings: baseline interest - scenario interest
+    const savings = baseline.totalInterest.sub(scenario.totalInterest);
+    const tenureReduced = baseline.months - scenario.months;
 
     return {
-      savings: Math.max(0, savings.toNumber()),
+      savings: Math.max(0, Math.round(savings.toNumber())),
       tenureReduced: Math.max(0, tenureReduced),
-      newTenure: postPrepay.months,
+      newTenure: scenario.months,
     };
-  }, [
-    outstandingBalance,
-    currentEMI,
-    extraMonthlyPayment,
-    remainingTenure,
-    interestRate,
-    monthlyRate,
-    baseline,
-  ]);
+  }, [outstandingBalance, currentEMI, extraMonthlyPayment, interestRate, monthlyRate]);
 
   // Output 2: Interest saved by paying EMI + E for 24 months, then EMI only
   const calculateTwoYearRecurringSavings = useMemo(() => {
@@ -250,7 +227,6 @@ export default function Home() {
       outstandingBalance === null ||
       currentEMI === null ||
       extraMonthlyPayment === null ||
-      remainingTenure === null ||
       interestRate === null
     ) {
       return {
@@ -264,7 +240,16 @@ export default function Home() {
     const P = new Decimal(outstandingBalance);
     const EMI = new Decimal(currentEMI);
     const E = new Decimal(extraMonthlyPayment);
-    const N = remainingTenure;
+    const R = monthlyRate;
+
+    // 1. Simulate BASELINE (no extra payments)
+    const baseline = simulateLoanUnified({
+      principal: P,
+      emi: EMI,
+      rate: R,
+      extraPayment: new Decimal(0),
+      strategy: "BASELINE",
+    });
 
     if (!baseline.ok) {
       return {
@@ -280,46 +265,39 @@ export default function Home() {
         savings: 0,
         tenureReduced: 0,
         totalMonthsWithExtra: 0,
-        newTotalTenure: baseline.tenureMonths,
+        newTotalTenure: baseline.months,
       };
     }
 
-    const scheduleWithExtra = simulateLoan({
-      startingPrincipal: P,
-      paymentForMonth: (month) => (month <= 24 ? EMI.add(E) : EMI),
-      maxMonths: 1000,
+    // 2. Simulate 2_YEAR scenario (extra in months 1-24, then EMI only)
+    const scenario = simulateLoanUnified({
+      principal: P,
+      emi: EMI,
+      rate: R,
+      extraPayment: E,
+      strategy: "2_YEAR",
     });
 
-    if (!scheduleWithExtra.ok) {
+    if (!scenario.ok) {
       return {
         savings: 0,
         tenureReduced: 0,
         totalMonthsWithExtra: 0,
-        newTotalTenure: baseline.tenureMonths,
+        newTotalTenure: baseline.months,
       };
     }
 
-    // Baseline interest uses constant EMI over the user-provided tenure:
-    // I_baseline = (EMI × N) - P
-    const I_baseline = EMI.mul(N).sub(P);
-    const savings = I_baseline.sub(scheduleWithExtra.totalInterestPaid);
-    const tenureReduced = N - scheduleWithExtra.months;
+    // 3. Calculate savings: baseline interest - scenario interest
+    const savings = baseline.totalInterest.sub(scenario.totalInterest);
+    const tenureReduced = baseline.months - scenario.months;
 
     return {
-      savings: Math.max(0, savings.toNumber()),
+      savings: Math.max(0, Math.round(savings.toNumber())),
       tenureReduced: Math.max(0, tenureReduced),
-      newTotalTenure: scheduleWithExtra.months,
-      totalMonthsWithExtra: Math.min(24, scheduleWithExtra.months),
+      newTotalTenure: scenario.months,
+      totalMonthsWithExtra: Math.min(24, scenario.months),
     };
-  }, [
-    outstandingBalance,
-    currentEMI,
-    extraMonthlyPayment,
-    remainingTenure,
-    interestRate,
-    monthlyRate,
-    baseline,
-  ]);
+  }, [outstandingBalance, currentEMI, extraMonthlyPayment, interestRate, monthlyRate]);
 
   // Nudge logic (Option 7 vs Option 6)
   const nudgeMessage = useMemo(() => {
@@ -342,45 +320,42 @@ export default function Home() {
 
     const ratio = E / S;
 
+    // Calculate potential savings using unified simulation engine
     const calculatePotentialSavings = (suggestedExtra: number) => {
-      if (
-        outstandingBalance === null ||
-        currentEMI === null ||
-        remainingTenure === null ||
-        interestRate === null
-      ) {
+      if (outstandingBalance === null || currentEMI === null || interestRate === null) {
         return 0;
       }
 
       const P = new Decimal(outstandingBalance);
       const EMI = new Decimal(currentEMI);
       const E2 = new Decimal(suggestedExtra);
-      const N = new Decimal(remainingTenure);
-
-      if (!baseline.ok) return 0;
+      const R = monthlyRate;
 
       if (E2.lte(0)) return 0;
 
-      const I_baseline = EMI.mul(N).sub(P);
-      if (I_baseline.lte(0)) return 0;
-
-      // Edge: prepay clears loan
-      if (E2.gte(P)) {
-        return Math.max(0, I_baseline.toNumber());
-      }
-
-      // Avoid "round-up trap" here too: use simulation so last payment is partial.
-      const P_new = P.sub(E2);
-      const postPrepay = simulateLoan({
-        startingPrincipal: P_new,
-        paymentForMonth: () => EMI,
-        maxMonths: 2000,
+      // Use unified simulation for both baseline and scenario
+      const baseline = simulateLoanUnified({
+        principal: P,
+        emi: EMI,
+        rate: R,
+        extraPayment: new Decimal(0),
+        strategy: "BASELINE",
       });
-      if (!postPrepay.ok) return 0;
 
-      const I_new = postPrepay.totalInterestPaid;
-      const savings = I_baseline.sub(I_new);
-      return Math.max(0, savings.toNumber());
+      if (!baseline.ok) return 0;
+
+      const scenario = simulateLoanUnified({
+        principal: P,
+        emi: EMI,
+        rate: R,
+        extraPayment: E2,
+        strategy: "ONE_TIME",
+      });
+
+      if (!scenario.ok) return 0;
+
+      const savings = baseline.totalInterest.sub(scenario.totalInterest);
+      return Math.max(0, Math.round(savings.toNumber()));
     };
 
     if (ratio < 0.3) {
@@ -421,9 +396,7 @@ export default function Home() {
     outstandingBalance,
     monthlyRate,
     currentEMI,
-    remainingTenure,
     interestRate,
-    baseline,
   ]);
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 md:py-16">
