@@ -1,12 +1,430 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Decimal from "decimal.js";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import AnimatedCard from "./components/AnimatedCard";
 import AnimatedNumber from "./components/AnimatedNumber";
+import LoanSlider from "./components/LoanSlider";
 import { fadeIn } from "./lib/animation";
 
 export default function Home() {
+  // State for all 7 sliders
+  const [originalLoanAmount, setOriginalLoanAmount] = useState<number | null>(
+    null
+  );
+  const [outstandingBalance, setOutstandingBalance] = useState<number | null>(
+    null
+  );
+  const [interestRate, setInterestRate] = useState<number | null>(null);
+  const [remainingTenure, setRemainingTenure] = useState<number | null>(null); // months
+  const [currentEMI, setCurrentEMI] = useState<number | null>(null);
+  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState<number | null>(
+    null
+  );
+  const [monthlyDiscretionaryExpenses, setMonthlyDiscretionaryExpenses] =
+    useState<number | null>(null);
+
+  // Display-only placeholders (NOT used for calculations)
+  const placeholders = {
+    originalLoanAmount: 5000000, // ₹50,00,000
+    outstandingBalance: 4000000, // ₹40,00,000
+    interestRate: 9, // 9%
+    remainingTenure: 180, // 15 years
+    currentEMI: 45000, // ₹45,000
+    extraMonthlyPayment: 10000, // ₹10,000
+    monthlyDiscretionaryExpenses: 15000, // ₹15,000
+  };
+
+  const formatIndian = (num: number): string => {
+    if (!Number.isFinite(num)) return "0";
+    return Math.round(num).toLocaleString("en-IN");
+  };
+
+  const formatTenure = (months: number): string => {
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+
+    if (years === 0) {
+      return `${remainingMonths} months`;
+    } else if (remainingMonths === 0) {
+      return `${years} year${years > 1 ? "s" : ""}`;
+    } else {
+      return `${years} year${years > 1 ? "s" : ""} ${remainingMonths} month${
+        remainingMonths > 1 ? "s" : ""
+      }`;
+    }
+  };
+
+  // Monthly interest rate: R = annual rate / 12 / 100
+  const monthlyRate = useMemo(() => {
+    if (interestRate === null) return new Decimal(0);
+    return new Decimal(interestRate).div(12).div(100);
+  }, [interestRate]);
+
+  const simulateLoan = (params: {
+    startingPrincipal: Decimal;
+    paymentForMonth: (month: number) => Decimal;
+    maxMonths?: number;
+  }) => {
+    const { startingPrincipal, paymentForMonth, maxMonths = 1000 } = params;
+
+    let balance = startingPrincipal;
+    let totalInterestPaid = new Decimal(0);
+    let monthsPassed = 0;
+
+    while (balance.gt(0) && monthsPassed < maxMonths) {
+      monthsPassed++;
+
+      const interestForMonth = balance.mul(monthlyRate);
+      totalInterestPaid = totalInterestPaid.add(interestForMonth);
+
+      let payment = paymentForMonth(monthsPassed);
+
+      // If payment doesn't cover interest, loan will never amortize
+      if (payment.lte(interestForMonth)) {
+        return {
+          ok: false as const,
+          months: monthsPassed,
+          totalInterestPaid,
+        };
+      }
+
+      // Don't overpay in the final month
+      const totalOwed = balance.add(interestForMonth);
+      if (payment.gt(totalOwed)) {
+        payment = totalOwed;
+      }
+
+      const principalPaid = payment.sub(interestForMonth);
+      balance = balance.sub(principalPaid);
+
+      if (balance.lt(0)) {
+        balance = new Decimal(0);
+      }
+    }
+
+    return {
+      ok: balance.lte(0) as boolean,
+      months: monthsPassed,
+      totalInterestPaid,
+    };
+  };
+
+  // Baseline (constant EMI over user-provided remaining tenure)
+  // I_baseline = (EMI × N) - P
+  const baseline = useMemo(() => {
+    if (
+      outstandingBalance === null ||
+      currentEMI === null ||
+      remainingTenure === null ||
+      interestRate === null
+    ) {
+      return {
+        ok: false as const,
+        tenureMonths: 0,
+        totalInterest: new Decimal(0),
+      };
+    }
+
+    const P = new Decimal(outstandingBalance);
+    const EMI = new Decimal(currentEMI);
+    const N = new Decimal(remainingTenure);
+    const R = monthlyRate;
+
+    if (P.lte(0) || EMI.lte(0) || N.lte(0) || R.lt(0)) {
+      return {
+        ok: false as const,
+        tenureMonths: 0,
+        totalInterest: new Decimal(0),
+      };
+    }
+
+    // If EMI doesn't even cover first-month interest, loan never amortizes.
+    if (R.gt(0) && EMI.lte(P.mul(R))) {
+      return {
+        ok: false as const,
+        tenureMonths: N.toNumber(),
+        totalInterest: new Decimal(0),
+      };
+    }
+
+    const totalPaid = EMI.mul(N);
+    const totalInterest = totalPaid.sub(P);
+
+    if (totalInterest.lt(0)) {
+      return {
+        ok: false as const,
+        tenureMonths: N.toNumber(),
+        totalInterest: new Decimal(0),
+      };
+    }
+
+    return {
+      ok: true as const,
+      tenureMonths: N.toNumber(),
+      totalInterest,
+    };
+  }, [outstandingBalance, currentEMI, remainingTenure, interestRate, monthlyRate]);
+
+  // Output 1: Interest saved by making ONE extra payment right now
+  const calculateOneTimePaymentSavings = useMemo(() => {
+    if (
+      outstandingBalance === null ||
+      currentEMI === null ||
+      extraMonthlyPayment === null ||
+      remainingTenure === null ||
+      interestRate === null
+    ) {
+      return { savings: 0, tenureReduced: 0, newTenure: 0 };
+    }
+
+    const P = new Decimal(outstandingBalance);
+    const EMI = new Decimal(currentEMI);
+    const E = new Decimal(extraMonthlyPayment);
+    const R = monthlyRate;
+    const N = new Decimal(remainingTenure);
+
+    if (!baseline.ok) {
+      return { savings: 0, tenureReduced: 0, newTenure: 0 };
+    }
+
+    if (E.lte(0)) {
+      return { savings: 0, tenureReduced: 0, newTenure: baseline.tenureMonths };
+    }
+
+    // I_baseline = (EMI × N) - P
+    const I_baseline = EMI.mul(N).sub(P);
+    if (I_baseline.lte(0)) {
+      return { savings: 0, tenureReduced: 0, newTenure: baseline.tenureMonths };
+    }
+
+    // Edge: prepay clears loan
+    if (E.gte(P)) {
+      return {
+        savings: Math.max(0, I_baseline.toNumber()),
+        tenureReduced: Math.max(0, N.toNumber()),
+        newTenure: 0,
+      };
+    }
+
+    // P_new = P - E
+    const P_new = P.sub(E);
+
+    // IMPORTANT: Avoid the "round-up trap".
+    // We keep EMI constant, but the final month is a PARTIAL payment (not a full EMI).
+    // So we compute post-prepayment interest via amortization simulation which caps the last payment.
+    const postPrepay = simulateLoan({
+      startingPrincipal: P_new,
+      paymentForMonth: () => EMI,
+      maxMonths: 2000,
+    });
+
+    if (!postPrepay.ok) {
+      return { savings: 0, tenureReduced: 0, newTenure: baseline.tenureMonths };
+    }
+
+    const I_new = postPrepay.totalInterestPaid;
+    const savings = I_baseline.sub(I_new);
+    const tenureReduced = N.toNumber() - postPrepay.months;
+
+    return {
+      savings: Math.max(0, savings.toNumber()),
+      tenureReduced: Math.max(0, tenureReduced),
+      newTenure: postPrepay.months,
+    };
+  }, [
+    outstandingBalance,
+    currentEMI,
+    extraMonthlyPayment,
+    remainingTenure,
+    interestRate,
+    monthlyRate,
+    baseline,
+  ]);
+
+  // Output 2: Interest saved by paying EMI + E for 24 months, then EMI only
+  const calculateTwoYearRecurringSavings = useMemo(() => {
+    if (
+      outstandingBalance === null ||
+      currentEMI === null ||
+      extraMonthlyPayment === null ||
+      remainingTenure === null ||
+      interestRate === null
+    ) {
+      return {
+        savings: 0,
+        tenureReduced: 0,
+        totalMonthsWithExtra: 0,
+        newTotalTenure: 0,
+      };
+    }
+
+    const P = new Decimal(outstandingBalance);
+    const EMI = new Decimal(currentEMI);
+    const E = new Decimal(extraMonthlyPayment);
+    const N = remainingTenure;
+
+    if (!baseline.ok) {
+      return {
+        savings: 0,
+        tenureReduced: 0,
+        totalMonthsWithExtra: 0,
+        newTotalTenure: 0,
+      };
+    }
+
+    if (E.lte(0)) {
+      return {
+        savings: 0,
+        tenureReduced: 0,
+        totalMonthsWithExtra: 0,
+        newTotalTenure: baseline.tenureMonths,
+      };
+    }
+
+    const scheduleWithExtra = simulateLoan({
+      startingPrincipal: P,
+      paymentForMonth: (month) => (month <= 24 ? EMI.add(E) : EMI),
+      maxMonths: 1000,
+    });
+
+    if (!scheduleWithExtra.ok) {
+      return {
+        savings: 0,
+        tenureReduced: 0,
+        totalMonthsWithExtra: 0,
+        newTotalTenure: baseline.tenureMonths,
+      };
+    }
+
+    // Baseline interest uses constant EMI over the user-provided tenure:
+    // I_baseline = (EMI × N) - P
+    const I_baseline = EMI.mul(N).sub(P);
+    const savings = I_baseline.sub(scheduleWithExtra.totalInterestPaid);
+    const tenureReduced = N - scheduleWithExtra.months;
+
+    return {
+      savings: Math.max(0, savings.toNumber()),
+      tenureReduced: Math.max(0, tenureReduced),
+      newTotalTenure: scheduleWithExtra.months,
+      totalMonthsWithExtra: Math.min(24, scheduleWithExtra.months),
+    };
+  }, [
+    outstandingBalance,
+    currentEMI,
+    extraMonthlyPayment,
+    remainingTenure,
+    interestRate,
+    monthlyRate,
+    baseline,
+  ]);
+
+  // Nudge logic (Option 7 vs Option 6)
+  const nudgeMessage = useMemo(() => {
+    if (extraMonthlyPayment === null || monthlyDiscretionaryExpenses === null) {
+      return {
+        type: "neutral" as const,
+        message: "Move the sliders to see personalized insights.",
+      };
+    }
+
+    const E = extraMonthlyPayment;
+    const S = monthlyDiscretionaryExpenses;
+
+    if (S <= 0) {
+      return {
+        type: "neutral" as const,
+        message: "Track your discretionary spending to get personalized insights.",
+      };
+    }
+
+    const ratio = E / S;
+
+    const calculatePotentialSavings = (suggestedExtra: number) => {
+      if (
+        outstandingBalance === null ||
+        currentEMI === null ||
+        remainingTenure === null ||
+        interestRate === null
+      ) {
+        return 0;
+      }
+
+      const P = new Decimal(outstandingBalance);
+      const EMI = new Decimal(currentEMI);
+      const E2 = new Decimal(suggestedExtra);
+      const N = new Decimal(remainingTenure);
+
+      if (!baseline.ok) return 0;
+
+      if (E2.lte(0)) return 0;
+
+      const I_baseline = EMI.mul(N).sub(P);
+      if (I_baseline.lte(0)) return 0;
+
+      // Edge: prepay clears loan
+      if (E2.gte(P)) {
+        return Math.max(0, I_baseline.toNumber());
+      }
+
+      // Avoid "round-up trap" here too: use simulation so last payment is partial.
+      const P_new = P.sub(E2);
+      const postPrepay = simulateLoan({
+        startingPrincipal: P_new,
+        paymentForMonth: () => EMI,
+        maxMonths: 2000,
+      });
+      if (!postPrepay.ok) return 0;
+
+      const I_new = postPrepay.totalInterestPaid;
+      const savings = I_baseline.sub(I_new);
+      return Math.max(0, savings.toNumber());
+    };
+
+    if (ratio < 0.3) {
+      const suggestedExtra = Math.round(S * 0.5);
+      const potentialSavings = calculatePotentialSavings(suggestedExtra);
+      return {
+        type: "encourage" as const,
+        message: `You spend ₹${formatIndian(S)} on discretionary items monthly. Diverting just 50% (₹${formatIndian(
+          suggestedExtra
+        )}) to your loan could save you ₹${formatIndian(potentialSavings)} in interest!`,
+        suggestedAmount: suggestedExtra,
+      };
+    } else if (ratio < 0.8) {
+      return {
+        type: "positive" as const,
+        message: `Great balance! You're putting ₹${formatIndian(E)} extra while keeping ₹${formatIndian(
+          Math.max(0, S - E)
+        )} for lifestyle. Smart move!`,
+      };
+    } else if (ratio <= 1) {
+      return {
+        type: "positive" as const,
+        message: "You're maximizing your loan payments. This discipline will pay off significantly!",
+      };
+    }
+
+    return {
+      type: "warning" as const,
+      message: `This is an aggressive repayment plan. Your extra payment (₹${formatIndian(
+        E
+      )}) exceeds your discretionary budget (₹${formatIndian(
+        S
+      )}). Ensure you're not cutting essential expenses.`,
+    };
+  }, [
+    extraMonthlyPayment,
+    monthlyDiscretionaryExpenses,
+    outstandingBalance,
+    monthlyRate,
+    currentEMI,
+    remainingTenure,
+    interestRate,
+    baseline,
+  ]);
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 md:py-16">
       {/* Hero Section */}
@@ -15,19 +433,223 @@ export default function Home() {
           className="text-6xl md:text-7xl font-extrabold text-[#B19CD7] mb-4 drop-shadow-sm tracking-tight"
           {...fadeIn}
         >
-          UnlocQ
+          UnLoQ1
         </motion.h1>
         <motion.p
           className="text-2xl md:text-3xl font-medium text-gray-800 mb-6 tracking-tight"
           {...fadeIn}
           transition={{ delay: 0.2 }}
         >
-          Smart Loan Prepayment Calculator
+          Money matters
         </motion.p>
         <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
           Discover how much you can save on your loan by prepaying smartly
         </p>
       </div>
+
+      {/* Loan Analysis Sliders */}
+      <motion.div
+        className="w-full max-w-6xl mx-auto mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
+        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-purple-200 shadow-lg">
+          {/* Grid Layout: 3 columns on desktop, 1 column on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {/* Row 1 - First 3 sliders */}
+            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+              <LoanSlider
+                label="Current Outstanding Balance"
+                helper="Amount remaining on your loan today"
+                min={0}
+                max={200000000}
+                step={50000}
+                format="currency"
+                value={outstandingBalance}
+                displayPlaceholder={placeholders.outstandingBalance}
+                onChange={setOutstandingBalance}
+                disabled={false}
+              />
+            </div>
+
+            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+              <LoanSlider
+                label="Original Loan Amount"
+                helper="The total amount you borrowed"
+                min={100000}
+                max={200000000}
+                step={50000}
+                format="currency"
+                value={originalLoanAmount}
+                displayPlaceholder={placeholders.originalLoanAmount}
+                onChange={setOriginalLoanAmount}
+              />
+            </div>
+
+            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+              <LoanSlider
+                label="Current Interest Rate (% p.a.)"
+                helper="As per your latest statement"
+                min={5}
+                max={20}
+                step={0.1}
+                format="percentage"
+                value={interestRate}
+                displayPlaceholder={placeholders.interestRate}
+                onChange={setInterestRate}
+              />
+            </div>
+
+            {/* Row 2 - Next 3 sliders */}
+            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+              <LoanSlider
+                label="Remaining Loan Tenure"
+                helper="Months left to pay off your loan"
+                min={24}
+                max={360}
+                step={12}
+                format="months"
+                value={remainingTenure}
+                displayPlaceholder={placeholders.remainingTenure}
+                onChange={setRemainingTenure}
+              />
+            </div>
+
+            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+              <LoanSlider
+                label="Current Monthly EMI"
+                helper="As per your loan schedule"
+                min={1000}
+                max={2000000}
+                step={1000}
+                format="currency"
+                value={currentEMI}
+                displayPlaceholder={placeholders.currentEMI}
+                onChange={setCurrentEMI}
+              />
+            </div>
+
+            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+              <LoanSlider
+                label="Extra Monthly Payment Capacity"
+                helper="This will not change your EMI unless you choose to"
+                min={1000}
+                max={1000000}
+                step={1000}
+                format="currency"
+                value={extraMonthlyPayment}
+                displayPlaceholder={placeholders.extraMonthlyPayment}
+                onChange={setExtraMonthlyPayment}
+              />
+            </div>
+
+            {/* Row 3 - Last slider (spans 1 column, centered on desktop) */}
+            <div className="p-3 bg-white/50 rounded-lg border border-purple-100 md:col-start-2">
+              <LoanSlider
+                label="Monthly Discretionary Expenses"
+                helper="e.g. online shopping, dining, non-essential spends"
+                min={1000}
+                max={300000}
+                step={1000}
+                format="currency"
+                value={monthlyDiscretionaryExpenses}
+                displayPlaceholder={placeholders.monthlyDiscretionaryExpenses}
+                onChange={setMonthlyDiscretionaryExpenses}
+              />
+            </div>
+          </div>
+
+          {/* Results Section (same container) */}
+          <div className="mt-8 space-y-6">
+            {/* Output 1 */}
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC]">
+              <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
+                Interest Saved This Month
+              </p>
+              <div className="flex items-baseline gap-2">
+                <AnimatedNumber
+                  value={calculateOneTimePaymentSavings.savings}
+                  prefix="₹"
+                  className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
+                />
+              </div>
+              <p className="text-sm text-[#5B4B8A] mt-2">
+                By paying an extra{" "}
+                <span className="font-semibold">
+                  ₹{formatIndian(extraMonthlyPayment ?? 0)}
+                </span>{" "}
+                this month, you eliminate this much future interest liability
+                instantly.
+              </p>
+              {calculateOneTimePaymentSavings.tenureReduced > 0 && (
+                <p className="text-xs text-[#8E7BB8] mt-1">
+                  Tenure reduced by {calculateOneTimePaymentSavings.tenureReduced}{" "}
+                  month
+                  {calculateOneTimePaymentSavings.tenureReduced > 1 ? "s" : ""}
+                </p>
+              )}
+            </div>
+
+            {/* Output 2 */}
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC]">
+              <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
+                Interest Saved Over 2 Years
+              </p>
+              <div className="flex items-baseline gap-2">
+                <AnimatedNumber
+                  value={calculateTwoYearRecurringSavings.savings}
+                  prefix="₹"
+                  className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
+                />
+              </div>
+              <p className="text-sm text-[#5B4B8A] mt-2">
+                If you continue paying{" "}
+                <span className="font-semibold">
+                  ₹{formatIndian(extraMonthlyPayment ?? 0)}
+                </span>{" "}
+                extra every month for 2 years.
+              </p>
+              {calculateTwoYearRecurringSavings.tenureReduced > 0 && (
+                <p className="text-xs text-[#8E7BB8] mt-1">
+                  You'll be debt-free{" "}
+                  <span className="font-semibold text-[#7C5CBF]">
+                    {formatTenure(calculateTwoYearRecurringSavings.tenureReduced)}
+                  </span>{" "}
+                  earlier!
+                </p>
+              )}
+            </div>
+
+            {/* Nudge */}
+            <div
+              className={`rounded-xl p-4 ${
+                nudgeMessage.type === "warning"
+                  ? "bg-amber-50 border border-amber-200"
+                  : nudgeMessage.type === "encourage"
+                    ? "bg-purple-50 border border-[#EBE8FC]"
+                    : nudgeMessage.type === "positive"
+                      ? "bg-green-50 border border-green-200"
+                      : "bg-white/60 border border-purple-200"
+              }`}
+            >
+              <p
+                className={`text-sm ${
+                  nudgeMessage.type === "warning"
+                    ? "text-amber-800"
+                    : nudgeMessage.type === "encourage"
+                      ? "text-[#5B4B8A]"
+                      : nudgeMessage.type === "positive"
+                        ? "text-green-800"
+                        : "text-[#5B4B8A]"
+                }`}
+              >
+                💡 {nudgeMessage.message}
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* AnimatedNumber Showcase */}
       <motion.div
@@ -43,7 +665,7 @@ export default function Home() {
             className="text-5xl md:text-6xl font-bold text-[#B19CD7]"
           />
         </div>
-        <p className="text-lg text-gray-600 mt-4">using UnlocQ calculators</p>
+        <p className="text-lg text-gray-600 mt-4">using UnLoQ1 calculators</p>
       </motion.div>
 
       {/* Calculator Navigation Links */}

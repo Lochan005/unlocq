@@ -21,7 +21,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "UnlocQ - Smart Loan Prepayment Calculator",
+  title: "UnLoQ1 - Smart Loan Prepayment Calculator",
   description: "Discover how much you can save on your loan by prepaying smartly",
 };
 

@@ -20,7 +20,7 @@ export default function AboutUs() {
           transition={{ delay: 0.2 }}
         >
           <p className="text-gray-700 text-lg leading-relaxed mb-6">
-            Welcome to UnlocQ, your trusted partner in smart financial planning.
+            Welcome to UnLoQ1, your trusted partner in smart financial planning.
           </p>
           
           <p className="text-gray-700 text-lg leading-relaxed mb-6">

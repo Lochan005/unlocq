@@ -20,7 +20,7 @@ export default function Rewards() {
           transition={{ delay: 0.2 }}
         >
           <p className="text-gray-700 text-lg leading-relaxed mb-6">
-            Unlock amazing rewards with UnlocQ!
+            Unlock amazing rewards with UnLoQ1!
           </p>
           
           <p className="text-gray-700 text-lg leading-relaxed mb-6">

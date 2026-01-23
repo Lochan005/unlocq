@@ -35,7 +35,7 @@ export default function GetInTouch() {
               </div>
               <div>
                 <p className="text-gray-600 text-sm">Email</p>
-                <p className="text-gray-800 font-medium">contact@unlocq.app</p>
+                <p className="text-gray-800 font-medium">contact@unloq1.app</p>
               </div>
             </div>
           </div>

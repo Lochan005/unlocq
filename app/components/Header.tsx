@@ -30,7 +30,7 @@ export default function Header() {
           href="/"
           className="text-2xl font-bold text-[#B19CD7] hover:text-[#EBE8FC] transition-colors"
         >
-          UnlocQ
+          UnLoQ1
         </Link>
 
         {/* Desktop Navigation */}
