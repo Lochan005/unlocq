@@ -320,9 +320,9 @@ export default function LoanSlider({
             }}
             transition={{ duration: 0.1 }}
           >
-            {/* Thumb icon */}
+            {/* Thumb icon - varies by format */}
             <span className="text-[10px] font-extrabold text-[#7C5CBF] leading-none select-none">
-              ₹
+              {format === "currency" ? "₹" : format === "percentage" ? "%" : "M"}
             </span>
             {/* Tooltip */}
             {showTooltip && (

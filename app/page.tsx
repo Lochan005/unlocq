@@ -520,7 +520,7 @@ export default function Home() {
             {/* Row 3 - Last slider (spans 1 column, centered on desktop) */}
             <div className="p-3 bg-white/50 rounded-lg border border-purple-100 md:col-start-2">
               <LoanSlider
-                label="Monthly Discretionary Expenses"
+                label="Monthly Living Expenses"
                 helper="e.g. online shopping, dining, non-essential spends"
                 min={1000}
                 max={300000}
