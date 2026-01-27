@@ -40,8 +40,12 @@ export default function LoanSlider({
   const [showTooltip, setShowTooltip] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [yearInput, setYearInput] = useState("");
+  const [monthInput, setMonthInput] = useState("");
   const [warning, setWarning] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const yearInputRef = useRef<HTMLInputElement>(null);
+  const monthInputRef = useRef<HTMLInputElement>(null);
 
   const isSet = value !== null && value !== undefined;
   const fallbackValue = displayPlaceholder ?? defaultValue ?? min;
@@ -62,12 +66,13 @@ export default function LoanSlider({
       return `${val.toFixed(1)}%`;
     } else if (format === "months") {
       const years = Math.floor(val / 12);
+      const remainingMonths = val % 12;
       if (years === 0) {
-        return `${val} months`;
-      } else if (val % 12 === 0) {
+        return `${remainingMonths} month${remainingMonths !== 1 ? "s" : ""}`;
+      } else if (remainingMonths === 0) {
         return `${years} ${years === 1 ? "year" : "years"}`;
       } else {
-        return `${years} ${years === 1 ? "year" : "years"}`;
+        return `${years} ${years === 1 ? "year" : "years"} ${remainingMonths} month${remainingMonths !== 1 ? "s" : ""}`;
       }
     }
     return val.toString();
@@ -121,7 +126,14 @@ export default function LoanSlider({
   const handleValueClick = () => {
     if (!disabled) {
       setIsEditing(true);
-      setInputValue(getRawValue(sliderValue));
+      if (format === "months") {
+        const years = Math.floor(sliderValue / 12);
+        const months = sliderValue % 12;
+        setYearInput(years.toString());
+        setMonthInput(months.toString());
+      } else {
+        setInputValue(getRawValue(sliderValue));
+      }
     }
   };
 
@@ -157,8 +169,56 @@ export default function LoanSlider({
     }
   };
 
+  // Handle year/month input changes
+  const handleYearMonthChange = (type: "year" | "month", value: string) => {
+    const cleaned = value.replace(/[^\d]/g, "");
+    if (type === "year") {
+      setYearInput(cleaned);
+    } else {
+      setMonthInput(cleaned);
+    }
+
+    // Real-time validation
+    if (showWarning && cleaned) {
+      const years = parseInt(type === "year" ? cleaned : yearInput) || 0;
+      const months = parseInt(type === "month" ? cleaned : monthInput) || 0;
+      const totalMonths = years * 12 + months;
+      
+      if (totalMonths < effectiveMin) {
+        setWarning("Too low");
+      } else if (totalMonths > effectiveMax) {
+        setWarning("Too high");
+      } else {
+        setWarning(null);
+      }
+    }
+  };
+
   // Handle input blur (when user clicks away)
   const handleInputBlur = () => {
+    if (format === "months") {
+      // Handle dual input for years and months
+      const years = parseInt(yearInput) || 0;
+      const months = parseInt(monthInput) || 0;
+      const totalMonths = years * 12 + months;
+      
+      if (totalMonths === 0 && sliderValue > 0) {
+        // User cleared both inputs, don't change
+        setIsEditing(false);
+        setWarning(null);
+        return;
+      }
+
+      // Clamp to min/max
+      let clampedValue = Math.max(effectiveMin, Math.min(effectiveMax, totalMonths));
+      clampedValue = Math.trunc(clampedValue);
+
+      onChange(clampedValue);
+      setIsEditing(false);
+      setWarning(null);
+      return;
+    }
+
     const raw = inputValue.trim();
 
     // If user cleared input, don't change the current value
@@ -189,8 +249,8 @@ export default function LoanSlider({
     // Clamp to min/max, but DO NOT round to step (manual entry must be exact)
     let clampedValue = Math.max(effectiveMin, Math.min(effectiveMax, parsedValue));
 
-    // Keep integer for currency / months
-    if (format === "currency" || format === "months") {
+    // Keep integer for currency
+    if (format === "currency") {
       clampedValue = Math.trunc(clampedValue);
     }
 
@@ -202,11 +262,39 @@ export default function LoanSlider({
   // Handle Enter key
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      inputRef.current?.blur();
+      if (format === "months") {
+        monthInputRef.current?.blur();
+      } else {
+        inputRef.current?.blur();
+      }
     } else if (e.key === "Escape") {
       setIsEditing(false);
-      setInputValue(getRawValue(sliderValue));
+      if (format === "months") {
+        const years = Math.floor(sliderValue / 12);
+        const months = sliderValue % 12;
+        setYearInput(years.toString());
+        setMonthInput(months.toString());
+      } else {
+        setInputValue(getRawValue(sliderValue));
+      }
       setWarning(null);
+    }
+  };
+
+  // Handle Tab key for year/month inputs
+  const handleYearMonthKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, type: "year" | "month") => {
+    if (e.key === "Enter") {
+      monthInputRef.current?.blur();
+    } else if (e.key === "Escape") {
+      setIsEditing(false);
+      const years = Math.floor(sliderValue / 12);
+      const months = sliderValue % 12;
+      setYearInput(years.toString());
+      setMonthInput(months.toString());
+      setWarning(null);
+    } else if (e.key === "Tab" && type === "year" && !e.shiftKey) {
+      e.preventDefault();
+      monthInputRef.current?.focus();
     }
   };
 
@@ -236,11 +324,16 @@ export default function LoanSlider({
 
   // Focus input when editing starts
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
+    if (isEditing) {
+      if (format === "months") {
+        yearInputRef.current?.focus();
+        yearInputRef.current?.select();
+      } else if (inputRef.current) {
+        inputRef.current.focus();
+        inputRef.current.select();
+      }
     }
-  }, [isEditing]);
+  }, [isEditing, format]);
 
   const percentage = ((sliderValue - min) / (max - min)) * 100;
 
@@ -322,7 +415,7 @@ export default function LoanSlider({
           >
             {/* Thumb icon - varies by format */}
             <span className="text-[10px] font-extrabold text-[#7C5CBF] leading-none select-none">
-              {format === "currency" ? "₹" : format === "percentage" ? "%" : "M"}
+              {format === "currency" ? "₹" : format === "percentage" ? "%" : "T"}
             </span>
             {/* Tooltip */}
             {showTooltip && (
@@ -342,7 +435,44 @@ export default function LoanSlider({
         {/* Current Value Display - Centered */}
         <div className="flex flex-col items-center">
           <div className="flex justify-center items-center gap-2">
-            {isEditing ? (
+            {isEditing && format === "months" ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                  <input
+                    ref={yearInputRef}
+                    type="text"
+                    value={yearInput}
+                    onChange={(e) => handleYearMonthChange("year", e.target.value)}
+                    onBlur={handleInputBlur}
+                    onKeyDown={(e) => handleYearMonthKeyDown(e, "year")}
+                    className={`text-base font-bold tabular-nums bg-white border-2 rounded px-2 py-1 text-center w-16 focus:outline-none focus:ring-2 ${
+                      warning
+                        ? "text-red-600 border-red-400 focus:ring-red-400/20"
+                        : "text-[#5B4B8A] border-[#B19CD7] focus:ring-[#B19CD7]/20"
+                    }`}
+                    placeholder="0"
+                  />
+                  <span className="text-sm text-[#5B4B8A] font-medium">yr</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <input
+                    ref={monthInputRef}
+                    type="text"
+                    value={monthInput}
+                    onChange={(e) => handleYearMonthChange("month", e.target.value)}
+                    onBlur={handleInputBlur}
+                    onKeyDown={(e) => handleYearMonthKeyDown(e, "month")}
+                    className={`text-base font-bold tabular-nums bg-white border-2 rounded px-2 py-1 text-center w-16 focus:outline-none focus:ring-2 ${
+                      warning
+                        ? "text-red-600 border-red-400 focus:ring-red-400/20"
+                        : "text-[#5B4B8A] border-[#B19CD7] focus:ring-[#B19CD7]/20"
+                    }`}
+                    placeholder="0"
+                  />
+                  <span className="text-sm text-[#5B4B8A] font-medium">mo</span>
+                </div>
+              </div>
+            ) : isEditing ? (
               <input
                 ref={inputRef}
                 type="text"
