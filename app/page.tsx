@@ -436,7 +436,7 @@ export default function Home() {
                 label="Current Outstanding Balance"
                 helper="Amount remaining on your loan today"
                 min={0}
-                max={200000000}
+                max={50000000}
                 step={50000}
                 format="currency"
                 value={outstandingBalance}
@@ -451,7 +451,7 @@ export default function Home() {
                 label="Original Loan Amount"
                 helper="The total amount you borrowed"
                 min={100000}
-                max={200000000}
+                max={50000000}
                 step={50000}
                 format="currency"
                 value={originalLoanAmount}
@@ -494,7 +494,7 @@ export default function Home() {
                 label="Current Monthly EMI"
                 helper="As per your loan schedule"
                 min={1000}
-                max={2000000}
+                max={500000}
                 step={1000}
                 format="currency"
                 value={currentEMI}
@@ -508,7 +508,7 @@ export default function Home() {
                 label="Extra Monthly Payment Capacity"
                 helper="This will not change your EMI unless you choose to"
                 min={1000}
-                max={1000000}
+                max={500000}
                 step={1000}
                 format="currency"
                 value={extraMonthlyPayment}
@@ -523,7 +523,7 @@ export default function Home() {
                 label="Monthly Living Expenses"
                 helper="e.g. online shopping, dining, non-essential spends"
                 min={1000}
-                max={300000}
+                max={500000}
                 step={1000}
                 format="currency"
                 value={monthlyDiscretionaryExpenses}
