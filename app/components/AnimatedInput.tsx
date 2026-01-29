@@ -136,6 +136,7 @@ export default function AnimatedInput({
             id={label.toLowerCase().replace(/\s+/g, "-")}
             value={type === "number" ? formatValue(value) : value}
             onChange={handleChange}
+            onInput={handleChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={`

@@ -365,6 +365,10 @@ export default function LoanSlider({
             step={step}
             value={sliderValue}
             onChange={(e) => onChange(Number(e.target.value))}
+            onInput={(e) => {
+              // Safari often fires input but not change for range; ensure state updates
+              onChange(Number((e.target as HTMLInputElement).value));
+            }}
             onMouseDown={() => {
               setIsDragging(true);
               setShowTooltip(true);

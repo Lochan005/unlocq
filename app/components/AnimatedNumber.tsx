@@ -52,6 +52,8 @@ export default function AnimatedNumber({
 
   useEffect(() => {
     spring.set(value);
+    // Safari: ensure display updates when value prop changes even if spring subscription is delayed
+    setDisplayValue(formatIndianNumber(value));
   }, [value, spring]);
 
   useEffect(() => {

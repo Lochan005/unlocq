@@ -98,6 +98,10 @@ function MoneyInput({
             const num = Number(e.target.value.replace(/[^0-9]/g, ""));
             onChange(Number.isNaN(num) ? 0 : num);
           }}
+          onInput={e => {
+            const num = Number(e.currentTarget.value.replace(/[^0-9]/g, ""));
+            onChange(Number.isNaN(num) ? 0 : num);
+          }}
         />
       </div>
       {helperText && !error && (

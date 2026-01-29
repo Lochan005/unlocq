@@ -100,6 +100,10 @@ function MoneyInput({
             const num = Number(e.target.value.replace(/[^0-9]/g, ""));
             onChange(Number.isNaN(num) ? 0 : num);
           }}
+          onInput={e => {
+            const num = Number(e.currentTarget.value.replace(/[^0-9]/g, ""));
+            onChange(Number.isNaN(num) ? 0 : num);
+          }}
         />
       </div>
       {helperText && !error && (
@@ -140,7 +144,7 @@ function RateInput({
         <input
           inputMode="decimal"
           type="number"
-          step="0.01"
+          step="any"
           name={id}
           id={id}
           className={`w-full rounded-lg pr-10 pl-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
@@ -152,6 +156,10 @@ function RateInput({
           max={max}
           value={value}
           onChange={e => onChange(Number(e.target.value))}
+          onInput={e => {
+            const v = Number((e.target as HTMLInputElement).value);
+            onChange(Number.isFinite(v) ? v : 0);
+          }}
         />
         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg select-none">%</span>
       </div>
