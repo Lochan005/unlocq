@@ -56,14 +56,16 @@ export default function AnimatedNumber({
     setDisplayValue(formatIndianNumber(value));
   }, [value, spring]);
 
+  // Subscribe to spring-driven formatted value once on mount. Empty deps so we
+  // don't re-run when formattedValue reference changes (avoids infinite setState loop).
   useEffect(() => {
     const unsubscribe = formattedValue.on("change", (latest) => {
       setDisplayValue(latest);
     });
-    // Set initial value
     setDisplayValue(formatIndianNumber(spring.get()));
     return unsubscribe;
-  }, [formattedValue, spring]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: subscribe once only
+  }, []);
 
   return (
     <span className={`tabular-nums ${className}`}>

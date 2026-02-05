@@ -28,7 +28,7 @@ export default function AnimatedButton({
 
   const variantStyles = {
     primary: "bg-[#B19CD7] hover:bg-[#9B87C5] text-white",
-    secondary: "bg-gray-300 hover:bg-gray-400 text-gray-800",
+    secondary: "bg-gray-300 hover:bg-gray-400 text-[#5B4B8A]",
     outline:
       "border-2 border-[#B19CD7] bg-transparent text-[#B19CD7] hover:bg-[#B19CD7]/10",
   };

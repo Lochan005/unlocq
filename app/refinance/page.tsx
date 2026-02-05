@@ -90,7 +90,7 @@ function MoneyInput({
           type="text"
           name={id}
           id={id}
-          className={`w-full rounded-lg pl-10 pr-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
+          className={`w-full rounded-lg pl-10 pr-4 py-3 bg-white text-[#5B4B8A] text-lg font-medium focus:outline-none focus:ring-2 ${
             error
               ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
               : "focus:ring-green-600 border-2 border-transparent"
@@ -147,7 +147,7 @@ function RateInput({
           step="any"
           name={id}
           id={id}
-          className={`w-full rounded-lg pr-10 pl-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
+          className={`w-full rounded-lg pr-10 pl-4 py-3 bg-white text-[#5B4B8A] text-lg font-medium focus:outline-none focus:ring-2 ${
             error
               ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
               : "focus:ring-green-600 border-2 border-transparent"
@@ -203,7 +203,7 @@ function MonthsInput({
           type="number"
           name={id}
           id={id}
-          className={`w-full rounded-lg pr-16 pl-4 py-3 bg-white text-gray-800 text-lg font-medium focus:outline-none focus:ring-2 ${
+          className={`w-full rounded-lg pr-16 pl-4 py-3 bg-white text-[#5B4B8A] text-lg font-medium focus:outline-none focus:ring-2 ${
             error
               ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
               : "focus:ring-green-600 border-2 border-transparent"

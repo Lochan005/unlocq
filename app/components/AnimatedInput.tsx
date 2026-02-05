@@ -141,7 +141,7 @@ export default function AnimatedInput({
             onBlur={() => setIsFocused(false)}
             className={`
               w-full bg-white border rounded-lg px-4 py-3
-              text-gray-800 text-lg font-medium
+              text-[#5B4B8A] text-lg font-medium
               focus:outline-none transition-colors duration-200
               ${prefix ? "pl-10" : ""}
               ${suffix ? "pr-10" : ""}

@@ -45,6 +45,22 @@ body {
   background: linear-gradient(180deg, #EBE8FC 0%, #B19CD7 100%);
 }
 
+/* Auth page: fintech micrographics + lavender gradient */
+.bg-auth-fintech {
+  background: linear-gradient(135deg, #EBE8FC 0%, #D4C8F0 30%, #B19CD7 60%, #9678CD 85%, #7C5CBF 100%);
+  background-size: 100% 100%;
+}
+
+.bg-auth-fintech::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 L60 30 M30 0 L30 60' stroke='%23B19CD7' stroke-opacity='0.15' stroke-width='0.5'/%3E%3Ccircle cx='15' cy='15' r='2' fill='%239678CD' fill-opacity='0.2'/%3E%3Ccircle cx='45' cy='45' r='2' fill='%237C5CBF' fill-opacity='0.2'/%3E%3Cpath d='M5 45 L15 35 L25 40 L35 25 L45 30 L55 20' stroke='%235B4B8A' stroke-opacity='0.12' stroke-width='0.8' fill='none'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
 .shimmer-bg {
   background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
   background-size: 200% 100%;

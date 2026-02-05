@@ -23,15 +23,20 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-purple-200 h-[60px]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-purple-200 min-h-[60px] py-2">
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
-        {/* Logo */}
-        <Link
-          href="/"
-          className="text-2xl font-bold text-[#B19CD7] hover:text-[#EBE8FC] transition-colors"
-        >
-          UnLoQ1
-        </Link>
+        {/* Logo + Tagline */}
+        <div className="flex flex-col">
+          <Link
+            href="/"
+            className="text-2xl font-bold leading-tight text-[#9678CD] hover:text-[#B19CD7] transition-colors"
+          >
+            UnLoQ1
+          </Link>
+          <span className="text-sm font-medium text-[#5B4B8A] tracking-tight mt-0.5">
+            Money Matters ₹
+          </span>
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
@@ -42,7 +47,7 @@ export default function Header() {
               className={`px-3 py-2 text-sm font-medium transition-colors relative ${
                 isActive(link.href)
                   ? "text-[#B19CD7]"
-                  : "text-gray-700 hover:text-[#B19CD7]"
+                  : "text-[#5B4B8A] hover:text-[#B19CD7]"
               }`}
             >
               {link.label}
@@ -57,7 +62,7 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-gray-700 hover:text-[#B19CD7] transition-colors p-2"
+          className="md:hidden text-[#5B4B8A] hover:text-[#B19CD7] transition-colors p-2"
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
@@ -98,7 +103,7 @@ export default function Header() {
                 className={`px-4 py-3 text-sm font-medium transition-colors border-b border-purple-100 ${
                   isActive(link.href)
                     ? "text-[#B19CD7] bg-purple-50"
-                    : "text-gray-700 hover:text-[#B19CD7] hover:bg-purple-50"
+                    : "text-[#5B4B8A] hover:text-[#B19CD7] hover:bg-purple-50"
                 }`}
               >
                 {link.label}

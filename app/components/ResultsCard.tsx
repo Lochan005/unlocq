@@ -29,7 +29,7 @@ export default function ResultsCard({
   const trendStyles = {
     positive: "text-[#B19CD7]",
     negative: "text-red-400",
-    neutral: "text-gray-800",
+    neutral: "text-[#5B4B8A]",
   };
 
   const trendIcons = {
@@ -59,7 +59,7 @@ export default function ResultsCard({
             )}
           </div>
           {subtitle && (
-            <div className="text-sm md:text-base text-gray-700 font-medium mt-2">
+            <div className="text-sm md:text-base text-[#5B4B8A] font-medium mt-2">
               {subtitle}
             </div>
           )}
@@ -79,7 +79,7 @@ export default function ResultsCard({
             <div className="text-xs md:text-sm text-gray-600 mb-2">
               {beforeLabel}
             </div>
-            <div className="text-lg md:text-xl font-semibold text-gray-700">
+            <div className="text-lg md:text-xl font-semibold text-[#5B4B8A]">
               {beforeValue || "-"}
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function ResultsCard({
           )}
         </div>
         {subtitle && (
-          <div className="mt-2 text-xs md:text-sm text-gray-700">
+          <div className="mt-2 text-xs md:text-sm text-[#5B4B8A]">
             {subtitle}
           </div>
         )}

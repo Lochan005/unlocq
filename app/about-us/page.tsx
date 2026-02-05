@@ -19,17 +19,17 @@ export default function AboutUs() {
           {...fadeIn}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             Welcome to UnLoQ1, your trusted partner in smart financial planning.
           </p>
           
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             We are dedicated to helping you make informed decisions about your loans
             and financial future. Our mission is to empower individuals with the tools
             and knowledge they need to save money and achieve their financial goals.
           </p>
           
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed">
             This page is currently under development. More information coming soon!
           </p>
         </motion.div>

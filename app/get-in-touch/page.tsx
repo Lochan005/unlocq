@@ -19,11 +19,11 @@ export default function GetInTouch() {
           {...fadeIn}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             We'd love to hear from you!
           </p>
           
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             Have questions, feedback, or suggestions? Reach out to us and we'll get
             back to you as soon as possible.
           </p>
@@ -35,12 +35,12 @@ export default function GetInTouch() {
               </div>
               <div>
                 <p className="text-gray-600 text-sm">Email</p>
-                <p className="text-gray-800 font-medium">contact@unloq1.app</p>
+                <p className="text-[#5B4B8A] font-medium">contact@unloq1.app</p>
               </div>
             </div>
           </div>
           
-          <p className="text-gray-700 text-lg leading-relaxed mt-8">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mt-8">
             Contact form and additional details coming soon!
           </p>
         </motion.div>

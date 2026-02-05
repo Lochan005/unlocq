@@ -19,16 +19,16 @@ export default function Rewards() {
           {...fadeIn}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             Unlock amazing rewards with UnLoQ1!
           </p>
           
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             Earn points for every calculation you make, share your results, and refer
             friends. Redeem your points for exclusive benefits and discounts.
           </p>
           
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed">
             Our rewards program is coming soon! Stay tuned for exciting updates.
           </p>
         </motion.div>

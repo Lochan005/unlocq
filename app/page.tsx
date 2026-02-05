@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import Decimal from "decimal.js";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import AnimatedCard from "./components/AnimatedCard";
 import AnimatedNumber from "./components/AnimatedNumber";
 import LoanSlider from "./components/LoanSlider";
 import { fadeIn } from "./lib/animation";
+import { calculateEMI, calculateNewTenure } from "./lib/calculator";
 
 export default function Home() {
   // State for all 7 sliders
@@ -62,6 +63,45 @@ export default function Home() {
     if (interestRate === null) return new Decimal(0);
     return new Decimal(interestRate).div(12).div(100);
   }, [interestRate]);
+
+  // Auto-update Current Monthly EMI when outstanding balance, interest rate, or remaining tenure change
+  useEffect(() => {
+    if (
+      outstandingBalance != null &&
+      interestRate != null &&
+      remainingTenure != null &&
+      outstandingBalance > 0 &&
+      interestRate > 0 &&
+      remainingTenure > 0
+    ) {
+      const emi = calculateEMI(outstandingBalance, interestRate, remainingTenure);
+      setCurrentEMI(Math.round(emi.toNumber()));
+    }
+  }, [outstandingBalance, interestRate, remainingTenure]);
+
+  // Auto-update Remaining Loan Tenure when outstanding balance, interest rate, or current EMI change
+  useEffect(() => {
+    if (
+      outstandingBalance != null &&
+      interestRate != null &&
+      currentEMI != null &&
+      outstandingBalance > 0 &&
+      interestRate > 0 &&
+      currentEMI > 0
+    ) {
+      const tenureDecimal = calculateNewTenure(
+        outstandingBalance,
+        interestRate,
+        currentEMI,
+        0
+      );
+      const months = tenureDecimal.toNumber();
+      if (Number.isFinite(months) && months > 0) {
+        const clamped = Math.max(24, Math.min(360, Math.ceil(months)));
+        setRemainingTenure(clamped);
+      }
+    }
+  }, [outstandingBalance, interestRate, currentEMI]);
 
   /**
    * UNIFIED SIMULATION ENGINE
@@ -403,19 +443,12 @@ export default function Home() {
       {/* Hero Section */}
       <div className="w-full max-w-4xl mx-auto text-center mb-12 md:mb-16">
         <motion.h1
-          className="text-6xl md:text-7xl font-extrabold text-[#B19CD7] mb-4 drop-shadow-sm tracking-tight"
+          className="text-6xl md:text-7xl font-extrabold mb-4 drop-shadow-sm tracking-tight text-[#9678CD]"
           {...fadeIn}
         >
           UnLoQ1
         </motion.h1>
-        <motion.p
-          className="text-2xl md:text-3xl font-medium text-gray-800 mb-6 tracking-tight"
-          {...fadeIn}
-          transition={{ delay: 0.2 }}
-        >
-          Money matters
-        </motion.p>
-        <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-[#5B4B8A] max-w-2xl mx-auto">
           Discover how much you can save on your loan by prepaying smartly
         </p>
       </div>
@@ -536,62 +569,78 @@ export default function Home() {
           {/* Results Section (same container) */}
           <div className="mt-8 space-y-6">
             {/* Output 1 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC]">
-              <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
-                Interest Saved This Month
-              </p>
-              <div className="flex items-baseline gap-2">
-                <AnimatedNumber
-                  value={calculateOneTimePaymentSavings.savings}
-                  prefix="₹"
-                  className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
-                />
-              </div>
-              <p className="text-sm text-[#5B4B8A] mt-2">
-                By paying an extra{" "}
-                <span className="font-semibold">
-                  ₹{formatIndian(extraMonthlyPayment ?? 0)}
-                </span>{" "}
-                this month, you eliminate this much future interest liability
-                instantly.
-              </p>
-              {calculateOneTimePaymentSavings.tenureReduced > 0 && (
-                <p className="text-xs text-[#8E7BB8] mt-1">
-                  Tenure reduced by {calculateOneTimePaymentSavings.tenureReduced}{" "}
-                  month
-                  {calculateOneTimePaymentSavings.tenureReduced > 1 ? "s" : ""}
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
+                  Interest Saved This Month
                 </p>
-              )}
+                <div className="flex items-baseline gap-2">
+                  <AnimatedNumber
+                    value={calculateOneTimePaymentSavings.savings}
+                    prefix="₹"
+                    className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
+                  />
+                </div>
+                <p className="text-sm text-[#5B4B8A] mt-2">
+                  By paying an extra{" "}
+                  <span className="font-semibold">
+                    ₹{formatIndian(extraMonthlyPayment ?? 0)}
+                  </span>{" "}
+                  this month, you eliminate this much future interest liability
+                  instantly.
+                </p>
+                {calculateOneTimePaymentSavings.tenureReduced > 0 && (
+                  <p className="text-xs text-[#8E7BB8] mt-1">
+                    Tenure reduced by {calculateOneTimePaymentSavings.tenureReduced}{" "}
+                    month
+                    {calculateOneTimePaymentSavings.tenureReduced > 1 ? "s" : ""}
+                  </p>
+                )}
+              </div>
+              <Link
+                href={`/pay-now?emi=${currentEMI ?? 0}&prepayment=${extraMonthlyPayment ?? 0}&savings=${calculateOneTimePaymentSavings.savings}`}
+                className="shrink-0 px-6 py-3 rounded-lg font-semibold text-white bg-[#9678CD] hover:bg-[#7C5CBF] focus:outline-none focus:ring-2 focus:ring-[#9678CD]/50 transition-colors text-center"
+              >
+                Pay now
+              </Link>
             </div>
 
             {/* Output 2 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC]">
-              <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
-                Interest Saved Over 2 Years
-              </p>
-              <div className="flex items-baseline gap-2">
-                <AnimatedNumber
-                  value={calculateTwoYearRecurringSavings.savings}
-                  prefix="₹"
-                  className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
-                />
-              </div>
-              <p className="text-sm text-[#5B4B8A] mt-2">
-                If you continue paying{" "}
-                <span className="font-semibold">
-                  ₹{formatIndian(extraMonthlyPayment ?? 0)}
-                </span>{" "}
-                extra every month for 2 years.
-              </p>
-              {calculateTwoYearRecurringSavings.tenureReduced > 0 && (
-                <p className="text-xs text-[#8E7BB8] mt-1">
-                  You'll be debt-free{" "}
-                  <span className="font-semibold text-[#7C5CBF]">
-                    {formatTenure(calculateTwoYearRecurringSavings.tenureReduced)}
-                  </span>{" "}
-                  earlier!
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
+                  Interest Saved Over 2 Years
                 </p>
-              )}
+                <div className="flex items-baseline gap-2">
+                  <AnimatedNumber
+                    value={calculateTwoYearRecurringSavings.savings}
+                    prefix="₹"
+                    className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
+                  />
+                </div>
+                <p className="text-sm text-[#5B4B8A] mt-2">
+                  If you continue paying{" "}
+                  <span className="font-semibold">
+                    ₹{formatIndian(extraMonthlyPayment ?? 0)}
+                  </span>{" "}
+                  extra every month for 2 years.
+                </p>
+                {calculateTwoYearRecurringSavings.tenureReduced > 0 && (
+                  <p className="text-xs text-[#8E7BB8] mt-1">
+                    You'll be debt-free{" "}
+                    <span className="font-semibold text-[#7C5CBF]">
+                      {formatTenure(calculateTwoYearRecurringSavings.tenureReduced)}
+                    </span>{" "}
+                    earlier!
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                className="shrink-0 px-6 py-3 rounded-lg font-semibold text-white bg-[#9678CD] hover:bg-[#7C5CBF] focus:outline-none focus:ring-2 focus:ring-[#9678CD]/50 transition-colors"
+              >
+                Set reminder
+              </button>
             </div>
 
             {/* Nudge */}
@@ -638,7 +687,7 @@ export default function Home() {
             className="text-5xl md:text-6xl font-bold text-[#B19CD7]"
           />
         </div>
-        <p className="text-lg text-gray-600 mt-4">using UnLoQ1 calculators</p>
+        <p className="text-lg text-gray-600 mt-4">using UnLoQ1</p>
       </motion.div>
 
       {/* Calculator Navigation Links */}
@@ -651,19 +700,19 @@ export default function Home() {
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           <Link
             href="/lump-sum"
-            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-gray-700 hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
           >
             Lump Sum
           </Link>
           <Link
             href="/monthly-extra"
-            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-gray-700 hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
           >
             Monthly Extra
           </Link>
           <Link
             href="/refinance"
-            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-gray-700 hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
           >
             Refinance
           </Link>
@@ -672,7 +721,7 @@ export default function Home() {
 
       {/* Scenario Selection Cards */}
       <div className="w-full max-w-6xl mx-auto mb-12">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">
+        <h2 className="text-2xl font-semibold text-[#5B4B8A] mb-8 text-center">
           Choose your scenario:
         </h2>
         
@@ -684,7 +733,7 @@ export default function Home() {
             className="group flex flex-col h-full p-6 md:p-8"
           >
             <div className="text-4xl mb-4">💰</div>
-            <h3 className="text-xl font-bold text-gray-800 mb-3">Lump Sum Prepayment</h3>
+            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Lump Sum Prepayment</h3>
             <p className="text-gray-600 mb-6 flex-grow">
               Pay a one-time large amount to reduce your loan tenure or EMI
             </p>
@@ -703,7 +752,7 @@ export default function Home() {
             className="group flex flex-col h-full p-6 md:p-8"
           >
             <div className="text-4xl mb-4">📅</div>
-            <h3 className="text-xl font-bold text-gray-800 mb-3">Monthly Extra Payment</h3>
+            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Monthly Extra Payment</h3>
             <p className="text-gray-600 mb-6 flex-grow">
               Add extra amount to your EMI every month and become debt-free faster
             </p>
@@ -722,7 +771,7 @@ export default function Home() {
             className="group flex flex-col h-full p-6 md:p-8"
           >
             <div className="text-4xl mb-4">🔄</div>
-            <h3 className="text-xl font-bold text-gray-800 mb-3">Refinance Comparison</h3>
+            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Refinance Comparison</h3>
             <p className="text-gray-600 mb-6 flex-grow">
               Should you switch to a lower rate? Compare staying, prepaying, refinancing, or doing both
             </p>
@@ -746,7 +795,7 @@ export default function Home() {
               </span>
             </div>
             <div className="text-4xl mb-4 opacity-50">📊</div>
-            <h3 className="text-xl font-bold text-gray-700 mb-3 opacity-75">Compare All Scenarios</h3>
+            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3 opacity-75">Compare All Scenarios</h3>
             <p className="text-gray-500 mb-6 flex-grow">
               Not sure which option? Compare all scenarios side by side
             </p>

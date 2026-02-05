@@ -79,13 +79,13 @@ export default function ComparisonTable({
             variants={rowVariants}
             className="bg-purple-50 border-b border-purple-200"
           >
-            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+            <th className="py-4 px-4 text-left text-xs font-semibold text-[#5B4B8A] uppercase tracking-wider">
               Metric
             </th>
-            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+            <th className="py-4 px-4 text-left text-xs font-semibold text-[#5B4B8A] uppercase tracking-wider">
               {beforeLabel}
             </th>
-            <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+            <th className="py-4 px-4 text-left text-xs font-semibold text-[#5B4B8A] uppercase tracking-wider">
               {afterLabel}
             </th>
           </motion.tr>
@@ -116,10 +116,10 @@ export default function ComparisonTable({
                   : {}
               }
             >
-              <td className="py-4 px-4 text-gray-700 font-medium">
+              <td className="py-4 px-4 text-[#5B4B8A] font-medium">
                 {row.label}
               </td>
-              <td className="py-4 px-4 text-gray-700">
+              <td className="py-4 px-4 text-[#5B4B8A]">
                 {typeof row.before === "number"
                   ? `₹${row.before.toLocaleString("en-IN")}`
                   : row.before}

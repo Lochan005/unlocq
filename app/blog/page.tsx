@@ -19,16 +19,16 @@ export default function Blog() {
           {...fadeIn}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             Welcome to the UnLoQ1 Blog!
           </p>
           
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed mb-6">
             Stay updated with the latest tips, insights, and guides on loan management,
             financial planning, and smart prepayment strategies.
           </p>
           
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-[#5B4B8A] text-lg leading-relaxed">
             Our blog is coming soon! Check back later for valuable content and expert advice.
           </p>
         </motion.div>
