@@ -55,30 +55,30 @@ type MissingDetailsEntry = {
 
 function getCachedBranches(): BranchRecord[] | null {
   if (typeof globalThis !== "undefined" && (globalThis as Record<string, unknown>)[CACHE_KEY_BRANCHES] != null) {
-    return (globalThis as Record<string, BranchRecord[]>)[CACHE_KEY_BRANCHES];
+    return (globalThis as unknown as Record<string, BranchRecord[]>)[CACHE_KEY_BRANCHES];
   }
   return null;
 }
 function setCachedBranches(v: BranchRecord[]) {
-  if (typeof globalThis !== "undefined") (globalThis as Record<string, BranchRecord[]>)[CACHE_KEY_BRANCHES] = v;
+  if (typeof globalThis !== "undefined") (globalThis as unknown as Record<string, BranchRecord[]>)[CACHE_KEY_BRANCHES] = v;
 }
 function getCachedMerged(): Record<string, MergedEntry> | null {
   if (typeof globalThis !== "undefined" && (globalThis as Record<string, unknown>)[CACHE_KEY_MERGED] != null) {
-    return (globalThis as Record<string, Record<string, MergedEntry>>)[CACHE_KEY_MERGED];
+    return (globalThis as unknown as Record<string, Record<string, MergedEntry>>)[CACHE_KEY_MERGED];
   }
   return null;
 }
 function setCachedMerged(v: Record<string, MergedEntry>) {
-  if (typeof globalThis !== "undefined") (globalThis as Record<string, Record<string, MergedEntry>>)[CACHE_KEY_MERGED] = v;
+  if (typeof globalThis !== "undefined") (globalThis as unknown as Record<string, Record<string, MergedEntry>>)[CACHE_KEY_MERGED] = v;
 }
 function getCachedMissing(): Record<string, MissingDetailsEntry> | null {
   if (typeof globalThis !== "undefined" && (globalThis as Record<string, unknown>)[CACHE_KEY_MISSING] != null) {
-    return (globalThis as Record<string, Record<string, MissingDetailsEntry>>)[CACHE_KEY_MISSING];
+    return (globalThis as unknown as Record<string, Record<string, MissingDetailsEntry>>)[CACHE_KEY_MISSING];
   }
   return null;
 }
 function setCachedMissing(v: Record<string, MissingDetailsEntry>) {
-  if (typeof globalThis !== "undefined") (globalThis as Record<string, Record<string, MissingDetailsEntry>>)[CACHE_KEY_MISSING] = v;
+  if (typeof globalThis !== "undefined") (globalThis as unknown as Record<string, Record<string, MissingDetailsEntry>>)[CACHE_KEY_MISSING] = v;
 }
 
 /** Load from IFSC.json.gz, IFSC (1).json.gz, or IFSC.json (primary) and merged_banks.json (fallback/gap-fill). Search uses BOTH. */
