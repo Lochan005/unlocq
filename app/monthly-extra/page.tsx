@@ -12,8 +12,11 @@ import AnimatedNumber from "../components/AnimatedNumber";
 import { AnimatedPieChart, AnimatedBarChart } from "../components/AnimatedCharts";
 import BackButton from "../components/BackButton";
 import { fadeIn } from "../lib/animation";
+import { useRewardsStore } from "../lib/rewards/store";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { Check, Alarm } from "@phosphor-icons/react";
+import { UnLoQ1Coin } from "@/app/components/icons";
 
 // Validation constants
 const VALIDATION_RULES = {
@@ -122,6 +125,9 @@ export default function MonthlyExtraPage() {
   const [monthlyExtra, setMonthlyExtra] = useState(10000);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [chartHeight, setChartHeight] = useState(200);
+  const [reminderSet, setReminderSet] = useState(false);
+  const [showBonusToast, setShowBonusToast] = useState(false);
+  const addBonus = useRewardsStore((state) => state.addBonus);
 
   // Chart height based on screen size
   useEffect(() => {
@@ -550,10 +556,35 @@ export default function MonthlyExtraPage() {
                 onShareWhatsApp={shareOnWhatsApp}
                 isGeneratingPDF={isGeneratingPDF}
               />
+
+              {/* Set Reminder - bonus trigger */}
+              <div className="mt-6">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!reminderSet) {
+                      await addBonus("set_reminder", 25);
+                      setReminderSet(true);
+                      setShowBonusToast(true);
+                      setTimeout(() => setShowBonusToast(false), 3000);
+                    }
+                  }}
+                  className="w-full rounded-lg border-2 border-[#EBE8FC] bg-white/50 px-4 py-3 text-sm font-semibold text-[#5B4B8A] transition-colors hover:border-[#B19CD7] hover:bg-white/70"
+                >
+                  {reminderSet ? <><Check size={16} weight="bold" className="inline-block mr-1" /> Reminder Set</> : <><Alarm size={16} weight="duotone" className="inline-block mr-1" /> Set Reminder</>}
+                </button>
+              </div>
             </ResultsReveal>
           )}
         </motion.div>
       </div>
+
+      {/* Bonus toast */}
+      {showBonusToast && (
+        <div className="fixed bottom-4 right-4 z-50 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white shadow-lg">
+          <UnLoQ1Coin size={16} color="#fbbf24" className="inline-block mr-1" /> +25 coins earned for setting a reminder!
+        </div>
+      )}
     </motion.div>
   );
 }

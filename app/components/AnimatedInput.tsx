@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { transitionPresets } from "../lib/animation";
+import { Warning } from "@phosphor-icons/react";
 
 interface AnimatedInputProps {
   label: string;
@@ -199,7 +200,7 @@ export default function AnimatedInput({
             transition={transitionPresets.quick}
             className="mt-1 text-sm text-red-500 flex items-center gap-1"
           >
-            <span>⚠️</span>
+            <Warning size={16} weight="bold" />
             <span>{error}</span>
           </motion.p>
         )}

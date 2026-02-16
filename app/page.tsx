@@ -9,6 +9,7 @@ import AnimatedNumber from "./components/AnimatedNumber";
 import LoanSlider from "./components/LoanSlider";
 import { fadeIn } from "./lib/animation";
 import { calculateEMI, calculateNewTenure } from "./lib/calculator";
+import { Coins, CalendarBlank, ArrowsClockwise, ChartBar, Lightbulb } from "@phosphor-icons/react";
 
 export default function Home() {
   // State for all 7 sliders
@@ -666,7 +667,7 @@ export default function Home() {
                         : "text-[#5B4B8A]"
                 }`}
               >
-                💡 {nudgeMessage.message}
+                <Lightbulb size={18} weight="duotone" className="inline-block mr-1 align-text-bottom" />{nudgeMessage.message}
               </p>
             </div>
           </div>
@@ -732,7 +733,7 @@ export default function Home() {
             delay={0.5}
             className="group flex flex-col h-full p-6 md:p-8"
           >
-            <div className="text-4xl mb-4">💰</div>
+            <div className="mb-4 text-[#B19CD7]"><Coins size={40} weight="duotone" /></div>
             <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Lump Sum Prepayment</h3>
             <p className="text-gray-600 mb-6 flex-grow">
               Pay a one-time large amount to reduce your loan tenure or EMI
@@ -751,7 +752,7 @@ export default function Home() {
             delay={0.6}
             className="group flex flex-col h-full p-6 md:p-8"
           >
-            <div className="text-4xl mb-4">📅</div>
+            <div className="mb-4 text-[#B19CD7]"><CalendarBlank size={40} weight="duotone" /></div>
             <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Monthly Extra Payment</h3>
             <p className="text-gray-600 mb-6 flex-grow">
               Add extra amount to your EMI every month and become debt-free faster
@@ -770,7 +771,7 @@ export default function Home() {
             delay={0.7}
             className="group flex flex-col h-full p-6 md:p-8"
           >
-            <div className="text-4xl mb-4">🔄</div>
+            <div className="mb-4 text-[#B19CD7]"><ArrowsClockwise size={40} weight="duotone" /></div>
             <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Refinance Comparison</h3>
             <p className="text-gray-600 mb-6 flex-grow">
               Should you switch to a lower rate? Compare staying, prepaying, refinancing, or doing both
@@ -794,7 +795,7 @@ export default function Home() {
                 Coming Soon
               </span>
             </div>
-            <div className="text-4xl mb-4 opacity-50">📊</div>
+            <div className="mb-4 opacity-50 text-[#B19CD7]"><ChartBar size={40} weight="duotone" /></div>
             <h3 className="text-xl font-bold text-[#5B4B8A] mb-3 opacity-75">Compare All Scenarios</h3>
             <p className="text-gray-500 mb-6 flex-grow">
               Not sure which option? Compare all scenarios side by side

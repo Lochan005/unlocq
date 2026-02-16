@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { fadeIn } from "../lib/animation";
+import { EnvelopeSimple } from "@phosphor-icons/react";
 
 export default function GetInTouch() {
   return (
@@ -31,7 +32,7 @@ export default function GetInTouch() {
           <div className="space-y-4 mt-8">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <span className="text-2xl">📧</span>
+                <EnvelopeSimple size={24} weight="duotone" className="text-purple-600" />
               </div>
               <div>
                 <p className="text-gray-600 text-sm">Email</p>

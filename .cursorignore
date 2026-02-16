@@ -3,7 +3,6 @@
 
 # Dependencies & build (largest)
 node_modules/
-.next/
 out/
 build/
 .vercel/

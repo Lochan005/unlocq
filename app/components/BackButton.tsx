@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { transitionPresets } from "../lib/animation";
+import { ArrowLeft } from "@phosphor-icons/react";
 
 interface BackButtonProps {
   href?: string;
@@ -20,11 +21,10 @@ export default function BackButton({
     >
       {/* Arrow */}
       <motion.span
-        className="text-lg"
         whileHover={{ x: -4 }}
         transition={transitionPresets.snappy}
       >
-        ←
+        <ArrowLeft size={18} weight="bold" />
       </motion.span>
 
       {/* Text */}

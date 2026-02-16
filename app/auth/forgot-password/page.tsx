@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowLeft } from "@phosphor-icons/react";
 
 export default function ForgotPasswordPage() {
   return (
@@ -25,7 +26,7 @@ export default function ForgotPasswordPage() {
           href="/auth"
           className="mt-4 inline-block text-sm text-[#7C5CBF] hover:underline"
         >
-          ← Back to sign in
+          <ArrowLeft size={14} weight="bold" className="inline-block mr-0.5" /> Back to sign in
         </Link>
       </div>
     </div>

@@ -1,12 +1,15 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import IFSCAutocomplete, {
   PaymentBadges,
   type BranchRecord,
 } from "../components/IFSCAutocomplete";
+import { useRewardsStore } from "@/app/lib/rewards/store";
+import { formatCurrency } from "@/app/lib/currency";
+import { ArrowLeft, Check } from "@phosphor-icons/react";
 
 function formatINR(value: number): string {
   if (!Number.isFinite(value)) return "₹0";
@@ -22,6 +25,18 @@ function PayNowContent() {
   const defaultPrepayment = prepaymentFromQuery ? Number(prepaymentFromQuery) : null;
   const defaultEmi = emiFromQuery ? Number(emiFromQuery) : null;
   const defaultSavings = savingsFromQuery ? Number(savingsFromQuery) : null;
+
+  const poolBalance = useRewardsStore((state) => state.poolBalance);
+  const redeemPool = useRewardsStore((state) => state.redeemPool);
+  const refreshData = useRewardsStore((state) => state.refreshData);
+  const [poolLoaded, setPoolLoaded] = useState(false);
+  const [isRedeeming, setIsRedeeming] = useState(false);
+  const [redeemSuccess, setRedeemSuccess] = useState(false);
+
+  useEffect(() => {
+    refreshData().then(() => setPoolLoaded(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [loanAccountNo, setLoanAccountNo] = useState("");
   const [ifsc, setIfsc] = useState("");
@@ -54,7 +69,7 @@ function PayNowContent() {
           href="/"
           className="inline-flex items-center gap-2 text-sm font-medium text-[#5B4B8A] hover:text-[#7C5CBF] transition-colors mb-8"
         >
-          <span aria-hidden>←</span> Back to calculator
+          <ArrowLeft size={16} weight="bold" aria-hidden /> Back to calculator
         </Link>
 
         <h1 className="text-2xl md:text-3xl font-bold text-[#5B4B8A] mb-2">
@@ -63,6 +78,58 @@ function PayNowContent() {
         <p className="text-sm text-[#5B4B8A]/80 mb-8">
           Enter your loan and bank details to proceed with the prepayment.
         </p>
+
+        {poolLoaded && poolBalance.confirmed > 0 && (
+          <div className="mb-6 rounded-2xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-white p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-slate-800">
+                  Pay from Rewards Pool
+                </h3>
+                <p className="text-sm text-slate-500">
+                  Use your earned rewards for this prepayment
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-extrabold text-purple-600">
+                  {formatCurrency(poolBalance.confirmed)}
+                </p>
+                <p className="text-xs text-slate-400">available</p>
+              </div>
+            </div>
+
+            {redeemSuccess ? (
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-center">
+                <p className="flex items-center justify-center gap-1.5 font-semibold text-emerald-700">
+                  <Check size={16} weight="bold" /> Successfully applied to your loan!
+                </p>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={async () => {
+                  setIsRedeeming(true);
+                  const result = await redeemPool(poolBalance.confirmed, "prepay");
+                  if (result.success) setRedeemSuccess(true);
+                  setIsRedeeming(false);
+                }}
+                disabled={isRedeeming}
+                className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isRedeeming
+                  ? "Processing..."
+                  : `Apply ${formatCurrency(poolBalance.confirmed)} from Rewards Pool`}
+              </button>
+            )}
+
+            {poolBalance.pending > 0 && (
+              <p className="mt-3 text-center text-xs text-slate-400">
+                +{formatCurrency(poolBalance.pending)} pending confirmation —
+                will become available soon
+              </p>
+            )}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Details card */}

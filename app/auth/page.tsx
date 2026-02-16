@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ArrowRight } from "@phosphor-icons/react";
 
 type Tab = "signin" | "signup";
 
@@ -167,7 +168,7 @@ export default function AuthPage() {
             className="w-full py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-[#7C5CBF] to-[#B19CD7] hover:from-[#6B4CAF] hover:to-[#9B8CC7] focus:outline-none focus:ring-2 focus:ring-[#B19CD7]/50 disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
             Continue
-            <span className="text-lg">→</span>
+            <ArrowRight size={18} weight="bold" />
           </button>
         </form>
 
@@ -187,7 +188,7 @@ export default function AuthPage() {
             href="/"
             className="text-xs text-[#5B4B8A]/80 hover:text-[#7C5CBF] hover:underline"
           >
-            Skip for now →
+            Skip for now <ArrowRight size={12} weight="bold" className="inline-block ml-0.5" />
           </Link>
         </p>
       </div>
