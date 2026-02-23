@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import IFSCAutocomplete, {
@@ -28,13 +28,25 @@ function PayNowContent() {
 
   const poolBalance = useRewardsStore((state) => state.poolBalance);
   const redeemPool = useRewardsStore((state) => state.redeemPool);
+  const restorePool = useRewardsStore((state) => state.restorePool);
   const refreshData = useRewardsStore((state) => state.refreshData);
   const [poolLoaded, setPoolLoaded] = useState(false);
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [redeemSuccess, setRedeemSuccess] = useState(false);
+  const [redeemedPoolAmount, setRedeemedPoolAmount] = useState(0);
+
+  const redeemSuccessRef = useRef(false);
+  useEffect(() => {
+    redeemSuccessRef.current = redeemSuccess;
+  }, [redeemSuccess]);
 
   useEffect(() => {
     refreshData().then(() => setPoolLoaded(true));
+    return () => {
+      if (redeemSuccessRef.current) {
+        restorePool();
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -51,6 +63,12 @@ function PayNowContent() {
   const interestSaved = defaultSavings != null && Number.isFinite(defaultSavings) ? defaultSavings : 0;
 
   const displayPrepayment = prepaymentAmount === "" ? "" : Number(prepaymentAmount).toLocaleString("en-IN");
+
+  const isFormComplete =
+    loanAccountNo.trim().length > 0 &&
+    ifsc.trim().length === 11 &&
+    selectedBranch !== null &&
+    prepaymentNum > 0;
 
   const handleBranchSelect = (branch: BranchRecord, bankName: string) => {
     setSelectedBranch(branch);
@@ -79,7 +97,7 @@ function PayNowContent() {
           Enter your loan and bank details to proceed with the prepayment.
         </p>
 
-        {poolLoaded && poolBalance.confirmed > 0 && (
+        {poolLoaded && (poolBalance.confirmed > 0 || redeemSuccess) && (
           <div className="mb-6 rounded-2xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-white p-6">
             <div className="mb-4 flex items-center justify-between">
               <div>
@@ -87,21 +105,25 @@ function PayNowContent() {
                   Pay from Rewards Pool
                 </h3>
                 <p className="text-sm text-slate-500">
-                  Use your earned rewards for this prepayment
+                  {redeemSuccess
+                    ? "Rewards applied to this prepayment"
+                    : "Use your earned rewards for this prepayment"}
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-2xl font-extrabold text-purple-600">
-                  {formatCurrency(poolBalance.confirmed)}
+                  {formatCurrency(redeemSuccess ? redeemedPoolAmount : poolBalance.confirmed)}
                 </p>
-                <p className="text-xs text-slate-400">available</p>
+                <p className="text-xs text-slate-400">
+                  {redeemSuccess ? "applied" : "available"}
+                </p>
               </div>
             </div>
 
             {redeemSuccess ? (
               <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-center">
                 <p className="flex items-center justify-center gap-1.5 font-semibold text-emerald-700">
-                  <Check size={16} weight="bold" /> Successfully applied to your loan!
+                  <Check size={16} weight="bold" /> Successfully added pool balance to your prepayment!
                 </p>
               </div>
             ) : (
@@ -109,8 +131,12 @@ function PayNowContent() {
                 type="button"
                 onClick={async () => {
                   setIsRedeeming(true);
-                  const result = await redeemPool(poolBalance.confirmed, "prepay");
-                  if (result.success) setRedeemSuccess(true);
+                  const amountToRedeem = poolBalance.confirmed;
+                  const result = await redeemPool(amountToRedeem, "prepay");
+                  if (result.success) {
+                    setRedeemSuccess(true);
+                    setRedeemedPoolAmount(amountToRedeem);
+                  }
                   setIsRedeeming(false);
                 }}
                 disabled={isRedeeming}
@@ -122,7 +148,7 @@ function PayNowContent() {
               </button>
             )}
 
-            {poolBalance.pending > 0 && (
+            {!redeemSuccess && poolBalance.pending > 0 && (
               <p className="mt-3 text-center text-xs text-slate-400">
                 +{formatCurrency(poolBalance.pending)} pending confirmation —
                 will become available soon
@@ -228,18 +254,48 @@ function PayNowContent() {
                   {formatINR(prepaymentNum)}
                 </dd>
               </div>
-              <div className="flex justify-between items-baseline pt-3 border-t border-[#EBE8FC]">
-                <dt className="text-sm font-medium text-[#5B4B8A]">Interest saved</dt>
-                <dd className="text-lg font-bold text-[#7C5CBF] tabular-nums">
-                  {formatINR(interestSaved)}
-                </dd>
-              </div>
+              {redeemSuccess && redeemedPoolAmount > 0 && prepaymentNum > 0 && interestSaved > 0 ? (
+                <>
+                  <div className="flex justify-between items-baseline pt-3 border-t border-[#EBE8FC]">
+                    <dt className="text-sm text-[#5B4B8A]/90">Your prepayment saves</dt>
+                    <dd className="text-base font-semibold text-[#5B4B8A] tabular-nums">
+                      {formatINR(interestSaved)}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <dt className="text-sm text-purple-600 font-medium">
+                      Rewards Pool saves
+                    </dt>
+                    <dd className="text-base font-semibold text-purple-600 tabular-nums">
+                      + {formatINR(Math.round(redeemedPoolAmount * (interestSaved / prepaymentNum)))}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between items-baseline pt-3 border-t border-[#EBE8FC]">
+                    <dt className="text-sm font-medium text-[#5B4B8A]">Total interest saved</dt>
+                    <dd className="text-lg font-bold text-[#7C5CBF] tabular-nums">
+                      {formatINR(interestSaved + Math.round(redeemedPoolAmount * (interestSaved / prepaymentNum)))}
+                    </dd>
+                  </div>
+                </>
+              ) : (
+                <div className="flex justify-between items-baseline pt-3 border-t border-[#EBE8FC]">
+                  <dt className="text-sm font-medium text-[#5B4B8A]">Interest saved</dt>
+                  <dd className="text-lg font-bold text-[#7C5CBF] tabular-nums">
+                    {formatINR(interestSaved)}
+                  </dd>
+                </div>
+              )}
             </dl>
           </div>
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-lg font-semibold text-white bg-[#9678CD] hover:bg-[#7C5CBF] focus:outline-none focus:ring-2 focus:ring-[#9678CD]/50 transition-colors"
+            disabled={!isFormComplete}
+            className={`w-full py-3.5 rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#9678CD]/50 ${
+              isFormComplete
+                ? "bg-[#9678CD] hover:bg-[#7C5CBF] text-white"
+                : "bg-[#9678CD]/40 text-white/60 cursor-not-allowed"
+            }`}
           >
             Proceed to pay
           </button>

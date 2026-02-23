@@ -43,6 +43,7 @@ export interface MerchantRoute {
   merchant_logo_url: string; // For MVP, this will be an emoji string
   category: MerchantCategory;
   network: string; // e.g., "cuelinks", "admitad", "vcommission", "direct"
+  tracking_base_url: string; // Base URL for the affiliate tracking domain
   priority: number; // 1 = highest
   reward_active: boolean;
   valid_from: string; // ISO date string
@@ -105,6 +106,37 @@ export interface UserRewardsProfile {
   profile_completed: boolean;
   created_at: string;
   updated_at: string;
+}
+
+// ============================================================
+// POSTBACK / AFFILIATE RECONCILIATION TYPES
+// ============================================================
+
+export type PostbackStatus = "pending" | "approved" | "rejected";
+
+export interface PostbackEvent {
+  postback_id: string;
+  sub_id: string; // Maps 1-to-1 with user_id
+  click_id: string | null; // Correlates with the outbound ClickEvent
+  transaction_id: string | null; // Network-assigned transaction reference
+  merchant_id: string | null; // Resolved from click store when click_id is present
+  network: string | null;
+  amount: number; // Gross commission received (Decimal.js precision)
+  status: PostbackStatus;
+  raw_params: Record<string, string>; // Full query/body for audit
+  received_at: string; // ISO datetime
+  processed: boolean;
+}
+
+export interface PostbackLogEntry {
+  log_id: string;
+  postback_id: string;
+  click_id: string | null; // Links outbound click to inbound commission
+  user_id: string;
+  amount_credited: number; // Final amount written to pool (Decimal.js precision)
+  reward_id: string; // The RewardEntry created by creditToPool
+  network: string | null;
+  timestamp: string; // ISO datetime
 }
 
 // ============================================================
@@ -175,6 +207,7 @@ export interface EngagementData {
   profileCompleted: boolean;
   hasReferral: boolean;
   recentCalculatorUse: boolean;
+  hasRecentPostbackCredit?: boolean; // True when a postback credit hit the pool recently
 }
 
 export interface ScoreTier {

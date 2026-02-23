@@ -3,12 +3,24 @@ import { resolveRoute } from "./routingEngine";
 
 const clickStore: ClickEvent[] = [];
 
+/**
+ * Assembles the affiliate tracked link from the route's tracking_base_url.
+ *
+ * URL format:
+ *   {tracking_base_url}/{network}/{merchant_id}?sub_id={userId}&click_id={clickId}
+ *
+ * `sub_id` is **always** the internal userId — this 1-to-1 mapping is how
+ * the postback listener reconciles inbound commissions back to the user.
+ */
 export function generateTrackedLink(
   route: MerchantRoute,
   userId: string,
   clickId: string
 ): string {
-  return `https://tracking.unloq1.in/${route.network}/${route.merchant_id}?sub_id=${userId}&click_id=${clickId}`;
+  const base = route.tracking_base_url.replace(/\/+$/, "");
+  const subId = encodeURIComponent(userId);
+  const cId = encodeURIComponent(clickId);
+  return `${base}/${route.network}/${route.merchant_id}?sub_id=${subId}&click_id=${cId}`;
 }
 
 export function handleMerchantClick(userId: string, merchantId: string): ClickEvent {
@@ -44,4 +56,13 @@ export function getClickHistory(userId: string): ClickEvent[] {
 
 export function getClickStore(): ClickEvent[] {
   return [...clickStore];
+}
+
+/**
+ * Resolves a single click event by its click_id.
+ * Used by the postback listener to correlate an inbound commission
+ * back to the original outbound click.
+ */
+export function getClickById(clickId: string): ClickEvent | null {
+  return clickStore.find((e) => e.click_id === clickId) ?? null;
 }

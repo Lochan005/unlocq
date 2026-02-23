@@ -10,6 +10,7 @@ import LoanSlider from "./components/LoanSlider";
 import { fadeIn } from "./lib/animation";
 import { calculateEMI, calculateNewTenure } from "./lib/calculator";
 import { Coins, CalendarBlank, ArrowsClockwise, ChartBar, Lightbulb } from "@phosphor-icons/react";
+import { FEATURE_FLAGS } from "./lib/featureFlags";
 
 export default function Home() {
   // State for all 7 sliders
@@ -691,121 +692,125 @@ export default function Home() {
         <p className="text-lg text-gray-600 mt-4">using UnLoQ1</p>
       </motion.div>
 
-      {/* Calculator Navigation Links */}
-      <motion.div
-        className="w-full max-w-4xl mx-auto mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.5 }}
-      >
-        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-          <Link
-            href="/lump-sum"
-            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+      {FEATURE_FLAGS.SHOW_SCENARIO_OPTIONS && (
+        <>
+          {/* Calculator Navigation Links */}
+          <motion.div
+            className="w-full max-w-4xl mx-auto mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
           >
-            Lump Sum
-          </Link>
-          <Link
-            href="/monthly-extra"
-            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
-          >
-            Monthly Extra
-          </Link>
-          <Link
-            href="/refinance"
-            className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
-          >
-            Refinance
-          </Link>
-        </div>
-      </motion.div>
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+              <Link
+                href="/lump-sum"
+                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+              >
+                Lump Sum
+              </Link>
+              <Link
+                href="/monthly-extra"
+                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+              >
+                Monthly Extra
+              </Link>
+              <Link
+                href="/refinance"
+                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+              >
+                Refinance
+              </Link>
+            </div>
+          </motion.div>
 
-      {/* Scenario Selection Cards */}
-      <div className="w-full max-w-6xl mx-auto mb-12">
-        <h2 className="text-2xl font-semibold text-[#5B4B8A] mb-8 text-center">
-          Choose your scenario:
-        </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Card 1 - Lump Sum Prepayment */}
-          <AnimatedCard
-            href="/lump-sum"
-            delay={0.5}
-            className="group flex flex-col h-full p-6 md:p-8"
-          >
-            <div className="mb-4 text-[#B19CD7]"><Coins size={40} weight="duotone" /></div>
-            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Lump Sum Prepayment</h3>
-            <p className="text-gray-600 mb-6 flex-grow">
-              Pay a one-time large amount to reduce your loan tenure or EMI
-            </p>
-            <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
-              <span>Get Started</span>
-              <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </AnimatedCard>
+          {/* Scenario Selection Cards */}
+          <div className="w-full max-w-6xl mx-auto mb-12">
+            <h2 className="text-2xl font-semibold text-[#5B4B8A] mb-8 text-center">
+              Choose your scenario:
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Card 1 - Lump Sum Prepayment */}
+              <AnimatedCard
+                href="/lump-sum"
+                delay={0.5}
+                className="group flex flex-col h-full p-6 md:p-8"
+              >
+                <div className="mb-4 text-[#B19CD7]"><Coins size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Lump Sum Prepayment</h3>
+                <p className="text-gray-600 mb-6 flex-grow">
+                  Pay a one-time large amount to reduce your loan tenure or EMI
+                </p>
+                <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
+                  <span>Get Started</span>
+                  <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </AnimatedCard>
 
-          {/* Card 2 - Monthly Extra Payment */}
-          <AnimatedCard
-            href="/monthly-extra"
-            delay={0.6}
-            className="group flex flex-col h-full p-6 md:p-8"
-          >
-            <div className="mb-4 text-[#B19CD7]"><CalendarBlank size={40} weight="duotone" /></div>
-            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Monthly Extra Payment</h3>
-            <p className="text-gray-600 mb-6 flex-grow">
-              Add extra amount to your EMI every month and become debt-free faster
-            </p>
-            <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
-              <span>Get Started</span>
-              <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </AnimatedCard>
+              {/* Card 2 - Monthly Extra Payment */}
+              <AnimatedCard
+                href="/monthly-extra"
+                delay={0.6}
+                className="group flex flex-col h-full p-6 md:p-8"
+              >
+                <div className="mb-4 text-[#B19CD7]"><CalendarBlank size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Monthly Extra Payment</h3>
+                <p className="text-gray-600 mb-6 flex-grow">
+                  Add extra amount to your EMI every month and become debt-free faster
+                </p>
+                <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
+                  <span>Get Started</span>
+                  <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </AnimatedCard>
 
-          {/* Card 3 - Refinance Comparison */}
-          <AnimatedCard
-            href="/refinance"
-            delay={0.7}
-            className="group flex flex-col h-full p-6 md:p-8"
-          >
-            <div className="mb-4 text-[#B19CD7]"><ArrowsClockwise size={40} weight="duotone" /></div>
-            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Refinance Comparison</h3>
-            <p className="text-gray-600 mb-6 flex-grow">
-              Should you switch to a lower rate? Compare staying, prepaying, refinancing, or doing both
-            </p>
-            <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
-              <span>Get Started</span>
-              <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </AnimatedCard>
+              {/* Card 3 - Refinance Comparison */}
+              <AnimatedCard
+                href="/refinance"
+                delay={0.7}
+                className="group flex flex-col h-full p-6 md:p-8"
+              >
+                <div className="mb-4 text-[#B19CD7]"><ArrowsClockwise size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Refinance Comparison</h3>
+                <p className="text-gray-600 mb-6 flex-grow">
+                  Should you switch to a lower rate? Compare staying, prepaying, refinancing, or doing both
+                </p>
+                <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
+                  <span>Get Started</span>
+                  <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </AnimatedCard>
 
-          {/* Card 4 - Compare All (Coming Soon) */}
-          <AnimatedCard
-            delay={0.8}
-            className="opacity-60 flex flex-col h-full p-6 md:p-8 relative"
-            disableHover
-          >
-            <div className="absolute top-4 right-4">
-              <span className="bg-purple-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
-                Coming Soon
-              </span>
+              {/* Card 4 - Compare All (Coming Soon) */}
+              <AnimatedCard
+                delay={0.8}
+                className="opacity-60 flex flex-col h-full p-6 md:p-8 relative"
+                disableHover
+              >
+                <div className="absolute top-4 right-4">
+                  <span className="bg-purple-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
+                    Coming Soon
+                  </span>
+                </div>
+                <div className="mb-4 opacity-50 text-[#B19CD7]"><ChartBar size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3 opacity-75">Compare All Scenarios</h3>
+                <p className="text-gray-500 mb-6 flex-grow">
+                  Not sure which option? Compare all scenarios side by side
+                </p>
+                <div className="flex items-center text-gray-500 font-semibold">
+                  <span>Coming Soon</span>
+                </div>
+              </AnimatedCard>
             </div>
-            <div className="mb-4 opacity-50 text-[#B19CD7]"><ChartBar size={40} weight="duotone" /></div>
-            <h3 className="text-xl font-bold text-[#5B4B8A] mb-3 opacity-75">Compare All Scenarios</h3>
-            <p className="text-gray-500 mb-6 flex-grow">
-              Not sure which option? Compare all scenarios side by side
-            </p>
-            <div className="flex items-center text-gray-500 font-semibold">
-              <span>Coming Soon</span>
-            </div>
-          </AnimatedCard>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
 
       {/* Trust Badges */}
       <motion.div

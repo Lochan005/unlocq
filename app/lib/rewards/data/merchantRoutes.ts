@@ -2,6 +2,13 @@ import type { MerchantRoute } from "@/app/lib/types";
 
 const baseDate = "2026-01-01T00:00:00Z";
 
+/**
+ * Plug-and-play tracking base URL.
+ * Swap this single constant when moving from test to a live affiliate domain
+ * (e.g. Cuelinks, Admitad, or a custom S2S endpoint).
+ */
+const TEST_TRACKING_BASE_URL = "https://test-tracking.unloq1.in/network";
+
 const merchantConfig: Array<{
   merchant_id: string;
   display_name: string;
@@ -32,6 +39,7 @@ export const merchantRoutes: MerchantRoute[] = merchantConfig.flatMap((m) => {
     merchant_logo_url: m.icon_key,
     category: m.category,
     network: "cuelinks",
+    tracking_base_url: TEST_TRACKING_BASE_URL,
     priority: 1,
     reward_active: m.merchant_id === "bookmyshow" ? false : m.merchant_id === "makemytrip" ? false : true,
     valid_from: "2026-01-01",
@@ -49,6 +57,7 @@ export const merchantRoutes: MerchantRoute[] = merchantConfig.flatMap((m) => {
     merchant_logo_url: m.icon_key,
     category: m.category,
     network: "admitad",
+    tracking_base_url: TEST_TRACKING_BASE_URL,
     priority: 2,
     reward_active: m.merchant_id === "makemytrip" ? false : true,
     valid_from: "2026-01-01",

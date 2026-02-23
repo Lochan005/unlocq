@@ -30,11 +30,11 @@ export default function Header() {
         <div className="flex flex-col">
           <Link
             href="/"
-            className="text-2xl font-bold leading-tight text-[#5C6BC0] hover:text-[#9FA8DA] transition-colors"
+            className="text-2xl font-bold leading-tight text-[#9678CD] hover:text-[#B19CD7] transition-colors"
           >
             UnLoQ1
           </Link>
-          <span className="text-sm font-medium text-[#303F9F] tracking-tight mt-0.5">
+          <span className="text-sm font-medium text-[#5B4B8A] tracking-tight mt-0.5">
             Money Matters ₹
           </span>
         </div>
@@ -49,13 +49,13 @@ export default function Header() {
               href={link.href}
               className={`px-3 py-2 text-sm font-medium transition-colors relative ${
                 isActive(link.href)
-                  ? "text-[#9FA8DA]"
-                  : "text-[#303F9F] hover:text-[#9FA8DA]"
+                  ? "text-[#B19CD7]"
+                  : "text-[#5B4B8A] hover:text-[#B19CD7]"
               }`}
             >
               {link.label}
               {isActive(link.href) && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#9FA8DA]"></span>
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#B19CD7]"></span>
               )}
             </Link>
           ))}
@@ -66,7 +66,7 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-[#303F9F] hover:text-[#9FA8DA] transition-colors p-2"
+          className="md:hidden text-[#5B4B8A] hover:text-[#B19CD7] transition-colors p-2"
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
@@ -112,8 +112,8 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 className={`px-4 py-3 text-sm font-medium transition-colors border-b border-purple-100 ${
                   isActive(link.href)
-                    ? "text-[#9FA8DA] bg-purple-50"
-                    : "text-[#303F9F] hover:text-[#9FA8DA] hover:bg-purple-50"
+                    ? "text-[#B19CD7] bg-purple-50"
+                    : "text-[#5B4B8A] hover:text-[#B19CD7] hover:bg-purple-50"
                 }`}
               >
                 {link.label}

@@ -47,6 +47,7 @@ interface RewardsState {
   refreshData: () => Promise<void>;
   handleShopClick: (merchantId: string) => Promise<{ rewardExpected: boolean; redirectUrl: string }>;
   redeemPool: (amount: number, type: "prepay" | "voucher" | "donate") => Promise<{ success: boolean; message: string }>;
+  restorePool: () => Promise<void>;
   addBonus: (action: string, coins: number) => Promise<void>;
   updateLoanData: (partial: Partial<LoanData>) => void;
   setAutoPrepayThreshold: (amount: number) => void;
@@ -144,6 +145,21 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
         success: false,
         message: err instanceof Error ? err.message : "Redemption failed",
       };
+    }
+  },
+
+  restorePool: async () => {
+    try {
+      const res = await fetch("/api/rewards/redeem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: MOCK_USER_ID, type: "restore" }),
+      });
+      if (res.ok) {
+        await get().refreshData();
+      }
+    } catch {
+      // Silent — best-effort restore on unmount
     }
   },
 

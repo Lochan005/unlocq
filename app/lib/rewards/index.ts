@@ -20,6 +20,7 @@ export {
   generateTrackedLink,
   getClickHistory,
   getClickStore,
+  getClickById,
 } from "./engine/clickHandler";
 export {
   getPoolBalance,
@@ -27,6 +28,10 @@ export {
   getMonthlyEarnings,
   getLifetimeStats,
   redeemFromPool,
+  restoreRecentRedemption,
   addPlatformBonus,
+  creditToPool,
+  getPostbackLog,
+  hasRecentPostbackActivity,
   resetLedger,
 } from "./engine/rewardsLedger";

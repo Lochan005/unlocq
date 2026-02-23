@@ -57,12 +57,13 @@ export function calculateUnLoQ1Score(
 
   // 5. Engagement (max 100) — driven by rewards activity
   let engagementScore = 0;
-  if (engagement.hasActiveStreak) engagementScore += 20;
-  engagementScore += Math.min(30, engagement.streakMonths * 5);
-  if (engagement.hasRecentRedemption) engagementScore += 20;
+  if (engagement.hasActiveStreak) engagementScore += 15;
+  engagementScore += Math.min(25, engagement.streakMonths * 5);
+  if (engagement.hasRecentRedemption) engagementScore += 15;
   if (engagement.profileCompleted) engagementScore += 10;
   if (engagement.hasReferral) engagementScore += 10;
   if (engagement.recentCalculatorUse) engagementScore += 10;
+  if (engagement.hasRecentPostbackCredit) engagementScore += 15;
 
   return Math.round(
     dtiScore + prepayScore + progressScore + bufferScore + engagementScore
