@@ -491,7 +491,7 @@ export default function SplashScreen1({
           UNLOQ1
         </h1>
         <p className="mt-1 text-sm font-medium text-[#0F0F5C] tracking-wide">
-          Build your freedom
+          Money Matters
         </p>
       </div>
 
