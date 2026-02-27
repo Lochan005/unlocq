@@ -15,7 +15,7 @@ function emiFromYears(
 }
 
 /**
- * Calculates the UnLoQ1 Score (0–1000) from loan data and engagement activity.
+ * Calculates the UNLOQ1 Score (0–1000) from loan data and engagement activity.
  *
  * Components:
  *   - DTI Health:           max 250 points
@@ -24,7 +24,7 @@ function emiFromYears(
  *   - Financial Buffer:     max 200 points
  *   - Engagement:           max 100 points (driven by rewards activity)
  */
-export function calculateUnLoQ1Score(
+export function calculateUNLOQ1Score(
   loanData: LoanData,
   engagement: EngagementData
 ): number {

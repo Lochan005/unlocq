@@ -26,12 +26,12 @@ export default function AnimatedToggle({
 
   return (
     <div
-      className={`relative flex bg-white/70 backdrop-blur-sm rounded-lg p-1 border border-purple-200 ${className}`}
+      className={`relative flex bg-white/70 backdrop-blur-sm rounded-lg p-1 border border-[#E6E4F5] ${className}`}
     >
       {/* Sliding indicator */}
       <motion.div
         layoutId="toggle-indicator"
-        className="absolute bg-[#B19CD7] rounded-md h-full"
+        className="absolute bg-[#4A4ABF] rounded-md h-full"
         style={{
           width: `${indicatorWidth}%`,
           left: `${selectedIndex * indicatorWidth}%`,

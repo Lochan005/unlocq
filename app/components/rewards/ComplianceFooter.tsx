@@ -5,8 +5,8 @@ interface ComplianceFooterProps {
 }
 
 const disclosures: Record<"earn" | "pool", string> = {
-  earn: "Reward availability and amounts depend on our partner agreements and may change without notice. UnLoQ1 does not guarantee any specific reward rate or amount from shopping activity.",
-  pool: "Your rewards pool is not a wallet or stored-value account. It represents earned entitlements that UnLoQ1 will apply toward your loan prepayment or other redemption options on your behalf.",
+  earn: "Reward availability and amounts depend on our partner agreements and may change without notice. UNLOQ1 does not guarantee any specific reward rate or amount from shopping activity.",
+  pool: "Your rewards pool is not a wallet or stored-value account. It represents earned entitlements that UNLOQ1 will apply toward your loan prepayment or other redemption options on your behalf.",
 };
 
 export default function ComplianceFooter({ variant }: ComplianceFooterProps) {

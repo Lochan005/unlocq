@@ -32,9 +32,9 @@ const statusConfig: Record<
   },
   redeemed: {
     label: "Redeemed",
-    bgColor: "bg-purple-50",
-    textColor: "text-purple-700",
-    dotColor: "bg-purple-500",
+    bgColor: "bg-[#F5F4FA]",
+    textColor: "text-[#0F0F5C]",
+    dotColor: "bg-[#3535A8]",
   },
   rejected: {
     label: "Not Earned",

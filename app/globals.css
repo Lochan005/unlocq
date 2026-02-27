@@ -31,23 +31,23 @@ body {
 }
 
 .text-gradient-purple {
-  background: linear-gradient(135deg, #B19CD7 0%, #EBE8FC 100%);
+  background: linear-gradient(135deg, #4A4ABF 0%, #E6E4F5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .glow-purple {
-  box-shadow: 0 0 20px rgba(177, 156, 215, 0.3);
+  box-shadow: 0 0 20px rgba(74, 74, 191, 0.3);
 }
 
 .bg-gradient-purple {
-  background: linear-gradient(180deg, #EBE8FC 0%, #B19CD7 100%);
+  background: linear-gradient(180deg, #E6E4F5 0%, #4A4ABF 100%);
 }
 
 /* Auth page: fintech micrographics + lavender gradient */
 .bg-auth-fintech {
-  background: linear-gradient(135deg, #EBE8FC 0%, #D4C8F0 30%, #B19CD7 60%, #9678CD 85%, #7C5CBF 100%);
+  background: linear-gradient(135deg, #E6E4F5 0%, #EEEDF8 30%, #4A4ABF 60%, #2E2E8F 85%, #1C1C78 100%);
   background-size: 100% 100%;
 }
 
@@ -56,7 +56,7 @@ body {
   position: absolute;
   inset: 0;
   background-image: 
-    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 L60 30 M30 0 L30 60' stroke='%23B19CD7' stroke-opacity='0.15' stroke-width='0.5'/%3E%3Ccircle cx='15' cy='15' r='2' fill='%239678CD' fill-opacity='0.2'/%3E%3Ccircle cx='45' cy='45' r='2' fill='%237C5CBF' fill-opacity='0.2'/%3E%3Cpath d='M5 45 L15 35 L25 40 L35 25 L45 30 L55 20' stroke='%235B4B8A' stroke-opacity='0.12' stroke-width='0.8' fill='none'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 L60 30 M30 0 L30 60' stroke='%234A4ABF' stroke-opacity='0.15' stroke-width='0.5'/%3E%3Ccircle cx='15' cy='15' r='2' fill='%232E2E8F' fill-opacity='0.2'/%3E%3Ccircle cx='45' cy='45' r='2' fill='%231C1C78' fill-opacity='0.2'/%3E%3Cpath d='M5 45 L15 35 L25 40 L35 25 L45 30 L55 20' stroke='%230F0F5C' stroke-opacity='0.12' stroke-width='0.8' fill='none'/%3E%3C/svg%3E");
   background-size: 60px 60px;
   pointer-events: none;
 }
@@ -89,7 +89,7 @@ body {
 }
 
 .chart-glow-purple {
-  filter: drop-shadow(0 0 8px rgba(177, 156, 215, 0.4));
+  filter: drop-shadow(0 0 8px rgba(74, 74, 191, 0.4));
 }
 
 /* Custom Range Input Styling */

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import HeaderRewardsIndicator from "@/app/components/rewards/HeaderRewardsIndicator";
+import { HeaderRewardsIndicator } from "./rewards";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,49 +24,50 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-purple-200 min-h-[60px] py-2">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#0A0A4A] via-[#0F0F5C] to-[#1C1C78] backdrop-blur-sm border-b border-[#1C1C78] min-h-[60px] py-2">
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         {/* Logo + Tagline */}
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <Link
             href="/"
-            className="text-2xl font-bold leading-tight text-[#9678CD] hover:text-[#B19CD7] transition-colors"
+            className="text-2xl font-bold leading-tight text-white hover:text-[#E6E4F5] transition-colors"
+            style={{ fontFamily: "var(--font-roboto)" }}
           >
-            UnLoQ1
+            UNLOQ1
           </Link>
-          <span className="text-sm font-medium text-[#5B4B8A] tracking-tight mt-0.5">
-            Money Matters ₹
+          <span className="text-[11px] font-medium text-white/70 tracking-tight mt-0.5">
+            Money Matters
           </span>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
-          <>
-            <HeaderRewardsIndicator />
+        {/* Rewards Indicator + Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-6">
+          <HeaderRewardsIndicator />
+          <nav className="flex items-center gap-6">
             {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-3 py-2 text-sm font-medium transition-colors relative ${
-                isActive(link.href)
-                  ? "text-[#B19CD7]"
-                  : "text-[#5B4B8A] hover:text-[#B19CD7]"
-              }`}
-            >
-              {link.label}
-              {isActive(link.href) && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#B19CD7]"></span>
-              )}
-            </Link>
-          ))}
-          </>
-        </nav>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-3 py-2 text-sm font-medium transition-colors relative ${
+                  isActive(link.href)
+                    ? "text-white"
+                    : "text-white/80 hover:text-white"
+                }`}
+              >
+                {link.label}
+                {isActive(link.href) && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></span>
+                )}
+              </Link>
+            ))}
+          </nav>
+        </div>
 
         {/* Mobile Hamburger Button */}
         <button
           type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-[#5B4B8A] hover:text-[#B19CD7] transition-colors p-2"
+          className="md:hidden text-white/80 hover:text-white transition-colors p-2"
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
@@ -97,23 +98,17 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-sm border-t border-purple-200">
+        <div className="md:hidden bg-[#0F0F5C]/95 backdrop-blur-sm border-t border-[#1C1C78]">
           <nav className="flex flex-col">
-            <div
-              className="border-b border-purple-100 px-4 py-3"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <HeaderRewardsIndicator />
-            </div>
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`px-4 py-3 text-sm font-medium transition-colors border-b border-purple-100 ${
+                className={`px-4 py-3 text-sm font-medium transition-colors border-b border-[#1C1C78] ${
                   isActive(link.href)
-                    ? "text-[#B19CD7] bg-purple-50"
-                    : "text-[#5B4B8A] hover:text-[#B19CD7] hover:bg-purple-50"
+                    ? "text-white bg-[#1C1C78]"
+                    : "text-white/80 hover:text-white hover:bg-[#1C1C78]"
                 }`}
               >
                 {link.label}

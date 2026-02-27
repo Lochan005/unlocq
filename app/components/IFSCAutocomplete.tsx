@@ -252,7 +252,7 @@ export default function IFSCAutocomplete({
   return (
     <div ref={containerRef} className={`relative ${className}`}>
       {label && (
-        <label htmlFor={id} className="block text-sm font-medium text-[#5B4B8A] mb-1.5">
+        <label htmlFor={id} className="block text-sm font-medium text-[#0F0F5C] mb-1.5">
           {label}
         </label>
       )}
@@ -267,8 +267,8 @@ export default function IFSCAutocomplete({
         maxLength={11}
         required={required}
         autoComplete="off"
-        className={`w-full px-4 py-3 rounded-lg border-2 bg-white text-[#5B4B8A] placeholder-[#8E7BB8]/60 focus:outline-none focus:ring-2 focus:ring-[#B19CD7]/30 focus:border-[#B19CD7] font-mono uppercase ${
-          !isValid ? "border-red-300" : "border-[#EBE8FC]"
+        className={`w-full px-4 py-3 rounded-lg border-2 bg-white text-[#0F0F5C] placeholder-[#4A4ABF]/60 focus:outline-none focus:ring-2 focus:ring-[#4A4ABF]/30 focus:border-[#4A4ABF] font-mono uppercase ${
+          !isValid ? "border-red-300" : "border-[#E6E4F5]"
         }`}
         aria-expanded={open}
         aria-autocomplete="list"
@@ -280,28 +280,28 @@ export default function IFSCAutocomplete({
         <ul
           id="ifsc-listbox"
           role="listbox"
-          className="absolute z-50 w-full mt-1 py-1 bg-white border-2 border-[#EBE8FC] rounded-lg shadow-lg max-h-64 overflow-y-auto"
+          className="absolute z-50 w-full mt-1 py-1 bg-white border-2 border-[#E6E4F5] rounded-lg shadow-lg max-h-64 overflow-y-auto"
         >
           {loading && suggestions.length === 0 && (
-            <li className="px-4 py-3 text-sm text-[#8E7BB8]">Searching...</li>
+            <li className="px-4 py-3 text-sm text-[#4A4ABF]">Searching...</li>
           )}
           {suggestions.map((branch) => (
             <li
               key={branch.ifsc}
               role="option"
               tabIndex={0}
-              className="px-4 py-3 cursor-pointer hover:bg-[#F5F3FF] focus:bg-[#F5F3FF] focus:outline-none border-b border-[#EBE8FC]/50 last:border-b-0"
+              className="px-4 py-3 cursor-pointer hover:bg-[#EEEDF8] focus:bg-[#EEEDF8] focus:outline-none border-b border-[#E6E4F5]/50 last:border-b-0"
               onMouseDown={(e) => {
                 e.preventDefault();
                 handleSelect(branch);
               }}
             >
-              <div className="text-sm text-[#5B4B8A]">
+              <div className="text-sm text-[#0F0F5C]">
                 {branch.ifsc}
                 {!isEmpty(branch.bank) ? ` - ${branch.bank}` : ""}
               </div>
               {formatBranchLine(branch) ? (
-                <div className="text-sm text-[#5B4B8A]/90 mt-0.5">
+                <div className="text-sm text-[#0F0F5C]/90 mt-0.5">
                   {formatBranchLine(branch)}
                 </div>
               ) : null}
@@ -325,7 +325,7 @@ export default function IFSCAutocomplete({
           <button
             type="button"
             onClick={applyNewIFSC}
-            className="mt-2 text-sm font-medium text-[#7C5CBF] hover:underline"
+            className="mt-2 text-sm font-medium text-[#1C1C78] hover:underline"
           >
             Use new IFSC
           </button>
@@ -333,7 +333,7 @@ export default function IFSCAutocomplete({
       )}
 
       {helpText && !mergedWarning && (
-        <p className="mt-1 text-xs text-[#8E7BB8]">{helpText}</p>
+        <p className="mt-1 text-xs text-[#4A4ABF]">{helpText}</p>
       )}
 
       {missingDetailsBranch && (
@@ -343,16 +343,16 @@ export default function IFSCAutocomplete({
           aria-modal="true"
           aria-labelledby="missing-details-title"
         >
-          <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-5 border border-[#EBE8FC]">
-            <h3 id="missing-details-title" className="text-sm font-semibold text-[#5B4B8A] mb-2">
+          <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-5 border border-[#E6E4F5]">
+            <h3 id="missing-details-title" className="text-sm font-semibold text-[#0F0F5C] mb-2">
               Improve your experience
             </h3>
-            <p className="text-sm text-[#5B4B8A]/90 mb-4">
+            <p className="text-sm text-[#0F0F5C]/90 mb-4">
               Please mention the branch and city detail so we can improve our records.
             </p>
             <div className="space-y-3">
               <div>
-                <label htmlFor="missing-branch" className="block text-xs font-medium text-[#5B4B8A] mb-1">
+                <label htmlFor="missing-branch" className="block text-xs font-medium text-[#0F0F5C] mb-1">
                   Branch
                 </label>
                 <input
@@ -361,11 +361,11 @@ export default function IFSCAutocomplete({
                   placeholder="Branch name"
                   value={missingBranch}
                   onChange={(e) => setMissingBranch(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-[#EBE8FC] text-sm text-[#5B4B8A] placeholder-[#8E7BB8]/60 focus:outline-none focus:ring-2 focus:ring-[#B19CD7]/30"
+                  className="w-full px-3 py-2 rounded-lg border border-[#E6E4F5] text-sm text-[#0F0F5C] placeholder-[#4A4ABF]/60 focus:outline-none focus:ring-2 focus:ring-[#4A4ABF]/30"
                 />
               </div>
               <div>
-                <label htmlFor="missing-city" className="block text-xs font-medium text-[#5B4B8A] mb-1">
+                <label htmlFor="missing-city" className="block text-xs font-medium text-[#0F0F5C] mb-1">
                   City
                 </label>
                 <input
@@ -374,11 +374,11 @@ export default function IFSCAutocomplete({
                   placeholder="City"
                   value={missingCity}
                   onChange={(e) => setMissingCity(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-[#EBE8FC] text-sm text-[#5B4B8A] placeholder-[#8E7BB8]/60 focus:outline-none focus:ring-2 focus:ring-[#B19CD7]/30"
+                  className="w-full px-3 py-2 rounded-lg border border-[#E6E4F5] text-sm text-[#0F0F5C] placeholder-[#4A4ABF]/60 focus:outline-none focus:ring-2 focus:ring-[#4A4ABF]/30"
                 />
               </div>
               <div>
-                <label htmlFor="missing-state" className="block text-xs font-medium text-[#5B4B8A] mb-1">
+                <label htmlFor="missing-state" className="block text-xs font-medium text-[#0F0F5C] mb-1">
                   State (optional)
                 </label>
                 <input
@@ -387,7 +387,7 @@ export default function IFSCAutocomplete({
                   placeholder="State"
                   value={missingState}
                   onChange={(e) => setMissingState(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-[#EBE8FC] text-sm text-[#5B4B8A] placeholder-[#8E7BB8]/60 focus:outline-none focus:ring-2 focus:ring-[#B19CD7]/30"
+                  className="w-full px-3 py-2 rounded-lg border border-[#E6E4F5] text-sm text-[#0F0F5C] placeholder-[#4A4ABF]/60 focus:outline-none focus:ring-2 focus:ring-[#4A4ABF]/30"
                 />
               </div>
             </div>
@@ -400,7 +400,7 @@ export default function IFSCAutocomplete({
                   setMissingCity("");
                   setMissingState("");
                 }}
-                className="flex-1 py-2 rounded-lg text-sm font-medium text-[#5B4B8A] border border-[#EBE8FC] hover:bg-[#F5F3FF]"
+                className="flex-1 py-2 rounded-lg text-sm font-medium text-[#0F0F5C] border border-[#E6E4F5] hover:bg-[#EEEDF8]"
               >
                 Skip
               </button>
@@ -408,7 +408,7 @@ export default function IFSCAutocomplete({
                 type="button"
                 onClick={submitMissingDetails}
                 disabled={submittingMissing}
-                className="flex-1 py-2 rounded-lg text-sm font-medium text-white bg-[#9678CD] hover:bg-[#7C5CBF] disabled:opacity-60"
+                className="flex-1 py-2 rounded-lg text-sm font-medium text-white bg-[#2E2E8F] hover:bg-[#1C1C78] disabled:opacity-60"
               >
                 {submittingMissing ? "Submitting…" : "Submit"}
               </button>

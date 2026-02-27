@@ -340,17 +340,17 @@ export default function LoanSlider({
   return (
     <div className="flex flex-col h-full">
       {/* Label */}
-      <label className="text-sm font-semibold text-[#5B4B8A] mb-2 block">
+      <label className="text-sm font-semibold text-[#0F0F5C] mb-2 block">
         {label}
       </label>
 
       {/* Slider Container */}
       <div className="relative flex-1 flex flex-col justify-center">
         {/* Slider Track */}
-        <div className="relative h-2 rounded-full bg-[#EBE8FC] mb-3">
+        <div className="relative h-2 rounded-full bg-[#E6E4F5] mb-3">
           {/* Filled Portion */}
           <motion.div
-            className="absolute top-0 left-0 h-2 rounded-full bg-gradient-to-r from-[#B19CD7] to-[#9678CD]"
+            className="absolute top-0 left-0 h-2 rounded-full bg-gradient-to-r from-[#4A4ABF] to-[#2E2E8F]"
             style={{ width: `${percentage}%` }}
             initial={false}
             animate={{ width: `${percentage}%` }}
@@ -405,11 +405,11 @@ export default function LoanSlider({
 
           {/* Custom Thumb */}
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white shadow-md border-2 border-[#B19CD7] pointer-events-none z-20 flex items-center justify-center"
+            className="absolute top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-white shadow-md border-2 border-[#4A4ABF] pointer-events-none z-20 flex items-center justify-center"
             style={{
               left: `calc(${percentage}% - 10px)`,
               boxShadow: isDragging
-                ? "0 0 12px rgba(177, 156, 215, 0.5)"
+                ? "0 0 12px rgba(74, 74, 191, 0.5)"
                 : "0 2px 4px rgba(0, 0, 0, 0.1)",
             }}
             animate={{
@@ -418,7 +418,7 @@ export default function LoanSlider({
             transition={{ duration: 0.1 }}
           >
             {/* Thumb icon - varies by format */}
-            <span className="text-[10px] font-extrabold text-[#7C5CBF] leading-none select-none">
+            <span className="text-[10px] font-extrabold text-[#1C1C78] leading-none select-none">
               {format === "currency" ? "₹" : format === "percentage" ? "%" : "T"}
             </span>
             {/* Tooltip */}
@@ -427,10 +427,10 @@ export default function LoanSlider({
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: -5 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-[#5B4B8A] text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-lg pointer-events-none"
+                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-[#0F0F5C] text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-lg pointer-events-none"
               >
                 {formatValue(sliderValue)}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[#5B4B8A]"></div>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[#0F0F5C]"></div>
               </motion.div>
             )}
           </motion.div>
@@ -452,11 +452,11 @@ export default function LoanSlider({
                     className={`text-base font-bold tabular-nums bg-white border-2 rounded px-2 py-1 text-center w-16 focus:outline-none focus:ring-2 ${
                       warning
                         ? "text-red-600 border-red-400 focus:ring-red-400/20"
-                        : "text-[#5B4B8A] border-[#B19CD7] focus:ring-[#B19CD7]/20"
+                        : "text-[#0F0F5C] border-[#4A4ABF] focus:ring-[#4A4ABF]/20"
                     }`}
                     placeholder="0"
                   />
-                  <span className="text-sm text-[#5B4B8A] font-medium">yr</span>
+                  <span className="text-sm text-[#0F0F5C] font-medium">yr</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <input
@@ -469,11 +469,11 @@ export default function LoanSlider({
                     className={`text-base font-bold tabular-nums bg-white border-2 rounded px-2 py-1 text-center w-16 focus:outline-none focus:ring-2 ${
                       warning
                         ? "text-red-600 border-red-400 focus:ring-red-400/20"
-                        : "text-[#5B4B8A] border-[#B19CD7] focus:ring-[#B19CD7]/20"
+                        : "text-[#0F0F5C] border-[#4A4ABF] focus:ring-[#4A4ABF]/20"
                     }`}
                     placeholder="0"
                   />
-                  <span className="text-sm text-[#5B4B8A] font-medium">mo</span>
+                  <span className="text-sm text-[#0F0F5C] font-medium">mo</span>
                 </div>
               </div>
             ) : isEditing ? (
@@ -487,7 +487,7 @@ export default function LoanSlider({
                 className={`text-base font-bold tabular-nums bg-white border-2 rounded px-2 py-1 text-center w-32 focus:outline-none focus:ring-2 ${
                   warning
                     ? "text-red-600 border-red-400 focus:ring-red-400/20"
-                    : "text-[#5B4B8A] border-[#B19CD7] focus:ring-[#B19CD7]/20"
+                    : "text-[#0F0F5C] border-[#4A4ABF] focus:ring-[#4A4ABF]/20"
                 }`}
                 placeholder={getRawValue(sliderValue)}
               />
@@ -495,13 +495,13 @@ export default function LoanSlider({
               <span
                 onClick={handleValueClick}
                 className={`text-base tabular-nums transition-colors px-2 py-1 rounded ${
-                  isSet ? "cursor-pointer hover:bg-purple-50" : "cursor-default"
+                  isSet ? "cursor-pointer hover:bg-[#F5F4FA]" : "cursor-default"
                 } ${
                   warning
                     ? "text-red-600"
                     : isSet
-                      ? "font-bold text-[#5B4B8A] hover:text-[#7C5CBF]"
-                      : "font-semibold text-[#8E7BB8]"
+                      ? "font-bold text-[#0F0F5C] hover:text-[#1C1C78]"
+                      : "font-semibold text-[#0F0F5C]"
                 }`}
                 title="Click to edit manually"
               >

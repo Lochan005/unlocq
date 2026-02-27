@@ -82,7 +82,7 @@ const brandColorMap: Record<string, string> = {
   swiggy: "#fc8019",
   zomato: "#e23744",
   blinkit: "#f8c93e",
-  zepto: "#8b5cf6",
+  zepto: "#4A4ABF",
   bigbasket: "#84c225",
   amazon: "#ff9900",
   flipkart: "#2874f0",
@@ -92,7 +92,7 @@ const brandColorMap: Record<string, string> = {
   bookmyshow: "#c4242b",
   makemytrip: "#eb2026",
   // Earn actions
-  signup: "#8b5cf6",
+  signup: "#4A4ABF",
   complete_profile: "#3b82f6",
   first_prepayment: "#f59e0b",
   per_1k_prepaid: "#f59e0b",
@@ -104,7 +104,7 @@ const brandColorMap: Record<string, string> = {
   bronze: "#cd7f32",
   silver: "#94a3b8",
   gold: "#eab308",
-  platinum: "#a78bfa",
+  platinum: "#4A4ABF",
   // Score tiers
   excellent: "#10b981",
   good: "#3b82f6",

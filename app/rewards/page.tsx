@@ -10,10 +10,10 @@ import {
 import { formatCurrency } from "@/app/lib/currency";
 import { fadeIn } from "../lib/animation";
 import AnimatedNumber from "@/app/components/AnimatedNumber";
-import { calculateUnLoQ1Score, getScoreTier } from "@/app/lib/score";
+import { calculateUNLOQ1Score, getScoreTier } from "@/app/lib/score";
 import { AppIcon } from "@/app/lib/iconMap";
 import { Fire, ArrowRight } from "@phosphor-icons/react";
-import { UnLoQ1Coin } from "@/app/components/icons";
+import { UNLOQ1Coin } from "@/app/components/icons";
 
 function getRewardSourceName(entry: {
   merchant_id: string | null;
@@ -56,7 +56,7 @@ export default function RewardsOverviewPage() {
     hasReferral: false,
     recentCalculatorUse: true,
   };
-  const score = calculateUnLoQ1Score(loanData, engagementData);
+  const score = calculateUNLOQ1Score(loanData, engagementData);
   const tier = getScoreTier(score);
 
   const monthlyTotal = useRewardsStore((s) =>
@@ -92,7 +92,7 @@ export default function RewardsOverviewPage() {
               value={poolBalance.confirmed}
               duration={1}
               prefix="₹"
-              className="text-2xl font-extrabold text-purple-600"
+              className="text-2xl font-extrabold text-[#1C1C78]"
             />
             {poolBalance.pending > 0 && (
               <p className="mt-1 text-xs text-slate-400">
@@ -102,7 +102,7 @@ export default function RewardsOverviewPage() {
           </div>
           {poolBalance.confirmed === 0 && poolBalance.pending === 0 ? (
             <p className="mt-2 text-sm text-slate-500">
-              Start earning by shopping through UnLoQ1
+              Start earning by shopping through UNLOQ1
             </p>
           ) : (
             <p className="mt-2 text-sm font-medium text-green-600">
@@ -115,8 +115,8 @@ export default function RewardsOverviewPage() {
           <p className="mb-2 text-xs font-semibold uppercase text-slate-500">
             COINS BALANCE
           </p>
-          <p className="flex items-center justify-center gap-1.5 text-2xl font-extrabold text-purple-600">
-            <UnLoQ1Coin size={24} color="#f59e0b" /> {userProfile?.coins_confirmed?.toLocaleString() ?? 0}
+          <p className="flex items-center justify-center gap-1.5 text-2xl font-extrabold text-[#1C1C78]">
+            <UNLOQ1Coin size={24} color="#f59e0b" /> {userProfile?.coins_confirmed?.toLocaleString() ?? 0}
           </p>
           <p className="mt-2 text-sm text-slate-500">
             ≈ {formatCurrency((userProfile?.coins_confirmed ?? 0) / 10)}{" "}
@@ -128,7 +128,7 @@ export default function RewardsOverviewPage() {
           <p className="mb-2 text-xs font-semibold uppercase text-slate-500">
             LIFETIME PREPAID
           </p>
-          <p className="text-2xl font-extrabold text-purple-600">
+          <p className="text-2xl font-extrabold text-[#1C1C78]">
             {formatCurrency(lifetimeStats.totalPrepaid)}
           </p>
           <p className="mt-2 text-sm text-slate-500">From rewards pool</p>
@@ -138,7 +138,7 @@ export default function RewardsOverviewPage() {
           <p className="mb-2 text-xs font-semibold uppercase text-slate-500">
             CURRENT STREAK
           </p>
-          <p className="flex items-center justify-center gap-1.5 text-2xl font-extrabold text-purple-600">
+          <p className="flex items-center justify-center gap-1.5 text-2xl font-extrabold text-[#1C1C78]">
             <Fire size={24} weight="duotone" className="text-amber-500" /> {userProfile?.current_streak_months ?? 0}
           </p>
           <p className="mt-2 text-sm font-medium text-amber-600">
@@ -149,16 +149,16 @@ export default function RewardsOverviewPage() {
         </div>
       </motion.div>
 
-      {/* UnLoQ1 Score */}
+      {/* UNLOQ1 Score */}
       <motion.div
-        className="rounded-2xl border border-purple-100 bg-white p-6 shadow-sm"
+        className="rounded-2xl border border-[#EEEDF8] bg-white p-6 shadow-sm"
         {...fadeIn}
         transition={{ delay: 0.15 }}
       >
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="mb-1 text-xs font-semibold uppercase text-slate-500">
-              UnLoQ1 Score
+              UNLOQ1 Score
             </p>
             <div className="flex items-center gap-3">
               <span className="text-4xl font-extrabold text-slate-800">
@@ -197,7 +197,7 @@ export default function RewardsOverviewPage() {
           <h3 className="text-lg font-bold text-slate-800">Recent Activity</h3>
           <button
             type="button"
-            className="text-sm font-semibold text-purple-600 hover:underline"
+            className="text-sm font-semibold text-[#1C1C78] hover:underline"
           >
             View All
           </button>
@@ -210,7 +210,7 @@ export default function RewardsOverviewPage() {
             </p>
             <Link
               href="/rewards/earn"
-              className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-purple-600 hover:underline"
+              className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#1C1C78] hover:underline"
             >
               Go to Earn <ArrowRight size={14} weight="bold" />
             </Link>
@@ -229,7 +229,7 @@ export default function RewardsOverviewPage() {
               return (
                 <div
                   key={entry.reward_id}
-                  className="flex items-center justify-between border-b border-slate-100 py-4 transition-colors last:border-b-0 hover:bg-purple-50"
+                  className="flex items-center justify-between border-b border-slate-100 py-4 transition-colors last:border-b-0 hover:bg-[#F5F4FA]"
                 >
                   <div className="flex items-center gap-4">
                     <div

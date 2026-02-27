@@ -7,7 +7,7 @@ import { formatCurrency } from "@/app/lib/currency";
 import { ComplianceFooter } from "@/app/components/rewards";
 import { AppIcon } from "@/app/lib/iconMap";
 import { Bank, Gear, TrendUp, Coins, Storefront } from "@phosphor-icons/react";
-import { UnLoQ1Coin } from "@/app/components/icons";
+import { UNLOQ1Coin } from "@/app/components/icons";
 
 export default function PoolPage() {
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -47,7 +47,7 @@ export default function PoolPage() {
       </div>
 
       {/* Pool Balance Card */}
-      <div className="rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-white shadow-xl">
+      <div className="rounded-2xl bg-gradient-to-br from-[#1C1C78] to-[#0A0A4A] p-8 text-white shadow-xl">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-medium text-white/80">Pool Balance</p>
@@ -55,7 +55,7 @@ export default function PoolPage() {
               {formatCurrency(confirmed)}
             </p>
             <p className="mt-2 flex items-center gap-1 text-sm text-white/90">
-              <UnLoQ1Coin size={16} color="#fbbf24" /> {coinsConfirmed.toLocaleString()} coins ≈{" "}
+              <UNLOQ1Coin size={16} color="#fbbf24" /> {coinsConfirmed.toLocaleString()} coins ≈{" "}
               {formatCurrency(coinsConfirmed / 10)}
             </p>
             {pending > 0 && (
@@ -94,7 +94,7 @@ export default function PoolPage() {
           ) : (
             <Link
               href="/rewards/redeem"
-              className="flex flex-1 items-center justify-center rounded-xl bg-white px-4 py-3 font-semibold text-purple-600 transition-all hover:bg-white/95"
+              className="flex flex-1 items-center justify-center rounded-xl bg-white px-4 py-3 font-semibold text-[#1C1C78] transition-all hover:bg-white/95"
             >
               <Bank size={18} weight="bold" className="mr-1" /> Prepay Now
             </Link>
@@ -142,7 +142,7 @@ export default function PoolPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-4 flex items-center justify-between rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-4 py-3 text-white">
+            <div className="mt-4 flex items-center justify-between rounded-xl bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] px-4 py-3 text-white">
               <span className="font-medium">Total this month</span>
               <span className="text-xl font-bold">
                 {formatCurrency(monthlyTotal)}
@@ -174,7 +174,7 @@ export default function PoolPage() {
               aria-checked={autoPrepayEnabled}
               onClick={toggleAutoPrepay}
               className={`relative h-8 w-14 rounded-full transition-colors ${
-                autoPrepayEnabled ? "bg-purple-600" : "bg-slate-300"
+                autoPrepayEnabled ? "bg-[#1C1C78]" : "bg-slate-300"
               }`}
             >
               <span
@@ -198,7 +198,7 @@ export default function PoolPage() {
               onChange={(e) =>
                 setAutoPrepayThreshold(Number(e.target.value))
               }
-              className="mt-2 h-2 w-full appearance-none rounded-full bg-slate-200 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-purple-600"
+              className="mt-2 h-2 w-full appearance-none rounded-full bg-slate-200 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#1C1C78]"
             />
             <div className="mt-1 flex justify-between text-xs text-slate-500">
               <span>{formatCurrency(1000)}</span>

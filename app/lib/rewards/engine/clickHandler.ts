@@ -40,7 +40,7 @@ export function handleMerchantClick(userId: string, merchantId: string): ClickEv
       ? generateTrackedLink(route, userId, clickId)
       : `https://www.${merchantId}.com`,
     timestamp: new Date().toISOString(),
-    user_agent: "UnLoQ1-MVP",
+    user_agent: "UNLOQ1-MVP",
     ip_hash: "mock_hash",
   };
 

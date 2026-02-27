@@ -27,9 +27,9 @@ export default function ResultsCard({
 }: ResultsCardProps) {
   // Trend indicator styles
   const trendStyles = {
-    positive: "text-[#B19CD7]",
+    positive: "text-[#4A4ABF]",
     negative: "text-red-400",
-    neutral: "text-[#5B4B8A]",
+    neutral: "text-[#0F0F5C]",
   };
 
   const trendIcons = {
@@ -41,7 +41,7 @@ export default function ResultsCard({
   // Variant-specific rendering
   if (variant === "highlight") {
     return (
-      <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-200 p-4 md:p-6 shadow-lg">
+      <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-[#E6E4F5] p-4 md:p-6 shadow-lg">
         <div className="text-center">
           <div className="text-sm md:text-base text-gray-400 font-medium uppercase tracking-wide mb-2">
             {title}
@@ -59,7 +59,7 @@ export default function ResultsCard({
             )}
           </div>
           {subtitle && (
-            <div className="text-sm md:text-base text-[#5B4B8A] font-medium mt-2">
+            <div className="text-sm md:text-base text-[#0F0F5C] font-medium mt-2">
               {subtitle}
             </div>
           )}
@@ -70,7 +70,7 @@ export default function ResultsCard({
 
   if (variant === "comparison") {
     return (
-      <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-purple-200 p-4 md:p-6 shadow-lg">
+      <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-[#E6E4F5] p-4 md:p-6 shadow-lg">
         <div className="text-sm md:text-base font-semibold text-white mb-4">
           {title}
         </div>
@@ -79,7 +79,7 @@ export default function ResultsCard({
             <div className="text-xs md:text-sm text-gray-600 mb-2">
               {beforeLabel}
             </div>
-            <div className="text-lg md:text-xl font-semibold text-[#5B4B8A]">
+            <div className="text-lg md:text-xl font-semibold text-[#0F0F5C]">
               {beforeValue || "-"}
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function ResultsCard({
           )}
         </div>
         {subtitle && (
-          <div className="mt-2 text-xs md:text-sm text-[#5B4B8A]">
+          <div className="mt-2 text-xs md:text-sm text-[#0F0F5C]">
             {subtitle}
           </div>
         )}

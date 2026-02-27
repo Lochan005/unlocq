@@ -108,12 +108,12 @@ export default function TiersPage() {
               key={tier.tier}
               className={`relative rounded-2xl p-6 ${
                 isCurrent
-                  ? "border-2 border-purple-500 bg-gradient-to-br from-purple-50/50 to-white shadow-lg"
+                  ? "border-2 border-[#3535A8] bg-gradient-to-br from-[#F5F4FA]/50 to-white shadow-lg"
                   : "border border-slate-200 bg-slate-50"
               }`}
             >
               {isCurrent && (
-                <span className="absolute right-3 top-3 rounded-full bg-purple-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                <span className="absolute right-3 top-3 rounded-full bg-[#1C1C78] px-2 py-0.5 text-[10px] font-bold text-white">
                   CURRENT
                 </span>
               )}
@@ -150,7 +150,7 @@ export default function TiersPage() {
       {/* Progress to Next Tier */}
       <div className="rounded-2xl bg-white p-6 shadow-lg">
         <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-slate-800">
-          <Rocket size={22} weight="duotone" className="text-purple-600" /> Progress to {nextTier?.name ?? "Platinum"}
+          <Rocket size={22} weight="duotone" className="text-[#1C1C78]" /> Progress to {nextTier?.name ?? "Platinum"}
         </h3>
 
         {isPlatinum ? (
@@ -166,13 +166,13 @@ export default function TiersPage() {
               </p>
               <div className="mt-2 h-3 overflow-hidden rounded-full bg-slate-200">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-700 transition-all"
+                  className="h-full rounded-full bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] transition-all"
                   style={{ width: `${Math.min(100, progressToNext)}%` }}
                 />
               </div>
             </div>
             <div className="text-center md:text-right">
-              <p className="flex items-center gap-1 text-sm font-semibold text-purple-600">
+              <p className="flex items-center gap-1 text-sm font-semibold text-[#1C1C78]">
                 {remainingPrepayments} more prepayments to {nextTier.name}{" "}
                 <AppIcon name={nextTier.iconKey} size={16} weight="duotone" />
               </p>

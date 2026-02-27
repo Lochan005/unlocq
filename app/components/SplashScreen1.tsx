@@ -358,25 +358,25 @@ export default function SplashScreen1({
         <g style={phaseStyle(0)}>
           <line
             x1="30" y1="220" x2="250" y2="220"
-            stroke="#5B4B8A" strokeWidth="3" strokeLinecap="round"
+            stroke="#0F0F5C" strokeWidth="3" strokeLinecap="round"
           />
           <rect x="60" y="200" width="160" height="20" rx="3"
-            fill="#8E7BB8" stroke="#5B4B8A" strokeWidth="1.5"
+            fill="#4A4ABF" stroke="#0F0F5C" strokeWidth="1.5"
           />
-          <line x1="100" y1="200" x2="100" y2="220" stroke="#5B4B8A" strokeWidth="0.8" opacity="0.4" />
-          <line x1="140" y1="200" x2="140" y2="220" stroke="#5B4B8A" strokeWidth="0.8" opacity="0.4" />
-          <line x1="180" y1="200" x2="180" y2="220" stroke="#5B4B8A" strokeWidth="0.8" opacity="0.4" />
+          <line x1="100" y1="200" x2="100" y2="220" stroke="#0F0F5C" strokeWidth="0.8" opacity="0.4" />
+          <line x1="140" y1="200" x2="140" y2="220" stroke="#0F0F5C" strokeWidth="0.8" opacity="0.4" />
+          <line x1="180" y1="200" x2="180" y2="220" stroke="#0F0F5C" strokeWidth="0.8" opacity="0.4" />
         </g>
 
         {/* Phase 1: Walls */}
         <g style={phaseStyle(1)}>
           <rect x="60" y="120" width="160" height="80"
-            fill="#EBE8FC" stroke="#5B4B8A" strokeWidth="1.5"
+            fill="#E6E4F5" stroke="#0F0F5C" strokeWidth="1.5"
           />
           {[0, 1, 2, 3].map((row) => (
             <g key={`brick-row-${row}`} opacity="0.15">
               <line x1="60" y1={132 + row * 18} x2="220" y2={132 + row * 18}
-                stroke="#5B4B8A" strokeWidth="0.8"
+                stroke="#0F0F5C" strokeWidth="0.8"
               />
               {[0, 1, 2, 3].map((col) => (
                 <line key={`brick-${row}-${col}`}
@@ -384,7 +384,7 @@ export default function SplashScreen1({
                   y1={120 + row * 18}
                   x2={80 + col * 40 + (row % 2 === 0 ? 0 : 20)}
                   y2={132 + row * 18}
-                  stroke="#5B4B8A" strokeWidth="0.8"
+                  stroke="#0F0F5C" strokeWidth="0.8"
                 />
               ))}
             </g>
@@ -394,67 +394,67 @@ export default function SplashScreen1({
         {/* Phase 2: Roof frame */}
         <g style={phaseStyle(2)}>
           <polygon points="140,55 50,120 230,120"
-            fill="none" stroke="#5B4B8A" strokeWidth="2.5" strokeLinejoin="round"
+            fill="none" stroke="#0F0F5C" strokeWidth="2.5" strokeLinejoin="round"
           />
           <line x1="140" y1="55" x2="140" y2="120"
-            stroke="#5B4B8A" strokeWidth="1.5" strokeDasharray="4 3"
+            stroke="#0F0F5C" strokeWidth="1.5" strokeDasharray="4 3"
           />
         </g>
 
         {/* Phase 3: Roof fill */}
         <g style={phaseStyle(3)}>
-          <polygon points="140,55 50,120 230,120" fill="#9678CD" opacity="0.9" />
+          <polygon points="140,55 50,120 230,120" fill="#2E2E8F" opacity="0.9" />
           {[0, 1, 2].map((i) => {
             const y = 75 + i * 16;
             const inset = ((y - 55) / (120 - 55)) * 90;
             return (
               <line key={`shingle-${i}`}
                 x1={50 + inset} y1={y} x2={230 - inset} y2={y}
-                stroke="#7C5CBF" strokeWidth="1" opacity="0.5"
+                stroke="#1C1C78" strokeWidth="1" opacity="0.5"
               />
             );
           })}
           <polygon points="140,55 50,120 230,120"
-            fill="none" stroke="#5B4B8A" strokeWidth="2.5" strokeLinejoin="round"
+            fill="none" stroke="#0F0F5C" strokeWidth="2.5" strokeLinejoin="round"
           />
         </g>
 
         {/* Phase 4: Door & Windows */}
         <g style={phaseStyle(4)}>
           <rect x="122" y="155" width="36" height="45" rx="18" ry="18"
-            fill="#7C5CBF" stroke="#5B4B8A" strokeWidth="1.5"
+            fill="#1C1C78" stroke="#0F0F5C" strokeWidth="1.5"
           />
           <rect x="122" y="173" width="36" height="27"
-            fill="#7C5CBF" stroke="#5B4B8A" strokeWidth="1.5"
+            fill="#1C1C78" stroke="#0F0F5C" strokeWidth="1.5"
           />
-          <circle cx="151" cy="183" r="2.5" fill="#EBE8FC" />
+          <circle cx="151" cy="183" r="2.5" fill="#E6E4F5" />
 
           <rect x="72" y="142" width="32" height="28" rx="2"
-            fill="#B19CD7" stroke="#5B4B8A" strokeWidth="1.5"
+            fill="#4A4ABF" stroke="#0F0F5C" strokeWidth="1.5"
           />
-          <line x1="88" y1="142" x2="88" y2="170" stroke="#5B4B8A" strokeWidth="1" />
-          <line x1="72" y1="156" x2="104" y2="156" stroke="#5B4B8A" strokeWidth="1" />
+          <line x1="88" y1="142" x2="88" y2="170" stroke="#0F0F5C" strokeWidth="1" />
+          <line x1="72" y1="156" x2="104" y2="156" stroke="#0F0F5C" strokeWidth="1" />
           <rect x="74" y="144" width="12" height="10" rx="1" fill="white" opacity="0.25" />
 
           <rect x="176" y="142" width="32" height="28" rx="2"
-            fill="#B19CD7" stroke="#5B4B8A" strokeWidth="1.5"
+            fill="#4A4ABF" stroke="#0F0F5C" strokeWidth="1.5"
           />
-          <line x1="192" y1="142" x2="192" y2="170" stroke="#5B4B8A" strokeWidth="1" />
-          <line x1="176" y1="156" x2="208" y2="156" stroke="#5B4B8A" strokeWidth="1" />
+          <line x1="192" y1="142" x2="192" y2="170" stroke="#0F0F5C" strokeWidth="1" />
+          <line x1="176" y1="156" x2="208" y2="156" stroke="#0F0F5C" strokeWidth="1" />
           <rect x="178" y="144" width="12" height="10" rx="1" fill="white" opacity="0.25" />
         </g>
 
         {/* Phase 5: Final touches */}
         <g style={phaseStyle(5)}>
           <rect x="180" y="60" width="18" height="35" rx="2"
-            fill="#8E7BB8" stroke="#5B4B8A" strokeWidth="1.5"
+            fill="#4A4ABF" stroke="#0F0F5C" strokeWidth="1.5"
           />
-          <circle cx="189" cy="52" r="5" fill="#D4C8F0" opacity="0.7">
+          <circle cx="189" cy="52" r="5" fill="#EEEDF8" opacity="0.7">
             <animate attributeName="cy" values="52;40;28" dur="2.5s" repeatCount="indefinite" />
             <animate attributeName="opacity" values="0.7;0.4;0" dur="2.5s" repeatCount="indefinite" />
             <animate attributeName="r" values="4;6;8" dur="2.5s" repeatCount="indefinite" />
           </circle>
-          <circle cx="192" cy="46" r="4" fill="#D4C8F0" opacity="0.5">
+          <circle cx="192" cy="46" r="4" fill="#EEEDF8" opacity="0.5">
             <animate attributeName="cy" values="46;34;22" dur="2.8s" repeatCount="indefinite" begin="0.6s" />
             <animate attributeName="opacity" values="0.5;0.3;0" dur="2.8s" repeatCount="indefinite" begin="0.6s" />
             <animate attributeName="r" values="3;5;7" dur="2.8s" repeatCount="indefinite" begin="0.6s" />
@@ -464,16 +464,16 @@ export default function SplashScreen1({
             <ellipse key={`stone-${i}`}
               cx={140} cy={228 + i * 8}
               rx={10 + i * 2} ry={3}
-              fill="#8E7BB8" opacity={0.5 - i * 0.08}
+              fill="#4A4ABF" opacity={0.5 - i * 0.08}
             />
           ))}
 
-          <ellipse cx="50" cy="215" rx="16" ry="10" fill="#9678CD" opacity="0.5" />
-          <ellipse cx="45" cy="212" rx="10" ry="7" fill="#B19CD7" opacity="0.6" />
-          <ellipse cx="230" cy="215" rx="16" ry="10" fill="#9678CD" opacity="0.5" />
-          <ellipse cx="235" cy="212" rx="10" ry="7" fill="#B19CD7" opacity="0.6" />
+          <ellipse cx="50" cy="215" rx="16" ry="10" fill="#2E2E8F" opacity="0.5" />
+          <ellipse cx="45" cy="212" rx="10" ry="7" fill="#4A4ABF" opacity="0.6" />
+          <ellipse cx="230" cy="215" rx="16" ry="10" fill="#2E2E8F" opacity="0.5" />
+          <ellipse cx="235" cy="212" rx="10" ry="7" fill="#4A4ABF" opacity="0.6" />
 
-          <rect x="126" y="198" width="28" height="4" rx="1" fill="#7C5CBF" opacity="0.7" />
+          <rect x="126" y="198" width="28" height="4" rx="1" fill="#1C1C78" opacity="0.7" />
         </g>
       </svg>
 
@@ -487,11 +487,11 @@ export default function SplashScreen1({
           transition: "opacity 500ms ease-out, transform 500ms ease-out",
         }}
       >
-        <h1 className="text-4xl font-extrabold tracking-tight text-[#9678CD] drop-shadow-sm">
-          UnLoQ1
+        <h1 className="text-4xl font-extrabold tracking-tight text-[#2E2E8F] drop-shadow-sm">
+          UNLOQ1
         </h1>
-        <p className="mt-1 text-sm font-medium text-[#8E7BB8] tracking-wide">
-          Building your freedom
+        <p className="mt-1 text-sm font-medium text-[#0F0F5C] tracking-wide">
+          Build your freedom
         </p>
       </div>
 
@@ -501,7 +501,7 @@ export default function SplashScreen1({
         style={{ zIndex: 1 }}
       >
         <p
-          className="text-xs font-medium text-[#8E7BB8] h-4 text-center"
+          className="text-xs font-medium text-[#0F0F5C] h-4 text-center"
           style={{
             opacity: phase >= 0 && !brandVisible ? 1 : 0,
             transition: "opacity 300ms ease-out",
@@ -510,12 +510,12 @@ export default function SplashScreen1({
           {phase >= 0 && phase < TOTAL_PHASES ? PHASE_LABELS[phase] : ""}
         </p>
 
-        <div className="w-full h-1.5 rounded-full bg-[#EBE8FC] overflow-hidden">
+        <div className="w-full h-1.5 rounded-full bg-[#E6E4F5] overflow-hidden">
           <div
             className="h-full rounded-full"
             style={{
               width: `${progressWidth}%`,
-              background: "linear-gradient(90deg, #B19CD7, #9678CD, #7C5CBF)",
+              background: "linear-gradient(90deg, #4A4ABF, #2E2E8F, #1C1C78)",
               transition: `width ${PHASE_DURATION}ms ${bounceEase}`,
             }}
           />

@@ -82,7 +82,7 @@ export default function SavingsHighlight({
         <div className="relative inline-block glow-purple rounded-lg px-6 py-3 bg-white/50 backdrop-blur-sm">
           <AnimatedNumber
             value={value}
-            className="text-4xl md:text-5xl font-bold text-[#B19CD7]"
+            className="text-4xl md:text-5xl font-bold text-[#4A4ABF]"
           />
         </div>
       </motion.div>

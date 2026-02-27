@@ -123,7 +123,7 @@ export default function RedeemPage() {
             className={`mt-4 w-full rounded-xl px-4 py-3 font-semibold transition-all ${
               confirmed === 0
                 ? "cursor-not-allowed bg-slate-200 text-slate-500"
-                : "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg hover:-translate-y-0.5"
+                : "bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] text-white shadow-lg hover:-translate-y-0.5"
             }`}
           >
             {confirmed === 0
@@ -155,7 +155,7 @@ export default function RedeemPage() {
           </div>
           <button
             type="button"
-            className="mt-4 w-full rounded-xl border-2 border-purple-200 bg-white px-4 py-3 font-semibold text-purple-600 hover:bg-purple-50"
+            className="mt-4 w-full rounded-xl border-2 border-[#E6E4F5] bg-white px-4 py-3 font-semibold text-[#1C1C78] hover:bg-[#F5F4FA]"
           >
             Browse Vouchers
           </button>
@@ -184,7 +184,7 @@ export default function RedeemPage() {
           </div>
           <button
             type="button"
-            className="mt-4 w-full rounded-xl border-2 border-purple-200 bg-white px-4 py-3 font-semibold text-purple-600 hover:bg-purple-50"
+            className="mt-4 w-full rounded-xl border-2 border-[#E6E4F5] bg-white px-4 py-3 font-semibold text-[#1C1C78] hover:bg-[#F5F4FA]"
           >
             Donate Now
           </button>
@@ -194,7 +194,7 @@ export default function RedeemPage() {
       {/* Impact Calculator */}
       <div className="rounded-2xl bg-white p-6 shadow-lg">
         <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-slate-800">
-          <ChartBar size={22} weight="duotone" className="text-purple-600" /> Impact of Auto-Prepay
+          <ChartBar size={22} weight="duotone" className="text-[#1C1C78]" /> Impact of Auto-Prepay
         </h3>
 
         {confirmed === 0 ? (
@@ -215,7 +215,7 @@ export default function RedeemPage() {
               <p className="text-xs font-semibold uppercase text-slate-500">
                 TENURE REDUCED
               </p>
-              <p className="mt-1 text-2xl font-bold text-purple-600">
+              <p className="mt-1 text-2xl font-bold text-[#1C1C78]">
                 {metrics.tenureReducedMonths} months
               </p>
             </div>
@@ -223,7 +223,7 @@ export default function RedeemPage() {
               <p className="text-xs font-semibold uppercase text-slate-500">
                 ROI
               </p>
-              <p className="mt-1 text-2xl font-bold text-purple-600">
+              <p className="mt-1 text-2xl font-bold text-[#1C1C78]">
                 {metrics.roiPercent.toFixed(1)}%
               </p>
             </div>
@@ -241,7 +241,7 @@ export default function RedeemPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800">
-              <Bank size={24} weight="duotone" className="text-purple-600" /> Confirm Auto-Prepay
+              <Bank size={24} weight="duotone" className="text-[#1C1C78]" /> Confirm Auto-Prepay
             </h3>
             <p className="mt-1 text-sm text-slate-500">
               Transfer your pool balance directly to your loan account
@@ -261,7 +261,7 @@ export default function RedeemPage() {
               <div className="my-3 border-t border-dashed border-slate-200" />
               <div className="flex justify-between">
                 <span className="text-slate-600">Amount to Prepay</span>
-                <span className="text-lg font-bold text-purple-600">
+                <span className="text-lg font-bold text-[#1C1C78]">
                   {formatCurrency(confirmed)}
                 </span>
               </div>
@@ -309,7 +309,7 @@ export default function RedeemPage() {
                 type="button"
                 onClick={handleConfirmPrepay}
                 disabled={isRedeeming}
-                className="flex-1 rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-4 py-3 font-semibold text-white shadow-lg disabled:opacity-50"
+                className="flex-1 rounded-xl bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] px-4 py-3 font-semibold text-white shadow-lg disabled:opacity-50"
               >
                 {isRedeeming ? "Processing..." : "Confirm Prepay"}
               </button>

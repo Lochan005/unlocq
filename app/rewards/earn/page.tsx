@@ -10,7 +10,7 @@ import {
 } from "@/app/components/rewards";
 import { AppIcon } from "@/app/lib/iconMap";
 import { ShoppingCart, Lightbulb, Coins, Check } from "@phosphor-icons/react";
-import { UnLoQ1Coin } from "@/app/components/icons";
+import { UNLOQ1Coin } from "@/app/components/icons";
 
 export default function EarnPage() {
   const [showConsentModal, setShowConsentModal] = useState(false);
@@ -92,10 +92,10 @@ export default function EarnPage() {
 
       {/* Section A — Shop & Earn (conditional on consent) */}
       {!consentGranted ? (
-        <div className="rounded-2xl border-2 border-purple-200 bg-white p-8 shadow-lg">
+        <div className="rounded-2xl border-2 border-[#E6E4F5] bg-white p-8 shadow-lg">
           <div className="flex flex-col items-center text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100">
-              <ShoppingCart size={32} weight="duotone" className="text-purple-600" />
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#EEEDF8]">
+              <ShoppingCart size={32} weight="duotone" className="text-[#1C1C78]" />
             </div>
             <h3 className="text-lg font-bold text-slate-800">
               Enable shopping rewards to grow your pool faster
@@ -107,7 +107,7 @@ export default function EarnPage() {
             <button
               type="button"
               onClick={() => setShowConsentModal(true)}
-              className="mt-6 rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-3 font-semibold text-white shadow-lg shadow-purple-200 transition-all hover:-translate-y-0.5 hover:shadow-xl"
+              className="mt-6 rounded-xl bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] px-6 py-3 font-semibold text-white shadow-lg shadow-[#E6E4F5] transition-all hover:-translate-y-0.5 hover:shadow-xl"
             >
               Enable Rewards
             </button>
@@ -125,7 +125,7 @@ export default function EarnPage() {
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800">
-                <ShoppingCart size={22} weight="duotone" className="text-purple-600" /> Shop & Earn
+                <ShoppingCart size={22} weight="duotone" className="text-[#1C1C78]" /> Shop & Earn
               </h3>
               <TierBadge tier={userProfile?.current_tier ?? "bronze"} />
             </div>
@@ -143,7 +143,7 @@ export default function EarnPage() {
                 onClick={() => handleMerchantClick(merchant)}
                 className={`flex flex-col items-center rounded-xl border p-4 text-center transition-all hover:shadow-md ${
                   merchant.status === "active"
-                    ? "cursor-pointer border-slate-200 bg-white hover:border-purple-200"
+                    ? "cursor-pointer border-slate-200 bg-white hover:border-[#E6E4F5]"
                     : "cursor-not-allowed border-slate-100 bg-slate-50 opacity-75"
                 }`}
               >
@@ -170,7 +170,7 @@ export default function EarnPage() {
             <p className="flex items-center gap-2 text-sm text-green-800">
               <Lightbulb size={18} weight="duotone" className="shrink-0 text-green-600" />
               Your everyday purchases can grow your prepayment pool. The more
-              you shop through UnLoQ1, the faster your loan shrinks.
+              you shop through UNLOQ1, the faster your loan shrinks.
             </p>
           </div>
         </>
@@ -207,7 +207,7 @@ export default function EarnPage() {
                     {action.type}
                   </span>
                   <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                    +{action.coins} <UnLoQ1Coin size={14} color="#92400e" />
+                    +{action.coins} <UNLOQ1Coin size={14} color="#92400e" />
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-slate-500">
@@ -229,7 +229,7 @@ export default function EarnPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-purple-100">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#EEEDF8]">
                 <AppIcon name={showShopModal.iconKey} size={28} weight="fill" colored />
               </div>
               <div>
@@ -267,7 +267,7 @@ export default function EarnPage() {
                 <button
                   type="button"
                   onClick={handleShopNow}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-4 py-3 text-sm font-semibold text-white shadow-lg"
+                  className="flex-1 rounded-xl bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] px-4 py-3 text-sm font-semibold text-white shadow-lg"
                 >
                   Shop Now
                 </button>

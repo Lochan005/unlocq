@@ -94,10 +94,10 @@ export default function LoanInputs({
             type="text"
             name="principal"
             id="principal"
-            className={`w-full rounded-lg pl-10 pr-4 py-3 bg-white text-[#5B4B8A] text-lg font-medium focus:outline-none focus:ring-2 ${
+            className={`w-full rounded-lg pl-10 pr-4 py-3 bg-white text-[#0F0F5C] text-lg font-medium focus:outline-none focus:ring-2 ${
               errors.principal
                 ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
-                : "focus:ring-[#B19CD7] border-2 border-gray-300"
+                : "focus:ring-[#4A4ABF] border-2 border-gray-300"
             }`}
             value={principal === 0 ? "" : principal.toLocaleString("en-IN")}
             onChange={(e) => {
@@ -139,10 +139,10 @@ export default function LoanInputs({
             step="any"
             name="interestRate"
             id="interestRate"
-            className={`w-full rounded-lg pr-10 pl-4 py-3 bg-white text-[#5B4B8A] text-lg font-medium focus:outline-none focus:ring-2 ${
+            className={`w-full rounded-lg pr-10 pl-4 py-3 bg-white text-[#0F0F5C] text-lg font-medium focus:outline-none focus:ring-2 ${
               errors.interestRate
                 ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
-                : "focus:ring-[#B19CD7] border-2 border-gray-300"
+                : "focus:ring-[#4A4ABF] border-2 border-gray-300"
             }`}
             min={VALIDATION_RULES.interestRate.min}
             max={VALIDATION_RULES.interestRate.max}
@@ -185,10 +185,10 @@ export default function LoanInputs({
             type="number"
             name="tenure"
             id="tenure"
-            className={`w-full rounded-lg pr-16 pl-4 py-3 bg-white text-[#5B4B8A] text-lg font-medium focus:outline-none focus:ring-2 ${
+            className={`w-full rounded-lg pr-16 pl-4 py-3 bg-white text-[#0F0F5C] text-lg font-medium focus:outline-none focus:ring-2 ${
               errors.tenure
                 ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
-                : "focus:ring-[#B19CD7] border-2 border-gray-300"
+                : "focus:ring-[#4A4ABF] border-2 border-gray-300"
             }`}
             min={VALIDATION_RULES.tenureMonths.min}
             max={VALIDATION_RULES.tenureMonths.max}

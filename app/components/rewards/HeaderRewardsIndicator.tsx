@@ -27,17 +27,21 @@ export default function HeaderRewardsIndicator() {
   return (
     <Link
       href="/rewards"
-      className="flex items-center gap-3 rounded-xl bg-purple-50 px-3 py-2 transition-colors hover:bg-purple-100"
+      className="flex items-center gap-3 px-2 py-1 transition-opacity hover:opacity-90"
     >
-      <TierBadge tier={userProfile.current_tier} size="sm" />
+      <span className="opacity-90">
+        <TierBadge tier={userProfile.current_tier} size="sm" />
+      </span>
       <div className="text-right">
-        <p className="text-xs text-slate-500">Pool</p>
-        <p className="text-sm font-bold text-purple-600">
+        <p className="text-xs text-white/60">Pool</p>
+        <p className="text-sm font-bold text-white">
           {formatCurrency(poolBalance.confirmed)}
         </p>
       </div>
       {userProfile.current_streak_months > 0 && (
-        <StreakBadge months={userProfile.current_streak_months} />
+        <span className="opacity-90">
+          <StreakBadge months={userProfile.current_streak_months} />
+        </span>
       )}
     </Link>
   );

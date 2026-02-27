@@ -1,1 +1,1 @@
-export { UnLoQ1Coin } from "./UnLoQ1Coin";
+export { UNLOQ1Coin } from "./UNLOQ1Coin";

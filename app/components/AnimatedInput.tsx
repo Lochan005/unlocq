@@ -142,7 +142,7 @@ export default function AnimatedInput({
             onBlur={() => setIsFocused(false)}
             className={`
               w-full bg-white border rounded-lg px-4 py-3
-              text-[#5B4B8A] text-lg font-medium
+              text-[#0F0F5C] text-lg font-medium
               focus:outline-none transition-colors duration-200
               ${prefix ? "pl-10" : ""}
               ${suffix ? "pr-10" : ""}
@@ -150,14 +150,14 @@ export default function AnimatedInput({
                 error
                   ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
                   : isFocused
-                  ? "border-[#B19CD7] focus:border-[#B19CD7] focus:ring-2 focus:ring-[#B19CD7]/20"
+                  ? "border-[#4A4ABF] focus:border-[#4A4ABF] focus:ring-2 focus:ring-[#4A4ABF]/20"
                   : "border-gray-300"
               }
             `}
             animate={{
               boxShadow: isFocused && !error
-                ? "0 0 0 3px rgba(177, 156, 215, 0.1)"
-                : "0 0 0 0px rgba(177, 156, 215, 0)",
+                ? "0 0 0 3px rgba(74, 74, 191, 0.1)"
+                : "0 0 0 0px rgba(74, 74, 191, 0)",
             }}
             transition={transitionPresets.quick}
           />

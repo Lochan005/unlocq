@@ -16,7 +16,7 @@ export default function PoolBalanceDisplay({
   return (
     <div>
       <p
-        className={`font-extrabold text-purple-600 ${
+        className={`font-extrabold text-[#1C1C78] ${
           size === "lg" ? "text-4xl" : "text-2xl"
         }`}
       >

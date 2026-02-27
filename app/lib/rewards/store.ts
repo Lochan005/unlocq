@@ -17,13 +17,13 @@ const MOCK_USER_ID = "user_001";
 
 // Static earn actions (inline for client component compatibility)
 const EARN_ACTIONS: EarnAction[] = [
-  { action_id: "signup", action_name: "Sign up", coins: 100, type: "one-time", icon_key: "signup", description: "Create your UnLoQ1 account" },
+  { action_id: "signup", action_name: "Sign up", coins: 100, type: "one-time", icon_key: "signup", description: "Create your UNLOQ1 account" },
   { action_id: "complete_profile", action_name: "Complete profile", coins: 50, type: "one-time", icon_key: "complete_profile", description: "Fill in your loan and personal details" },
   { action_id: "first_prepayment", action_name: "First prepayment", coins: 500, type: "one-time", icon_key: "first_prepayment", description: "Make your first loan prepayment" },
   { action_id: "per_1k_prepaid", action_name: "Every ₹1,000 prepaid", coins: 10, type: "recurring", icon_key: "per_1k_prepaid", description: "Earn coins for every ₹1,000 you prepay" },
   { action_id: "set_reminder", action_name: "Set a reminder", coins: 25, type: "one-time", icon_key: "set_reminder", description: "Set your first prepayment reminder" },
   { action_id: "monthly_streak", action_name: "Monthly prepay streak", coins: 200, type: "bonus", icon_key: "monthly_streak", description: "Prepay every month to maintain your streak" },
-  { action_id: "referral", action_name: "Refer a friend", coins: 250, type: "recurring", icon_key: "referral", description: "Invite someone to join UnLoQ1" },
+  { action_id: "referral", action_name: "Refer a friend", coins: 250, type: "recurring", icon_key: "referral", description: "Invite someone to join UNLOQ1" },
   { action_id: "friend_first_prepay", action_name: "Friend's first prepay", coins: 500, type: "bonus", icon_key: "friend_first_prepay", description: "Earn when your referred friend makes their first prepayment" },
 ];
 

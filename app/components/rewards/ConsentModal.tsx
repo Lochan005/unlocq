@@ -25,8 +25,8 @@ export default function ConsentModal({ isOpen, onClose }: ConsentModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100">
-            <ShoppingCart size={32} weight="duotone" className="text-purple-600" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#EEEDF8]">
+            <ShoppingCart size={32} weight="duotone" className="text-[#1C1C78]" />
           </div>
           <h2 className="text-xl font-bold text-slate-800">
             Enable Shopping Rewards
@@ -42,7 +42,7 @@ export default function ConsentModal({ isOpen, onClose }: ConsentModalProps) {
             How it works
           </h3>
           <p className="mb-4 text-xs leading-relaxed text-slate-500">
-            UnLoQ1 partners with affiliate networks to earn a small commission
+            UNLOQ1 partners with affiliate networks to earn a small commission
             when you shop through our links. A portion of this commission goes to
             your prepayment pool.
           </p>
@@ -76,7 +76,7 @@ export default function ConsentModal({ isOpen, onClose }: ConsentModalProps) {
           </button>
           <button
             onClick={handleAgree}
-            className="flex-1 rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-200 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-purple-300"
+            className="flex-1 rounded-xl bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#E6E4F5] transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#D0CEE8]"
           >
             I Agree
           </button>

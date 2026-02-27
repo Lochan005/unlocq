@@ -27,10 +27,10 @@ export default function AnimatedButton({
   const isInteractive = !disabled && !isLoading;
 
   const variantStyles = {
-    primary: "bg-[#B19CD7] hover:bg-[#9B87C5] text-white",
-    secondary: "bg-gray-300 hover:bg-gray-400 text-[#5B4B8A]",
+    primary: "bg-[#4A4ABF] hover:bg-[#3A3AAF] text-white",
+    secondary: "bg-gray-300 hover:bg-gray-400 text-[#0F0F5C]",
     outline:
-      "border-2 border-[#B19CD7] bg-transparent text-[#B19CD7] hover:bg-[#B19CD7]/10",
+      "border-2 border-[#4A4ABF] bg-transparent text-[#4A4ABF] hover:bg-[#4A4ABF]/10",
   };
 
   return (

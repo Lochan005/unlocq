@@ -37,9 +37,9 @@ const tierConfig: Record<
   platinum: {
     label: "PLATINUM",
     iconKey: "platinum",
-    bgColor: "bg-purple-50",
-    textColor: "text-purple-800",
-    borderColor: "border-purple-300",
+    bgColor: "bg-[#F5F4FA]",
+    textColor: "text-[#0A0A4A]",
+    borderColor: "border-[#D0CEE8]",
   },
 };
 

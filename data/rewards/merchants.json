@@ -2,7 +2,7 @@
   { "merchant_id": "swiggy", "display_name": "Swiggy", "icon_key": "swiggy", "category": "food", "brand_color": "#fc8019" },
   { "merchant_id": "zomato", "display_name": "Zomato", "icon_key": "zomato", "category": "food", "brand_color": "#e23744" },
   { "merchant_id": "blinkit", "display_name": "Blinkit", "icon_key": "blinkit", "category": "grocery", "brand_color": "#f8c93e" },
-  { "merchant_id": "zepto", "display_name": "Zepto", "icon_key": "zepto", "category": "grocery", "brand_color": "#8b5cf6" },
+  { "merchant_id": "zepto", "display_name": "Zepto", "icon_key": "zepto", "category": "grocery", "brand_color": "#4A4ABF" },
   { "merchant_id": "bigbasket", "display_name": "BigBasket", "icon_key": "bigbasket", "category": "grocery", "brand_color": "#84c225" },
   { "merchant_id": "amazon", "display_name": "Amazon", "icon_key": "amazon", "category": "shopping", "brand_color": "#ff9900" },
   { "merchant_id": "flipkart", "display_name": "Flipkart", "icon_key": "flipkart", "category": "shopping", "brand_color": "#2874f0" },

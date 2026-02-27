@@ -58,15 +58,15 @@ const CustomPieTooltip = ({ active, payload }: any) => {
 
   return (
     <div
-      className="bg-white/90 backdrop-blur-sm border border-purple-200 rounded-lg p-2 shadow-xl max-w-[160px]"
+      className="bg-white/90 backdrop-blur-sm border border-[#E6E4F5] rounded-lg p-2 shadow-xl max-w-[160px]"
       style={{
         filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))",
         zIndex: 100,
         position: "relative",
       }}
     >
-      <p className="text-[#5B4B8A] text-xs font-medium mb-1">{name}</p>
-      <p className="text-[#5B4B8A] text-sm font-semibold">{formatIndianCurrency(value)}</p>
+      <p className="text-[#0F0F5C] text-xs font-medium mb-1">{name}</p>
+      <p className="text-[#0F0F5C] text-sm font-semibold">{formatIndianCurrency(value)}</p>
       <p className="text-gray-400 text-xs mt-0.5">{percentage.toFixed(1)}%</p>
     </div>
   );
@@ -78,12 +78,12 @@ const CustomBarTooltip = ({ active, payload, label }: any) => {
 
   return (
     <div
-      className="bg-white/90 backdrop-blur-sm border border-purple-200 rounded-lg p-2 shadow-xl max-w-[160px]"
+      className="bg-white/90 backdrop-blur-sm border border-[#E6E4F5] rounded-lg p-2 shadow-xl max-w-[160px]"
       style={{
         filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))",
       }}
     >
-      <p className="text-[#5B4B8A] text-xs font-medium mb-1.5">{label}</p>
+      <p className="text-[#0F0F5C] text-xs font-medium mb-1.5">{label}</p>
       {payload.map((entry: any, index: number) => (
         <div key={index} className="flex items-center gap-1.5 mb-0.5 last:mb-0">
           <div
@@ -91,7 +91,7 @@ const CustomBarTooltip = ({ active, payload, label }: any) => {
             style={{ backgroundColor: entry.color }}
           />
           <span className="text-gray-600 text-xs capitalize">{entry.name}:</span>
-          <span className="text-[#5B4B8A] text-sm font-semibold">{formatIndianCurrency(entry.value || 0)}</span>
+          <span className="text-[#0F0F5C] text-sm font-semibold">{formatIndianCurrency(entry.value || 0)}</span>
         </div>
       ))}
     </div>
@@ -150,7 +150,7 @@ export function AnimatedPieChart({
       transition={{ delay, duration: 0.5 }}
     >
       {title && (
-        <h3 className="text-[#5B4B8A] text-lg font-semibold mb-4">{title}</h3>
+        <h3 className="text-[#0F0F5C] text-lg font-semibold mb-4">{title}</h3>
       )}
       <div 
         className="relative"
@@ -182,7 +182,7 @@ export function AnimatedPieChart({
               innerRadius={60}
               outerRadius={90}
               cornerRadius={4}
-              fill="#8884d8"
+              fill="#4A4ABF"
               dataKey="value"
               animationBegin={delay * 1000}
               animationDuration={1500}
@@ -226,7 +226,7 @@ export function AnimatedPieChart({
               zIndex: 10,
             }}
           >
-            <p className="text-[#5B4B8A] font-bold text-lg md:text-xl lg:text-2xl text-center">
+            <p className="text-[#0F0F5C] font-bold text-lg md:text-xl lg:text-2xl text-center">
               {formatIndianCurrency(totalToPay)}
             </p>
             <p className="text-gray-400 text-xs text-center mt-1">
@@ -258,8 +258,8 @@ export function AnimatedPieChart({
                   boxShadow: `0 0 4px ${entry.color}60`,
                 }}
               />
-              <span className="text-[#5B4B8A] font-medium">{entry.name}</span>
-              <span className="text-[#5B4B8A] font-semibold">{formatINR(entry.value)}</span>
+              <span className="text-[#0F0F5C] font-medium">{entry.name}</span>
+              <span className="text-[#0F0F5C] font-semibold">{formatINR(entry.value)}</span>
               <span className="text-gray-500">{percentage.toFixed(1)}%</span>
             </div>
           );
@@ -305,7 +305,7 @@ export function AnimatedBarChart({
       transition={{ delay }}
     >
       {title && (
-        <h3 className="text-[#5B4B8A] text-lg font-semibold mb-4">{title}</h3>
+        <h3 className="text-[#0F0F5C] text-lg font-semibold mb-4">{title}</h3>
       )}
       <ResponsiveContainer width="100%" height={250}>
         <BarChart

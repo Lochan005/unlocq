@@ -445,12 +445,13 @@ export default function Home() {
       {/* Hero Section */}
       <div className="w-full max-w-4xl mx-auto text-center mb-12 md:mb-16">
         <motion.h1
-          className="text-6xl md:text-7xl font-extrabold mb-4 drop-shadow-sm tracking-tight text-[#9678CD]"
+          className="text-6xl md:text-7xl font-extrabold mb-4 drop-shadow-sm tracking-tight text-[#2E2E8F]"
+          style={{ fontFamily: "var(--font-roboto)" }}
           {...fadeIn}
         >
-          UnLoQ1
+          UNLOQ1
         </motion.h1>
-        <p className="text-lg md:text-xl text-[#5B4B8A] max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-[#0F0F5C] max-w-2xl mx-auto">
           Discover how much you can save on your loan by prepaying smartly
         </p>
       </div>
@@ -462,11 +463,11 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
       >
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-purple-200 shadow-lg">
+        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-[#E6E4F5] shadow-lg">
           {/* Grid Layout: 3 columns on desktop, 1 column on mobile */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {/* Row 1 - First 3 sliders */}
-            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+            <div className="p-3 bg-white/50 rounded-lg border border-[#EEEDF8]">
               <LoanSlider
                 label="Current Outstanding Balance"
                 helper="Amount remaining on your loan today"
@@ -481,7 +482,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+            <div className="p-3 bg-white/50 rounded-lg border border-[#EEEDF8]">
               <LoanSlider
                 label="Original Loan Amount"
                 helper="The total amount you borrowed"
@@ -495,7 +496,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+            <div className="p-3 bg-white/50 rounded-lg border border-[#EEEDF8]">
               <LoanSlider
                 label="Current Interest Rate (% p.a.)"
                 helper="As per your latest statement"
@@ -510,7 +511,7 @@ export default function Home() {
             </div>
 
             {/* Row 2 - Next 3 sliders */}
-            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+            <div className="p-3 bg-white/50 rounded-lg border border-[#EEEDF8]">
               <LoanSlider
                 label="Remaining Loan Tenure"
                 helper="Months left to pay off your loan"
@@ -524,7 +525,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+            <div className="p-3 bg-white/50 rounded-lg border border-[#EEEDF8]">
               <LoanSlider
                 label="Current Monthly EMI"
                 helper="As per your loan schedule"
@@ -538,7 +539,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="p-3 bg-white/50 rounded-lg border border-purple-100">
+            <div className="p-3 bg-white/50 rounded-lg border border-[#EEEDF8]">
               <LoanSlider
                 label="Extra Monthly Payment Capacity"
                 helper="This will not change your EMI unless you choose to"
@@ -553,7 +554,7 @@ export default function Home() {
             </div>
 
             {/* Row 3 - Last slider (spans 1 column, centered on desktop) */}
-            <div className="p-3 bg-white/50 rounded-lg border border-purple-100 md:col-start-2">
+            <div className="p-3 bg-white/50 rounded-lg border border-[#EEEDF8] md:col-start-2">
               <LoanSlider
                 label="Monthly Living Expenses"
                 helper="e.g. online shopping, dining, non-essential spends"
@@ -571,19 +572,19 @@ export default function Home() {
           {/* Results Section (same container) */}
           <div className="mt-8 space-y-6">
             {/* Output 1 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#E6E4F5] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
+                <p className="text-sm font-bold text-[#0F0F5C] uppercase tracking-wide mb-2">
                   Interest Saved This Month
                 </p>
                 <div className="flex items-baseline gap-2">
                   <AnimatedNumber
                     value={calculateOneTimePaymentSavings.savings}
                     prefix="₹"
-                    className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
+                    className="text-3xl md:text-4xl font-bold text-[#1C1C78]"
                   />
                 </div>
-                <p className="text-sm text-[#5B4B8A] mt-2">
+                <p className="text-sm text-[#0F0F5C] mt-2">
                   By paying an extra{" "}
                   <span className="font-semibold">
                     ₹{formatIndian(extraMonthlyPayment ?? 0)}
@@ -592,7 +593,7 @@ export default function Home() {
                   instantly.
                 </p>
                 {calculateOneTimePaymentSavings.tenureReduced > 0 && (
-                  <p className="text-xs text-[#8E7BB8] mt-1">
+                  <p className="text-xs text-[#4A4ABF] mt-1">
                     Tenure reduced by {calculateOneTimePaymentSavings.tenureReduced}{" "}
                     month
                     {calculateOneTimePaymentSavings.tenureReduced > 1 ? "s" : ""}
@@ -601,26 +602,26 @@ export default function Home() {
               </div>
               <Link
                 href={`/pay-now?emi=${currentEMI ?? 0}&prepayment=${extraMonthlyPayment ?? 0}&savings=${calculateOneTimePaymentSavings.savings}`}
-                className="shrink-0 px-6 py-3 rounded-lg font-semibold text-white bg-[#9678CD] hover:bg-[#7C5CBF] focus:outline-none focus:ring-2 focus:ring-[#9678CD]/50 transition-colors text-center"
+                className="shrink-0 px-6 py-3 rounded-lg font-semibold text-white bg-[#2E2E8F] hover:bg-[#1C1C78] focus:outline-none focus:ring-2 focus:ring-[#2E2E8F]/50 transition-colors text-center"
               >
                 Pay now
               </Link>
             </div>
 
             {/* Output 2 */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-[#E6E4F5] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="text-sm text-[#8E7BB8] uppercase tracking-wide mb-2">
+                <p className="text-sm font-bold text-[#0F0F5C] uppercase tracking-wide mb-2">
                   Interest Saved Over 2 Years
                 </p>
                 <div className="flex items-baseline gap-2">
                   <AnimatedNumber
                     value={calculateTwoYearRecurringSavings.savings}
                     prefix="₹"
-                    className="text-3xl md:text-4xl font-bold text-[#7C5CBF]"
+                    className="text-3xl md:text-4xl font-bold text-[#1C1C78]"
                   />
                 </div>
-                <p className="text-sm text-[#5B4B8A] mt-2">
+                <p className="text-sm text-[#0F0F5C] mt-2">
                   If you continue paying{" "}
                   <span className="font-semibold">
                     ₹{formatIndian(extraMonthlyPayment ?? 0)}
@@ -628,9 +629,9 @@ export default function Home() {
                   extra every month for 2 years.
                 </p>
                 {calculateTwoYearRecurringSavings.tenureReduced > 0 && (
-                  <p className="text-xs text-[#8E7BB8] mt-1">
+                  <p className="text-xs text-[#4A4ABF] mt-1">
                     You'll be debt-free{" "}
-                    <span className="font-semibold text-[#7C5CBF]">
+                    <span className="font-semibold text-[#1C1C78]">
                       {formatTenure(calculateTwoYearRecurringSavings.tenureReduced)}
                     </span>{" "}
                     earlier!
@@ -639,7 +640,7 @@ export default function Home() {
               </div>
               <button
                 type="button"
-                className="shrink-0 px-6 py-3 rounded-lg font-semibold text-white bg-[#9678CD] hover:bg-[#7C5CBF] focus:outline-none focus:ring-2 focus:ring-[#9678CD]/50 transition-colors"
+                className="shrink-0 px-6 py-3 rounded-lg font-semibold text-white bg-[#2E2E8F] hover:bg-[#1C1C78] focus:outline-none focus:ring-2 focus:ring-[#2E2E8F]/50 transition-colors"
               >
                 Set reminder
               </button>
@@ -651,10 +652,10 @@ export default function Home() {
                 nudgeMessage.type === "warning"
                   ? "bg-amber-50 border border-amber-200"
                   : nudgeMessage.type === "encourage"
-                    ? "bg-purple-50 border border-[#EBE8FC]"
+                    ? "bg-[#F5F4FA] border border-[#E6E4F5]"
                     : nudgeMessage.type === "positive"
                       ? "bg-green-50 border border-green-200"
-                      : "bg-white/60 border border-purple-200"
+                      : "bg-white/60 border border-[#E6E4F5]"
               }`}
             >
               <p
@@ -662,10 +663,10 @@ export default function Home() {
                   nudgeMessage.type === "warning"
                     ? "text-amber-800"
                     : nudgeMessage.type === "encourage"
-                      ? "text-[#5B4B8A]"
+                      ? "text-[#0F0F5C]"
                       : nudgeMessage.type === "positive"
                         ? "text-green-800"
-                        : "text-[#5B4B8A]"
+                        : "text-[#0F0F5C]"
                 }`}
               >
                 <Lightbulb size={18} weight="duotone" className="inline-block mr-1 align-text-bottom" />{nudgeMessage.message}
@@ -686,10 +687,10 @@ export default function Home() {
         <div className="relative inline-block glow-purple rounded-lg px-8 py-4 bg-white/50 backdrop-blur-sm">
           <AnimatedNumber
             value={11640000}
-            className="text-5xl md:text-6xl font-bold text-[#B19CD7]"
+            className="text-5xl md:text-6xl font-bold text-[#4A4ABF]"
           />
         </div>
-        <p className="text-lg text-gray-600 mt-4">using UnLoQ1</p>
+        <p className="text-lg text-gray-600 mt-4">using UNLOQ1</p>
       </motion.div>
 
       {FEATURE_FLAGS.SHOW_SCENARIO_OPTIONS && (
@@ -704,19 +705,19 @@ export default function Home() {
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
               <Link
                 href="/lump-sum"
-                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-[#E6E4F5] text-[#0F0F5C] hover:text-[#4A4ABF] hover:border-[#4A4ABF] transition-all duration-200 font-medium"
               >
                 Lump Sum
               </Link>
               <Link
                 href="/monthly-extra"
-                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-[#E6E4F5] text-[#0F0F5C] hover:text-[#4A4ABF] hover:border-[#4A4ABF] transition-all duration-200 font-medium"
               >
                 Monthly Extra
               </Link>
               <Link
                 href="/refinance"
-                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-purple-200 text-[#5B4B8A] hover:text-[#B19CD7] hover:border-[#B19CD7] transition-all duration-200 font-medium"
+                className="px-6 py-3 bg-white/70 backdrop-blur-sm rounded-lg border border-[#E6E4F5] text-[#0F0F5C] hover:text-[#4A4ABF] hover:border-[#4A4ABF] transition-all duration-200 font-medium"
               >
                 Refinance
               </Link>
@@ -725,7 +726,7 @@ export default function Home() {
 
           {/* Scenario Selection Cards */}
           <div className="w-full max-w-6xl mx-auto mb-12">
-            <h2 className="text-2xl font-semibold text-[#5B4B8A] mb-8 text-center">
+            <h2 className="text-2xl font-semibold text-[#0F0F5C] mb-8 text-center">
               Choose your scenario:
             </h2>
             
@@ -736,12 +737,12 @@ export default function Home() {
                 delay={0.5}
                 className="group flex flex-col h-full p-6 md:p-8"
               >
-                <div className="mb-4 text-[#B19CD7]"><Coins size={40} weight="duotone" /></div>
-                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Lump Sum Prepayment</h3>
+                <div className="mb-4 text-[#4A4ABF]"><Coins size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#0F0F5C] mb-3">Lump Sum Prepayment</h3>
                 <p className="text-gray-600 mb-6 flex-grow">
                   Pay a one-time large amount to reduce your loan tenure or EMI
                 </p>
-                <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
+                <div className="flex items-center text-[#4A4ABF] font-semibold group-hover:gap-2 transition-all">
                   <span>Get Started</span>
                   <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -755,12 +756,12 @@ export default function Home() {
                 delay={0.6}
                 className="group flex flex-col h-full p-6 md:p-8"
               >
-                <div className="mb-4 text-[#B19CD7]"><CalendarBlank size={40} weight="duotone" /></div>
-                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Monthly Extra Payment</h3>
+                <div className="mb-4 text-[#4A4ABF]"><CalendarBlank size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#0F0F5C] mb-3">Monthly Extra Payment</h3>
                 <p className="text-gray-600 mb-6 flex-grow">
                   Add extra amount to your EMI every month and become debt-free faster
                 </p>
-                <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
+                <div className="flex items-center text-[#4A4ABF] font-semibold group-hover:gap-2 transition-all">
                   <span>Get Started</span>
                   <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -774,12 +775,12 @@ export default function Home() {
                 delay={0.7}
                 className="group flex flex-col h-full p-6 md:p-8"
               >
-                <div className="mb-4 text-[#B19CD7]"><ArrowsClockwise size={40} weight="duotone" /></div>
-                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3">Refinance Comparison</h3>
+                <div className="mb-4 text-[#4A4ABF]"><ArrowsClockwise size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#0F0F5C] mb-3">Refinance Comparison</h3>
                 <p className="text-gray-600 mb-6 flex-grow">
                   Should you switch to a lower rate? Compare staying, prepaying, refinancing, or doing both
                 </p>
-                <div className="flex items-center text-[#B19CD7] font-semibold group-hover:gap-2 transition-all">
+                <div className="flex items-center text-[#4A4ABF] font-semibold group-hover:gap-2 transition-all">
                   <span>Get Started</span>
                   <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -794,12 +795,12 @@ export default function Home() {
                 disableHover
               >
                 <div className="absolute top-4 right-4">
-                  <span className="bg-purple-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-[#EEEDF8] text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
                     Coming Soon
                   </span>
                 </div>
-                <div className="mb-4 opacity-50 text-[#B19CD7]"><ChartBar size={40} weight="duotone" /></div>
-                <h3 className="text-xl font-bold text-[#5B4B8A] mb-3 opacity-75">Compare All Scenarios</h3>
+                <div className="mb-4 opacity-50 text-[#4A4ABF]"><ChartBar size={40} weight="duotone" /></div>
+                <h3 className="text-xl font-bold text-[#0F0F5C] mb-3 opacity-75">Compare All Scenarios</h3>
                 <p className="text-gray-500 mb-6 flex-grow">
                   Not sure which option? Compare all scenarios side by side
                 </p>
@@ -820,19 +821,19 @@ export default function Home() {
       >
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12 text-gray-600">
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#B19CD7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-[#4A4ABF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
             <span className="text-sm md:text-base">100% Free</span>
           </div>
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#B19CD7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-[#4A4ABF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
             <span className="text-sm md:text-base">No Sign-up Required</span>
           </div>
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#B19CD7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-[#4A4ABF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
             <span className="text-sm md:text-base">Data Never Leaves Your Device</span>

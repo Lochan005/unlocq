@@ -85,20 +85,20 @@ function PayNowContent() {
       <div className="w-full max-w-lg mx-auto">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-[#5B4B8A] hover:text-[#7C5CBF] transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#0F0F5C] hover:text-[#1C1C78] transition-colors mb-8"
         >
           <ArrowLeft size={16} weight="bold" aria-hidden /> Back to calculator
         </Link>
 
-        <h1 className="text-2xl md:text-3xl font-bold text-[#5B4B8A] mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-[#0F0F5C] mb-2">
           Prepayment
         </h1>
-        <p className="text-sm text-[#5B4B8A]/80 mb-8">
+        <p className="text-sm text-[#0F0F5C]/80 mb-8">
           Enter your loan and bank details to proceed with the prepayment.
         </p>
 
         {poolLoaded && (poolBalance.confirmed > 0 || redeemSuccess) && (
-          <div className="mb-6 rounded-2xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-white p-6">
+          <div className="mb-6 rounded-2xl border-2 border-[#E6E4F5] bg-gradient-to-br from-[#F5F4FA] to-white p-6">
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-slate-800">
@@ -111,7 +111,7 @@ function PayNowContent() {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-extrabold text-purple-600">
+                <p className="text-2xl font-extrabold text-[#1C1C78]">
                   {formatCurrency(redeemSuccess ? redeemedPoolAmount : poolBalance.confirmed)}
                 </p>
                 <p className="text-xs text-slate-400">
@@ -140,7 +140,7 @@ function PayNowContent() {
                   setIsRedeeming(false);
                 }}
                 disabled={isRedeeming}
-                className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-xl bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isRedeeming
                   ? "Processing..."
@@ -159,13 +159,13 @@ function PayNowContent() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Details card */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EBE8FC] space-y-4">
-            <h2 className="text-sm font-semibold text-[#5B4B8A] uppercase tracking-wide">
+          <div className="bg-white rounded-2xl p-6 shadow-md border border-[#E6E4F5] space-y-4">
+            <h2 className="text-sm font-semibold text-[#0F0F5C] uppercase tracking-wide">
               Loan &amp; bank details
             </h2>
 
             <div>
-              <label htmlFor="loan-ac" className="block text-sm font-medium text-[#5B4B8A] mb-1.5">
+              <label htmlFor="loan-ac" className="block text-sm font-medium text-[#0F0F5C] mb-1.5">
                 Loan account number
               </label>
               <input
@@ -176,7 +176,7 @@ function PayNowContent() {
                 value={loanAccountNo}
                 onChange={(e) => setLoanAccountNo(e.target.value.replace(/\D/g, ""))}
                 required
-                className="w-full px-4 py-3 rounded-lg border-2 border-[#EBE8FC] bg-white text-[#5B4B8A] placeholder-[#8E7BB8]/60 focus:outline-none focus:ring-2 focus:ring-[#B19CD7]/30 focus:border-[#B19CD7]"
+                className="w-full px-4 py-3 rounded-lg border-2 border-[#E6E4F5] bg-white text-[#0F0F5C] placeholder-[#4A4ABF]/60 focus:outline-none focus:ring-2 focus:ring-[#4A4ABF]/30 focus:border-[#4A4ABF]"
               />
             </div>
 
@@ -192,35 +192,35 @@ function PayNowContent() {
             />
 
             {selectedBranch && (
-              <div className="rounded-lg bg-[#F5F3FF] border border-[#EBE8FC] p-4 space-y-2">
-                <div className="text-sm font-semibold text-[#5B4B8A]">
+              <div className="rounded-lg bg-[#EEEDF8] border border-[#E6E4F5] p-4 space-y-2">
+                <div className="text-sm font-semibold text-[#0F0F5C]">
                   {displayBankName ?? selectedBranch.bank}
                 </div>
                 {selectedBranch.branch &&
                   selectedBranch.branch.trim() !== "" &&
                   selectedBranch.branch.trim() !== "—" && (
-                    <div className="text-xs text-[#5B4B8A]/90">
+                    <div className="text-xs text-[#0F0F5C]/90">
                       {selectedBranch.branch}
                       {selectedBranch.address && selectedBranch.address.trim() !== "" && ` · ${selectedBranch.address}`}
                     </div>
                   )}
                 {(selectedBranch.city?.trim() || selectedBranch.state?.trim()) &&
                   (selectedBranch.city?.trim() !== "—" || selectedBranch.state?.trim() !== "—") && (
-                  <div className="text-xs text-[#8E7BB8]">
+                  <div className="text-xs text-[#4A4ABF]">
                     {[selectedBranch.city, selectedBranch.state]
                       .filter((s) => s && String(s).trim() !== "" && String(s).trim() !== "—")
                       .join(", ")}
                   </div>
                 )}
                 {selectedBranch.micr && (
-                  <div className="text-xs text-[#8E7BB8]">MICR: {selectedBranch.micr}</div>
+                  <div className="text-xs text-[#4A4ABF]">MICR: {selectedBranch.micr}</div>
                 )}
                 <PaymentBadges branch={selectedBranch} />
               </div>
             )}
 
             <div>
-              <label htmlFor="prepayment" className="block text-sm font-medium text-[#5B4B8A] mb-1.5">
+              <label htmlFor="prepayment" className="block text-sm font-medium text-[#0F0F5C] mb-1.5">
                 Prepayment amount (₹)
               </label>
               <input
@@ -231,56 +231,56 @@ function PayNowContent() {
                 value={displayPrepayment}
                 onChange={(e) => setPrepaymentAmount(e.target.value.replace(/[^0-9]/g, ""))}
                 required
-                className="w-full px-4 py-3 rounded-lg border-2 border-[#EBE8FC] bg-white text-[#5B4B8A] placeholder-[#8E7BB8]/60 focus:outline-none focus:ring-2 focus:ring-[#B19CD7]/30 focus:border-[#B19CD7]"
+                className="w-full px-4 py-3 rounded-lg border-2 border-[#E6E4F5] bg-white text-[#0F0F5C] placeholder-[#4A4ABF]/60 focus:outline-none focus:ring-2 focus:ring-[#4A4ABF]/30 focus:border-[#4A4ABF]"
               />
             </div>
           </div>
 
           {/* Summary card */}
-          <div className="bg-[#F5F3FF] rounded-2xl p-6 border border-[#EBE8FC]">
-            <h2 className="text-sm font-semibold text-[#5B4B8A] uppercase tracking-wide mb-4">
+          <div className="bg-[#EEEDF8] rounded-2xl p-6 border border-[#E6E4F5]">
+            <h2 className="text-sm font-semibold text-[#0F0F5C] uppercase tracking-wide mb-4">
               Summary
             </h2>
             <dl className="space-y-3">
               <div className="flex justify-between items-baseline">
-                <dt className="text-sm text-[#5B4B8A]/90">Current EMI</dt>
-                <dd className="text-base font-semibold text-[#5B4B8A] tabular-nums">
+                <dt className="text-sm text-[#0F0F5C]/90">Current EMI</dt>
+                <dd className="text-base font-semibold text-[#0F0F5C] tabular-nums">
                   {formatINR(emi)}
                 </dd>
               </div>
               <div className="flex justify-between items-baseline">
-                <dt className="text-sm text-[#5B4B8A]/90">Prepayment amount</dt>
-                <dd className="text-base font-semibold text-[#5B4B8A] tabular-nums">
+                <dt className="text-sm text-[#0F0F5C]/90">Prepayment amount</dt>
+                <dd className="text-base font-semibold text-[#0F0F5C] tabular-nums">
                   {formatINR(prepaymentNum)}
                 </dd>
               </div>
               {redeemSuccess && redeemedPoolAmount > 0 && prepaymentNum > 0 && interestSaved > 0 ? (
                 <>
-                  <div className="flex justify-between items-baseline pt-3 border-t border-[#EBE8FC]">
-                    <dt className="text-sm text-[#5B4B8A]/90">Your prepayment saves</dt>
-                    <dd className="text-base font-semibold text-[#5B4B8A] tabular-nums">
+                  <div className="flex justify-between items-baseline pt-3 border-t border-[#E6E4F5]">
+                    <dt className="text-sm text-[#0F0F5C]/90">Your prepayment saves</dt>
+                    <dd className="text-base font-semibold text-[#0F0F5C] tabular-nums">
                       {formatINR(interestSaved)}
                     </dd>
                   </div>
                   <div className="flex justify-between items-baseline">
-                    <dt className="text-sm text-purple-600 font-medium">
+                    <dt className="text-sm text-[#1C1C78] font-medium">
                       Rewards Pool saves
                     </dt>
-                    <dd className="text-base font-semibold text-purple-600 tabular-nums">
+                    <dd className="text-base font-semibold text-[#1C1C78] tabular-nums">
                       + {formatINR(Math.round(redeemedPoolAmount * (interestSaved / prepaymentNum)))}
                     </dd>
                   </div>
-                  <div className="flex justify-between items-baseline pt-3 border-t border-[#EBE8FC]">
-                    <dt className="text-sm font-medium text-[#5B4B8A]">Total interest saved</dt>
-                    <dd className="text-lg font-bold text-[#7C5CBF] tabular-nums">
+                  <div className="flex justify-between items-baseline pt-3 border-t border-[#E6E4F5]">
+                    <dt className="text-sm font-medium text-[#0F0F5C]">Total interest saved</dt>
+                    <dd className="text-lg font-bold text-[#1C1C78] tabular-nums">
                       {formatINR(interestSaved + Math.round(redeemedPoolAmount * (interestSaved / prepaymentNum)))}
                     </dd>
                   </div>
                 </>
               ) : (
-                <div className="flex justify-between items-baseline pt-3 border-t border-[#EBE8FC]">
-                  <dt className="text-sm font-medium text-[#5B4B8A]">Interest saved</dt>
-                  <dd className="text-lg font-bold text-[#7C5CBF] tabular-nums">
+                <div className="flex justify-between items-baseline pt-3 border-t border-[#E6E4F5]">
+                  <dt className="text-sm font-medium text-[#0F0F5C]">Interest saved</dt>
+                  <dd className="text-lg font-bold text-[#1C1C78] tabular-nums">
                     {formatINR(interestSaved)}
                   </dd>
                 </div>
@@ -291,10 +291,10 @@ function PayNowContent() {
           <button
             type="submit"
             disabled={!isFormComplete}
-            className={`w-full py-3.5 rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#9678CD]/50 ${
+            className={`w-full py-3.5 rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[#2E2E8F]/50 ${
               isFormComplete
-                ? "bg-[#9678CD] hover:bg-[#7C5CBF] text-white"
-                : "bg-[#9678CD]/40 text-white/60 cursor-not-allowed"
+                ? "bg-[#2E2E8F] hover:bg-[#1C1C78] text-white"
+                : "bg-[#2E2E8F]/40 text-white/60 cursor-not-allowed"
             }`}
           >
             Proceed to pay
@@ -309,7 +309,7 @@ export default function PayNowPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-[#5B4B8A]">Loading...</div>
+        <div className="text-[#0F0F5C]">Loading...</div>
       </div>
     }>
       <PayNowContent />

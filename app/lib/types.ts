@@ -76,7 +76,7 @@ export interface RewardEntry {
   network: string | null;
   reward_type: RewardType;
   gross_commission: number; // What the network pays — 0 for platform-funded
-  platform_topup: number; // Streak/tier multiplier bonus funded by UnLoQ1
+  platform_topup: number; // Streak/tier multiplier bonus funded by UNLOQ1
   user_share: number; // gross_commission × share_pct + platform_topup
   coins_credited: number; // user_share × 10
   status: RewardStatus;
@@ -197,7 +197,7 @@ export interface LoanData {
 }
 
 // ============================================================
-// ENGAGEMENT DATA (for UnLoQ1 Score calculation)
+// ENGAGEMENT DATA (for UNLOQ1 Score calculation)
 // ============================================================
 
 export interface EngagementData {
