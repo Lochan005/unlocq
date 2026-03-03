@@ -32,7 +32,7 @@ const statusConfig: Record<
   },
   redeemed: {
     label: "Redeemed",
-    bgColor: "bg-[#F5F4FA]",
+    bgColor: "bg-[#F1F5F9]",
     textColor: "text-[#0F0F5C]",
     dotColor: "bg-[#3535A8]",
   },

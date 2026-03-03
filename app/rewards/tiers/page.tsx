@@ -108,7 +108,7 @@ export default function TiersPage() {
               key={tier.tier}
               className={`relative rounded-2xl p-6 ${
                 isCurrent
-                  ? "border-2 border-[#3535A8] bg-gradient-to-br from-[#F5F4FA]/50 to-white shadow-lg"
+                  ? "border-2 border-[#3535A8] bg-gradient-to-br from-[#F1F5F9]/50 to-white shadow-lg"
                   : "border border-slate-200 bg-slate-50"
               }`}
             >

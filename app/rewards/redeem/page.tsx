@@ -155,7 +155,7 @@ export default function RedeemPage() {
           </div>
           <button
             type="button"
-            className="mt-4 w-full rounded-xl border-2 border-[#E6E4F5] bg-white px-4 py-3 font-semibold text-[#1C1C78] hover:bg-[#F5F4FA]"
+            className="mt-4 w-full rounded-xl border-2 border-[#E6E4F5] bg-white px-4 py-3 font-semibold text-[#1C1C78] hover:bg-[#F1F5F9]"
           >
             Browse Vouchers
           </button>
@@ -184,7 +184,7 @@ export default function RedeemPage() {
           </div>
           <button
             type="button"
-            className="mt-4 w-full rounded-xl border-2 border-[#E6E4F5] bg-white px-4 py-3 font-semibold text-[#1C1C78] hover:bg-[#F5F4FA]"
+            className="mt-4 w-full rounded-xl border-2 border-[#E6E4F5] bg-white px-4 py-3 font-semibold text-[#1C1C78] hover:bg-[#F1F5F9]"
           >
             Donate Now
           </button>

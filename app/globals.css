@@ -31,7 +31,7 @@ body {
 }
 
 .text-gradient-purple {
-  background: linear-gradient(135deg, #4A4ABF 0%, #E6E4F5 100%);
+  background: linear-gradient(135deg, #4A4ABF 0%, #E2E8F0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -42,12 +42,12 @@ body {
 }
 
 .bg-gradient-purple {
-  background: linear-gradient(180deg, #E6E4F5 0%, #4A4ABF 100%);
+  background: linear-gradient(170deg, #F1F5F9 0%, #E2E8F0 20%, #EEEDF8 40%, #F8FAFC 60%, #E6E4F5 80%, #F1F5F9 100%);
 }
 
-/* Auth page: fintech micrographics + lavender gradient */
+/* Auth page: fintech micrographics + silver gradient */
 .bg-auth-fintech {
-  background: linear-gradient(135deg, #E6E4F5 0%, #EEEDF8 30%, #4A4ABF 60%, #2E2E8F 85%, #1C1C78 100%);
+  background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 25%, #EEEDF8 45%, #4A4ABF 65%, #2E2E8F 85%, #1C1C78 100%);
   background-size: 100% 100%;
 }
 

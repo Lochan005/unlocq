@@ -229,7 +229,7 @@ export default function RewardsOverviewPage() {
               return (
                 <div
                   key={entry.reward_id}
-                  className="flex items-center justify-between border-b border-slate-100 py-4 transition-colors last:border-b-0 hover:bg-[#F5F4FA]"
+                  className="flex items-center justify-between border-b border-slate-100 py-4 transition-colors last:border-b-0 hover:bg-[#F1F5F9]"
                 >
                   <div className="flex items-center gap-4">
                     <div

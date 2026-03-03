@@ -98,7 +98,7 @@ function PayNowContent() {
         </p>
 
         {poolLoaded && (poolBalance.confirmed > 0 || redeemSuccess) && (
-          <div className="mb-6 rounded-2xl border-2 border-[#E6E4F5] bg-gradient-to-br from-[#F5F4FA] to-white p-6">
+          <div className="mb-6 rounded-2xl border-2 border-[#E6E4F5] bg-gradient-to-br from-[#F1F5F9] to-white p-6">
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-slate-800">

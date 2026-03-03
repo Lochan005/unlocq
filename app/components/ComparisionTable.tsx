@@ -77,7 +77,7 @@ export default function ComparisonTable({
         <thead>
           <motion.tr
             variants={rowVariants}
-            className="bg-[#F5F4FA] border-b border-[#E6E4F5]"
+            className="bg-[#F1F5F9] border-b border-[#E6E4F5]"
           >
             <th className="py-4 px-4 text-left text-xs font-semibold text-[#0F0F5C] uppercase tracking-wider">
               Metric
@@ -98,7 +98,7 @@ export default function ComparisonTable({
               key={index}
               variants={rowVariants}
               className={`border-b border-[#EEEDF8] ${
-                row.highlight ? "bg-[#F5F4FA]" : ""
+                row.highlight ? "bg-[#F1F5F9]" : ""
               }`}
               animate={
                 highlightedRows.has(index)

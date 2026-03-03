@@ -39,7 +39,7 @@ export default function RewardsLayout({
   return (
     <div className="mx-auto max-w-7xl overflow-x-hidden px-4 py-8 sm:px-6">
       {/* Tab Navigation */}
-      <nav className="mb-8 flex flex-nowrap gap-2 overflow-x-auto rounded-xl bg-[#F5F4FA] p-1.5">
+      <nav className="mb-8 flex flex-nowrap gap-2 overflow-x-auto rounded-xl bg-[#F1F5F9] p-1.5">
         {rewardsTabs.map((tab) => (
           <Link
             key={tab.id}

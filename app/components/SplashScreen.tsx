@@ -60,7 +60,7 @@ export default function SplashScreen({
       style={{
         backgroundColor: "#F8F6FD",
         backgroundImage:
-          "radial-gradient(circle, #E0D8F0 1px, transparent 1px)",
+          "radial-gradient(circle, #E2E8F0 1px, transparent 1px)",
         backgroundSize: "24px 24px",
         opacity: fadingOut ? 0 : 1,
         transition: `opacity ${FADE_DURATION}ms ease-out`,

@@ -452,7 +452,7 @@ export default function Home() {
           UNLOQ1
         </motion.h1>
         <p className="text-lg md:text-xl text-[#0F0F5C] max-w-2xl mx-auto">
-          Discover how much you can save on your loan by prepaying smartly
+          Discover how much interest you can reclaim today
         </p>
       </div>
 
@@ -652,7 +652,7 @@ export default function Home() {
                 nudgeMessage.type === "warning"
                   ? "bg-amber-50 border border-amber-200"
                   : nudgeMessage.type === "encourage"
-                    ? "bg-[#F5F4FA] border border-[#E6E4F5]"
+                    ? "bg-[#F1F5F9] border border-[#E6E4F5]"
                     : nudgeMessage.type === "positive"
                       ? "bg-green-50 border border-green-200"
                       : "bg-white/60 border border-[#E6E4F5]"

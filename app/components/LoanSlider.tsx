@@ -495,7 +495,7 @@ export default function LoanSlider({
               <span
                 onClick={handleValueClick}
                 className={`text-base tabular-nums transition-colors px-2 py-1 rounded ${
-                  isSet ? "cursor-pointer hover:bg-[#F5F4FA]" : "cursor-default"
+                  isSet ? "cursor-pointer hover:bg-[#F1F5F9]" : "cursor-default"
                 } ${
                   warning
                     ? "text-red-600"

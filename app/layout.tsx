@@ -31,6 +31,14 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "UNLOQ1 - Smart Loan Prepayment Calculator",
   description: "Discover how much you can save on your loan by prepaying smartly",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
