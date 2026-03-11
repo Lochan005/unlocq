@@ -1,0 +1,43 @@
+{
+  "name": "credx",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:network": "next dev -H 0.0.0.0",
+    "build": "npm run icons && next build --webpack",
+    "icons": "node scripts/generate-icons.mjs",
+    "start": "next start",
+    "lint": "eslint",
+    "ifsc:convert": "node scripts/ifsc-csv-to-branches.mjs"
+  },
+  "dependencies": {
+    "@credx/shared": "workspace:*",
+    "@phosphor-icons/react": "^2.1.10",
+    "@vercel/analytics": "^1.6.1",
+    "decimal.js": "^10.6.0",
+    "framer-motion": "^12.26.1",
+    "howler": "^2.2.4",
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.7",
+    "next": "^16.1.6",
+    "react": "19.2.3",
+    "react-confetti-explosion": "^3.0.3",
+    "react-dom": "19.2.3",
+    "recharts": "^3.6.0",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/howler": "^2.2.12",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.1",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4",
+    "to-ico": "^1.1.5",
+    "typescript": "^5"
+  }
+}
