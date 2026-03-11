@@ -4,11 +4,12 @@ import { useEffect, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useRewardsStore } from "@/app/lib/rewards/store";
-import { ChartBar, Coins, Bank, Gift, Crown } from "@phosphor-icons/react";
+import { ChartBar, ShoppingBag, CreditCard, Bank, Gift, Crown } from "@phosphor-icons/react";
 
 const rewardsTabs = [
   { id: "overview", label: "Overview", href: "/rewards", Icon: ChartBar },
-  { id: "earn", label: "Earn", href: "/rewards/earn", Icon: Coins },
+  { id: "earn", label: "Shop Cards", href: "/rewards/earn", Icon: ShoppingBag },
+  { id: "my-cards", label: "My Cards", href: "/rewards/my-cards", Icon: CreditCard },
   { id: "pool", label: "Pool", href: "/rewards/pool", Icon: Bank },
   { id: "redeem", label: "Redeem", href: "/rewards/redeem", Icon: Gift },
   { id: "tiers", label: "Tiers", href: "/rewards/tiers", Icon: Crown },

@@ -63,7 +63,7 @@ export function calculateUNLOQ1Score(
   if (engagement.profileCompleted) engagementScore += 10;
   if (engagement.hasReferral) engagementScore += 10;
   if (engagement.recentCalculatorUse) engagementScore += 10;
-  if (engagement.hasRecentPostbackCredit) engagementScore += 15;
+  if (engagement.hasRecentCouponPurchase ?? false) engagementScore += 15;
 
   return Math.round(
     dtiScore + prepayScore + progressScore + bufferScore + engagementScore

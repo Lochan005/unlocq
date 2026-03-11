@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllMerchantsWithStatus } from "@/app/lib/rewards/engine/routingEngine";
+import { getAllMerchantsWithStatus } from "@/app/lib/rewards/engine/catalogueEngine";
 
 export async function GET() {
   try {

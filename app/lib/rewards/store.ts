@@ -10,12 +10,14 @@ import type {
   PoolBalance,
   LifetimeStats,
   MonthlyEarning,
+  CatalogueItem,
+  CouponOrder,
 } from "@/app/lib/types";
 import { mockLoanData } from "@/app/lib/rewards/data/userMock";
 
 const MOCK_USER_ID = "user_001";
 
-// Static earn actions (inline for client component compatibility)
+// Earn actions: base set + first_card_purchase and purchase_streak from earn-actions.json
 const EARN_ACTIONS: EarnAction[] = [
   { action_id: "signup", action_name: "Sign up", coins: 100, type: "one-time", icon_key: "signup", description: "Create your UNLOQ1 account" },
   { action_id: "complete_profile", action_name: "Complete profile", coins: 50, type: "one-time", icon_key: "complete_profile", description: "Fill in your loan and personal details" },
@@ -25,6 +27,8 @@ const EARN_ACTIONS: EarnAction[] = [
   { action_id: "monthly_streak", action_name: "Monthly prepay streak", coins: 200, type: "bonus", icon_key: "monthly_streak", description: "Prepay every month to maintain your streak" },
   { action_id: "referral", action_name: "Refer a friend", coins: 250, type: "recurring", icon_key: "referral", description: "Invite someone to join UNLOQ1" },
   { action_id: "friend_first_prepay", action_name: "Friend's first prepay", coins: 500, type: "bonus", icon_key: "friend_first_prepay", description: "Earn when your referred friend makes their first prepayment" },
+  { action_id: "first_card_purchase", action_name: "First card purchase", coins: 200, type: "one-time", icon_key: "first_card_purchase", description: "Buy your first coupon card on UNLOQ1" },
+  { action_id: "purchase_streak", action_name: "Weekly purchase streak", coins: 100, type: "bonus", icon_key: "purchase_streak", description: "Buy at least one card every week for 4 weeks" },
 ];
 
 interface RewardsState {
@@ -34,25 +38,27 @@ interface RewardsState {
   poolBalance: PoolBalance;
   recentActivity: RewardEntry[];
   merchantGrid: MerchantWithStatus[];
+  catalogue: CatalogueItem[];
+  userOrders: CouponOrder[];
+  selectedMerchant: string | null;
   earnActions: EarnAction[];
   monthlyEarnings: MonthlyEarning[];
   lifetimeStats: LifetimeStats;
-  consentGranted: boolean;
-
-  // --- Loading / Error ---
   isLoading: boolean;
   error: string | null;
 
   // --- Actions ---
   refreshData: () => Promise<void>;
-  handleShopClick: (merchantId: string) => Promise<{ rewardExpected: boolean; redirectUrl: string }>;
-  redeemPool: (amount: number, type: "prepay" | "voucher" | "donate") => Promise<{ success: boolean; message: string }>;
+  purchaseCoupon: (itemId: string, paymentMethod: "upi" | "card" | "net_banking") => Promise<{ success: boolean; order?: CouponOrder; message: string }>;
+  fetchCatalogue: (category?: import("@/app/lib/types").MerchantCategory) => Promise<void>;
+  fetchUserOrders: () => Promise<void>;
+  setSelectedMerchant: (merchantId: string | null) => void;
+  redeemPool: (amount: number, type: "prepay" | "voucher") => Promise<{ success: boolean; message: string }>;
   restorePool: () => Promise<void>;
   addBonus: (action: string, coins: number) => Promise<void>;
   updateLoanData: (partial: Partial<LoanData>) => void;
   setAutoPrepayThreshold: (amount: number) => void;
   toggleAutoPrepay: () => void;
-  grantConsent: () => void;
 }
 
 export const useRewardsStore = create<RewardsState>((set, get) => ({
@@ -61,25 +67,31 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
   poolBalance: { confirmed: 0, pending: 0 },
   recentActivity: [],
   merchantGrid: [],
+  catalogue: [],
+  userOrders: [],
+  selectedMerchant: null,
   earnActions: EARN_ACTIONS,
   monthlyEarnings: [],
   lifetimeStats: { totalEarned: 0, totalPrepaid: 0, totalRedeemed: 0 },
-  consentGranted: false,
   isLoading: false,
   error: null,
 
   refreshData: async () => {
     set({ isLoading: true, error: null });
     try {
-      const [merchantsRes, ledgerRes, profileRes] = await Promise.all([
+      const [merchantsRes, ledgerRes, profileRes, catalogueRes, ordersRes] = await Promise.all([
         fetch("/api/rewards/merchants"),
         fetch(`/api/rewards/ledger?userId=${MOCK_USER_ID}`),
         fetch(`/api/rewards/profile?userId=${MOCK_USER_ID}`),
+        fetch("/api/rewards/catalogue"),
+        fetch(`/api/rewards/my-cards?userId=${MOCK_USER_ID}`),
       ]);
 
       const merchantsData = merchantsRes.ok ? await merchantsRes.json() : null;
       const ledgerData = ledgerRes.ok ? await ledgerRes.json() : null;
       const profileData = profileRes.ok ? await profileRes.json() : null;
+      const catalogueData = catalogueRes.ok ? await catalogueRes.json() : null;
+      const ordersData = ordersRes.ok ? await ordersRes.json() : null;
 
       if (!merchantsRes.ok) throw new Error("Failed to fetch merchants");
       if (!ledgerRes.ok) throw new Error("Failed to fetch ledger");
@@ -92,7 +104,8 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
         monthlyEarnings: ledgerData?.data?.monthlyEarnings ?? [],
         lifetimeStats: ledgerData?.data?.lifetimeStats ?? { totalEarned: 0, totalPrepaid: 0, totalRedeemed: 0 },
         userProfile: profileData?.data ?? null,
-        consentGranted: profileData?.data?.consent_affiliate_tracking ?? false,
+        catalogue: catalogueData?.data ?? [],
+        userOrders: ordersData?.data ?? [],
       });
     } catch (err) {
       set({ error: err instanceof Error ? err.message : "Failed to load data" });
@@ -101,28 +114,73 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
     }
   },
 
-  handleShopClick: async (merchantId: string) => {
+  purchaseCoupon: async (itemId: string, paymentMethod: "upi" | "card" | "net_banking") => {
     try {
-      const res = await fetch("/api/rewards/click", {
+      const res = await fetch("/api/rewards/purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: MOCK_USER_ID, merchantId }),
+        body: JSON.stringify({
+          userId: MOCK_USER_ID,
+          itemId,
+          paymentMethod,
+        }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.error ?? "Failed to process click");
+
+      if (!res.ok) {
+        return {
+          success: false,
+          message: data?.error ?? "Purchase failed",
+        };
+      }
 
       await get().refreshData();
 
       return {
-        rewardExpected: data.rewardExpected ?? false,
-        redirectUrl: data.data?.redirect_url ?? `https://www.${merchantId}.com`,
+        success: true,
+        order: data?.data?.order ?? null,
+        message: "Purchase successful",
       };
     } catch (err) {
-      throw err;
+      return {
+        success: false,
+        message: err instanceof Error ? err.message : "Purchase failed",
+      };
     }
   },
 
-  redeemPool: async (amount: number, type: "prepay" | "voucher" | "donate") => {
+  fetchCatalogue: async (category) => {
+    try {
+      const url = category
+        ? `/api/rewards/catalogue?category=${encodeURIComponent(category)}`
+        : "/api/rewards/catalogue";
+      const res = await fetch(url);
+      const data = await res.json();
+      if (res.ok) {
+        set({ catalogue: data?.data ?? [] });
+      }
+    } catch {
+      set({ catalogue: [] });
+    }
+  },
+
+  fetchUserOrders: async () => {
+    try {
+      const res = await fetch(`/api/rewards/my-cards?userId=${MOCK_USER_ID}`);
+      const data = await res.json();
+      if (res.ok) {
+        set({ userOrders: data?.data ?? [] });
+      }
+    } catch {
+      set({ userOrders: [] });
+    }
+  },
+
+  setSelectedMerchant: (merchantId: string | null) => {
+    set({ selectedMerchant: merchantId });
+  },
+
+  redeemPool: async (amount: number, type: "prepay" | "voucher") => {
     try {
       const res = await fetch("/api/rewards/redeem", {
         method: "POST",
@@ -210,17 +268,6 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
     set((state) => ({
       userProfile: state.userProfile
         ? { ...state.userProfile, auto_prepay_enabled: !state.userProfile.auto_prepay_enabled }
-        : null,
-    }));
-  },
-
-  // TODO: Consent resets on full page reload since there's no real backend — persist to localStorage or API when available
-  grantConsent: () => {
-    const now = new Date().toISOString();
-    set((state) => ({
-      consentGranted: true,
-      userProfile: state.userProfile
-        ? { ...state.userProfile, consent_affiliate_tracking: true, consent_granted_at: now }
         : null,
     }));
   },

@@ -27,11 +27,11 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!["prepay", "voucher", "donate"].includes(type)) {
+    if (!["prepay", "voucher"].includes(type)) {
       return NextResponse.json(
         {
           success: false,
-          error: "type must be 'prepay', 'voucher', or 'donate'",
+          error: "type must be 'prepay' or 'voucher'",
         },
         { status: 400 }
       );

@@ -6,23 +6,35 @@ const statusConfig: Record<
   RewardStatus,
   { label: string; bgColor: string; textColor: string; dotColor: string }
 > = {
-  tracked: {
-    label: "Tracked",
+  ordered: {
+    label: "Ordered",
     bgColor: "bg-blue-50",
     textColor: "text-blue-700",
     dotColor: "bg-blue-500",
   },
-  pending: {
-    label: "Pending",
+  payment_pending: {
+    label: "Payment Pending",
     bgColor: "bg-amber-50",
     textColor: "text-amber-700",
     dotColor: "bg-amber-500",
   },
-  under_confirmation: {
-    label: "Confirming",
+  payment_confirmed: {
+    label: "Payment Confirmed",
     bgColor: "bg-orange-50",
     textColor: "text-orange-700",
     dotColor: "bg-orange-500",
+  },
+  voucher_generated: {
+    label: "Voucher Ready",
+    bgColor: "bg-teal-50",
+    textColor: "text-teal-700",
+    dotColor: "bg-teal-500",
+  },
+  delivered: {
+    label: "Delivered",
+    bgColor: "bg-green-50",
+    textColor: "text-green-700",
+    dotColor: "bg-green-500",
   },
   confirmed: {
     label: "Confirmed",
@@ -36,8 +48,14 @@ const statusConfig: Record<
     textColor: "text-[#0F0F5C]",
     dotColor: "bg-[#3535A8]",
   },
-  rejected: {
-    label: "Not Earned",
+  expired: {
+    label: "Expired",
+    bgColor: "bg-gray-100",
+    textColor: "text-gray-500",
+    dotColor: "bg-gray-400",
+  },
+  refunded: {
+    label: "Refunded",
     bgColor: "bg-red-50",
     textColor: "text-red-700",
     dotColor: "bg-red-500",

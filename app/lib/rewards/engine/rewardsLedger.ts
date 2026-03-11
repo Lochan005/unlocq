@@ -3,10 +3,7 @@ import type {
   PoolBalance,
   LifetimeStats,
   MonthlyEarning,
-  PostbackLogEntry,
-  PostbackStatus,
 } from "@/app/lib/types";
-import Decimal from "decimal.js";
 import { rewardEntries } from "../data/rewardsMock";
 import { formatCurrency } from "@/app/lib/currency";
 import merchantsData from "@/data/rewards/merchants.json";
@@ -25,17 +22,17 @@ function getMerchantName(merchantId: string | null): string {
 }
 
 export function getPoolBalance(userId: string): PoolBalance {
+  // Confirmed = cashback credits in pool (status "confirmed")
   const confirmed = ledger
     .filter((e) => e.user_id === userId && e.status === "confirmed")
     .reduce((sum, e) => sum + e.user_share, 0);
 
+  // Pending = delivered or voucher_generated (cashback pending confirmation)
   const pending = ledger
     .filter(
       (e) =>
         e.user_id === userId &&
-        (e.status === "tracked" ||
-          e.status === "pending" ||
-          e.status === "under_confirmation")
+        (e.status === "delivered" || e.status === "voucher_generated")
     )
     .reduce((sum, e) => sum + e.user_share, 0);
 
@@ -94,10 +91,13 @@ export function getMonthlyEarnings(userId: string): MonthlyEarning[] {
 }
 
 export function getLifetimeStats(userId: string): LifetimeStats {
-  const allExceptRejected = ledger.filter(
-    (e) => e.user_id === userId && e.status !== "rejected"
+  const allExceptRefunded = ledger.filter(
+    (e) => e.user_id === userId && e.status !== "refunded"
   );
-  const totalEarned = allExceptRejected.reduce((sum, e) => sum + e.user_share, 0);
+  const totalEarned = allExceptRefunded.reduce(
+    (sum, e) => sum + e.user_share,
+    0
+  );
 
   const redeemedEntries = ledger.filter(
     (e) => e.user_id === userId && e.status === "redeemed"
@@ -117,7 +117,7 @@ export function getLifetimeStats(userId: string): LifetimeStats {
 export function redeemFromPool(
   userId: string,
   amount: number,
-  redemptionType: "prepay" | "voucher" | "donate"
+  redemptionType: "prepay" | "voucher"
 ): { success: boolean; message: string; redeemedAmount?: number } {
   const { confirmed } = getPoolBalance(userId);
 
@@ -179,12 +179,9 @@ export function addPlatformBonus(
   const entry: RewardEntry = {
     reward_id: crypto.randomUUID(),
     user_id: userId,
-    click_id: null,
+    order_id: null,
     merchant_id: null,
-    network: null,
     reward_type: "platform_bonus",
-    gross_commission: 0,
-    platform_topup: 0,
     user_share: userShare,
     coins_credited: coins,
     status: "confirmed",
@@ -197,6 +194,35 @@ export function addPlatformBonus(
 
   ledger.push(entry);
   return entry;
+}
+
+export function creditCashback(
+  userId: string,
+  orderId: string,
+  merchantId: string,
+  cashbackAmount: number
+): { entry: RewardEntry } {
+  const now = new Date().toISOString();
+  const coinsCredited = Math.round(cashbackAmount * 10);
+
+  const entry: RewardEntry = {
+    reward_id: crypto.randomUUID(),
+    user_id: userId,
+    order_id: orderId,
+    merchant_id: merchantId,
+    reward_type: "coupon_cashback",
+    user_share: cashbackAmount,
+    coins_credited: coinsCredited,
+    status: "confirmed",
+    campaign_ref: `order_${orderId}`,
+    status_history: [{ status: "confirmed", timestamp: now }],
+    created_at: now,
+    confirmed_at: now,
+    redeemed_at: null,
+  };
+
+  ledger.push(entry);
+  return { entry };
 }
 
 /**
@@ -242,109 +268,6 @@ export function restoreRecentRedemption(
   return { success: true, restoredAmount };
 }
 
-// ============================================================
-// POSTBACK RECONCILIATION — creditToPool + audit log
-// ============================================================
-
-const postbackLog: PostbackLogEntry[] = [];
-
-const USER_SHARE_PCT = new Decimal("0.85");
-
-/**
- * Credits a user's rewards pool with a commission received via postback.
- *
- * All monetary arithmetic uses Decimal.js to avoid floating-point drift.
- *
- * @param userId        The internal user ID (resolved from sub_id)
- * @param grossAmount   Gross commission reported by the affiliate network
- * @param postbackId    The PostbackEvent that triggered this credit
- * @param clickId       The original outbound click_id (nullable)
- * @param merchantId    Merchant that generated the commission (nullable)
- * @param network       The affiliate network name (nullable)
- * @param postbackStatus The status reported by the network
- */
-export function creditToPool(
-  userId: string,
-  grossAmount: number,
-  postbackId: string,
-  clickId: string | null,
-  merchantId: string | null,
-  network: string | null,
-  postbackStatus: PostbackStatus
-): { entry: RewardEntry; logEntry: PostbackLogEntry } {
-  const now = new Date().toISOString();
-
-  const gross = new Decimal(grossAmount);
-  const userShare = gross.mul(USER_SHARE_PCT).toDecimalPlaces(2).toNumber();
-  const coinsEarned = new Decimal(userShare).mul(10).round().toNumber();
-
-  const rewardStatus = postbackStatus === "approved" ? "confirmed" : "pending";
-
-  const entry: RewardEntry = {
-    reward_id: crypto.randomUUID(),
-    user_id: userId,
-    click_id: clickId,
-    merchant_id: merchantId,
-    network,
-    reward_type: "affiliate",
-    gross_commission: gross.toDecimalPlaces(2).toNumber(),
-    platform_topup: 0,
-    user_share: userShare,
-    coins_credited: coinsEarned,
-    status: rewardStatus,
-    campaign_ref: clickId ? `postback_${clickId}` : `postback_${postbackId}`,
-    status_history: [{ status: rewardStatus, timestamp: now }],
-    created_at: now,
-    confirmed_at: rewardStatus === "confirmed" ? now : null,
-    redeemed_at: null,
-  };
-
-  ledger.push(entry);
-
-  const logEntry: PostbackLogEntry = {
-    log_id: crypto.randomUUID(),
-    postback_id: postbackId,
-    click_id: clickId,
-    user_id: userId,
-    amount_credited: userShare,
-    reward_id: entry.reward_id,
-    network,
-    timestamp: now,
-  };
-
-  postbackLog.push(logEntry);
-
-  return { entry, logEntry };
-}
-
-/**
- * Returns the full postback reconciliation log, newest first.
- * In production this would be a database query; here it's in-memory.
- */
-export function getPostbackLog(userId?: string): PostbackLogEntry[] {
-  const entries = userId
-    ? postbackLog.filter((e) => e.user_id === userId)
-    : postbackLog;
-  return [...entries].sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  );
-}
-
-/**
- * Checks whether the user received any postback-credited commission
- * within the last N days. Used by the engagement score calculation.
- */
-export function hasRecentPostbackActivity(
-  userId: string,
-  withinDays: number = 30
-): boolean {
-  const cutoff = Date.now() - withinDays * 24 * 60 * 60 * 1000;
-  return postbackLog.some(
-    (e) => e.user_id === userId && new Date(e.timestamp).getTime() >= cutoff
-  );
-}
-
 export function resetLedger(): void {
   ledger = [...rewardEntries];
-  postbackLog.length = 0;
 }

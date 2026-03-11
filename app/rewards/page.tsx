@@ -18,13 +18,18 @@ import { UNLOQ1Coin } from "@/app/components/icons";
 function getRewardSourceName(entry: {
   merchant_id: string | null;
   campaign_ref: string;
+  reward_type: string;
 }): string {
-  if (!entry.merchant_id) {
-    if (entry.campaign_ref.includes("streak")) return "Monthly Streak";
-    if (entry.campaign_ref.includes("prepay")) return "Prepayment Bonus";
-    return "Platform Bonus";
+  if (entry.reward_type === "coupon_cashback" && entry.merchant_id) {
+    return `Cashback from ${entry.merchant_id}`;
   }
-  return entry.merchant_id;
+  if (entry.reward_type === "platform_bonus") {
+    if (entry.campaign_ref.includes("streak")) return "Bonus: Monthly Streak";
+    if (entry.campaign_ref.includes("prepay")) return "Bonus: Prepayment";
+    if (entry.campaign_ref.includes("signup")) return "Bonus: Sign up";
+    return `Bonus: ${entry.campaign_ref.replace(/_/g, " ")}`;
+  }
+  return entry.merchant_id ?? "Unknown";
 }
 
 function getRewardIconKey(entry: {
@@ -55,6 +60,7 @@ export default function RewardsOverviewPage() {
     profileCompleted: userProfile?.profile_completed ?? false,
     hasReferral: false,
     recentCalculatorUse: true,
+    hasRecentCouponPurchase: (userProfile?.total_cards_purchased ?? 0) > 0,
   };
   const score = calculateUNLOQ1Score(loanData, engagementData);
   const tier = getScoreTier(score);
@@ -102,7 +108,7 @@ export default function RewardsOverviewPage() {
           </div>
           {poolBalance.confirmed === 0 && poolBalance.pending === 0 ? (
             <p className="mt-2 text-sm text-slate-500">
-              Start earning by shopping through UNLOQ1
+              Start earning by buying coupon cards
             </p>
           ) : (
             <p className="mt-2 text-sm font-medium text-green-600">
@@ -206,22 +212,21 @@ export default function RewardsOverviewPage() {
         {activityDisplay.length === 0 ? (
           <div className="py-12 text-center">
             <p className="text-slate-500">
-              No activity yet. Visit the Earn tab to get started!
+              No activity yet. Visit Shop Cards to get started!
             </p>
             <Link
               href="/rewards/earn"
               className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#1C1C78] hover:underline"
             >
-              Go to Earn <ArrowRight size={14} weight="bold" />
+              Go to Shop Cards <ArrowRight size={14} weight="bold" />
             </Link>
           </div>
         ) : (
           <div className="space-y-0">
             {activityDisplay.map((entry) => {
               const displayName =
-                entry.merchant_id
-                  ? merchantGrid.find((m) => m.merchant_id === entry.merchant_id)
-                      ?.display_name ?? entry.merchant_id
+                entry.reward_type === "coupon_cashback" && entry.merchant_id
+                  ? `Cashback from ${merchantGrid.find((m) => m.merchant_id === entry.merchant_id)?.display_name ?? entry.merchant_id}`
                   : getRewardSourceName(entry);
               const isRedeemed = entry.status === "redeemed";
               const bgColor = isRedeemed ? "bg-amber-100" : "bg-green-100";

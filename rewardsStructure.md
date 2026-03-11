@@ -4,7 +4,7 @@ New pages: rewards/earn, rewards/pool, rewards/redeem, rewards/tiers, plus a sha
 Rewards engine: Built under app/lib/rewards/ with a click handler, rewards ledger, routing engine, mock data for merchants and users
 State management: Added Zustand (zustand@^5.0.11) for a global rewards store (app/lib/rewards/store.ts)
 API routes: 6 new API endpoints under app/api/rewards/ — bonus, click, ledger, merchants, profile, redeem
-UI components: New rewards-specific components — HeaderRewardsIndicator, ConsentModal, PoolBalanceDisplay, TierBadge, StreakBadge, StatusBadge, MerchantStatusPill, ComplianceFooter
+UI components: New rewards-specific components — HeaderRewardsIndicator, PoolBalanceDisplay, TierBadge, StreakBadge, StatusBadge, MerchantStatusPill, ComplianceFooter
 Data files: data/rewards/earn-actions.json and data/rewards/merchants.json
 2. Rewards Integration into Existing Pages
 Header: Added HeaderRewardsIndicator to both desktop and mobile nav

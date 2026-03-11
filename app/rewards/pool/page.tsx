@@ -1,23 +1,33 @@
 "use client";
 
-import { useRef } from "react";
-import Link from "next/link";
+import { useRef, useState } from "react";
 import { useRewardsStore } from "@/app/lib/rewards/store";
 import { formatCurrency } from "@/app/lib/currency";
 import { ComplianceFooter } from "@/app/components/rewards";
-import { AppIcon } from "@/app/lib/iconMap";
-import { Bank, Gear, TrendUp, Coins, Storefront } from "@phosphor-icons/react";
+import {
+  calculateNewTenure,
+  calculateInterestSaved,
+} from "@/app/lib/calculator";
+import { Bank, Gear, TrendUp, Coins, Storefront, Lightbulb } from "@phosphor-icons/react";
 import { UNLOQ1Coin } from "@/app/components/icons";
 
 export default function PoolPage() {
   const settingsRef = useRef<HTMLDivElement>(null);
+  const [showPrepayModal, setShowPrepayModal] = useState(false);
+  const [isRedeeming, setIsRedeeming] = useState(false);
+  const [redeemResult, setRedeemResult] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   const {
     poolBalance,
     userProfile,
+    loanData,
     monthlyEarnings,
     toggleAutoPrepay,
     setAutoPrepayThreshold,
+    redeemPool,
   } = useRewardsStore();
 
   const confirmed = poolBalance.confirmed;
@@ -35,6 +45,49 @@ export default function PoolPage() {
     settingsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const getImpactMetrics = () => {
+    if (confirmed <= 0) {
+      return { interestSaved: 0, tenureReducedMonths: 0, roiPercent: 0 };
+    }
+    const originalRemainingMonths = loanData.remainingTenure * 12;
+    const newTenureDecimal = calculateNewTenure(
+      loanData.outstandingBalance,
+      loanData.interestRate,
+      loanData.currentEMI,
+      confirmed
+    );
+    const newTenureMonths = Math.max(0, Math.ceil(newTenureDecimal.toNumber()));
+    const interestSavedDecimal = calculateInterestSaved(
+      loanData.currentEMI,
+      originalRemainingMonths,
+      newTenureMonths,
+      confirmed
+    );
+    const interestSaved = interestSavedDecimal.toNumber();
+    const tenureReducedMonths = originalRemainingMonths - newTenureMonths;
+    const roiPercent = confirmed > 0 ? (interestSaved / confirmed) * 100 : 0;
+    return { interestSaved, tenureReducedMonths, roiPercent };
+  };
+
+  const metrics = getImpactMetrics();
+
+  const handleConfirmPrepay = async () => {
+    setIsRedeeming(true);
+    setRedeemResult(null);
+    try {
+      const result = await redeemPool(confirmed, "prepay");
+      setRedeemResult(result);
+      if (result.success) {
+        setTimeout(() => {
+          setShowPrepayModal(false);
+          setRedeemResult(null);
+        }, 2000);
+      }
+    } finally {
+      setIsRedeeming(false);
+    }
+  };
+
   return (
     <div className="space-y-10">
       <div>
@@ -42,7 +95,7 @@ export default function PoolPage() {
           Your Prepayment Pool
         </h2>
         <p className="mt-1 text-slate-500">
-          Watch your earnings grow and auto-prepay when ready
+          Watch your earnings grow and prepay when ready
         </p>
       </div>
 
@@ -67,7 +120,7 @@ export default function PoolPage() {
 
           <div className="min-w-[200px]">
             <p className="text-sm font-medium text-white/80">
-              Auto-prepay threshold
+              Prepay threshold
             </p>
             <p className="mt-1 text-2xl font-bold">
               {formatCurrency(threshold)}
@@ -81,7 +134,7 @@ export default function PoolPage() {
               />
             </div>
             <p className="mt-1 text-xs text-white/80">
-              {Math.round(progressPercent)}% to auto-prepay
+              {Math.round(progressPercent)}% to prepay
             </p>
           </div>
         </div>
@@ -92,12 +145,13 @@ export default function PoolPage() {
               No confirmed balance yet
             </span>
           ) : (
-            <Link
-              href="/rewards/redeem"
+            <button
+              type="button"
+              onClick={() => setShowPrepayModal(true)}
               className="flex flex-1 items-center justify-center rounded-xl bg-white px-4 py-3 font-semibold text-[#1C1C78] transition-all hover:bg-white/95"
             >
               <Bank size={18} weight="bold" className="mr-1" /> Prepay Now
-            </Link>
+            </button>
           )}
           <button
             type="button"
@@ -109,15 +163,15 @@ export default function PoolPage() {
         </div>
       </div>
 
-      {/* This Month's Earnings */}
+      {/* This Month's Coupon Cashback */}
       <div className="rounded-2xl bg-white p-6 shadow-lg">
         <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-slate-800">
-          <TrendUp size={22} weight="duotone" className="text-green-600" /> This Month&apos;s Earnings
+          <TrendUp size={22} weight="duotone" className="text-green-600" /> This Month&apos;s Coupon Cashback
         </h3>
 
         {monthlyEarnings.length === 0 ? (
           <p className="py-6 text-center text-slate-500">
-            No earnings this month yet.
+            No coupon cashback this month yet. Buy cards from Shop Cards to earn.
           </p>
         ) : (
           <>
@@ -152,17 +206,17 @@ export default function PoolPage() {
         )}
       </div>
 
-      {/* Auto-Prepay Settings */}
+      {/* Prepay Settings */}
       <div ref={settingsRef} className="rounded-2xl bg-white p-6 shadow-lg">
         <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-slate-800">
-          <Gear size={22} weight="duotone" className="text-slate-500" /> Auto-Prepay Settings
+          <Gear size={22} weight="duotone" className="text-slate-500" /> Prepay Settings
         </h3>
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-semibold text-slate-800">
-                Enable Auto-Prepay
+                Enable Prepay
               </p>
               <p className="text-sm text-slate-500">
                 Automatically prepay when pool hits threshold
@@ -209,6 +263,88 @@ export default function PoolPage() {
       </div>
 
       <ComplianceFooter variant="pool" />
+
+      {/* Prepay Confirmation Modal */}
+      {showPrepayModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div
+            className="mx-4 w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800">
+              <Bank size={24} weight="duotone" className="text-[#1C1C78]" /> Confirm Prepay
+            </h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Transfer your pool balance directly to your loan account
+            </p>
+
+            <div className="mt-4 rounded-xl bg-slate-50 p-4">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">Pool Balance</span>
+                <span className="font-semibold">{formatCurrency(confirmed)}</span>
+              </div>
+              <div className="mt-2 flex justify-between text-sm">
+                <span className="text-slate-600">Processing Fee</span>
+                <span className="font-semibold text-green-600">FREE</span>
+              </div>
+              <div className="my-3 border-t border-dashed border-slate-200" />
+              <div className="flex justify-between">
+                <span className="text-slate-600">Amount to Prepay</span>
+                <span className="text-lg font-bold text-[#1C1C78]">
+                  {formatCurrency(confirmed)}
+                </span>
+              </div>
+              {pending > 0 && (
+                <p className="mt-2 text-xs text-slate-500">
+                  Pending rewards not included: {formatCurrency(pending)} (will
+                  become available after confirmation)
+                </p>
+              )}
+            </div>
+
+            <div className="mt-4 rounded-xl bg-green-50 p-4">
+              <p className="flex items-center gap-1.5 text-sm text-green-800">
+                <Lightbulb size={18} weight="duotone" className="shrink-0 text-green-600" /> This prepayment will save you approximately{" "}
+                <strong>{formatCurrency(metrics.interestSaved)}</strong> in interest!
+              </p>
+            </div>
+
+            {redeemResult && (
+              <div
+                className={`mt-4 rounded-lg p-3 text-sm ${
+                  redeemResult.success
+                    ? "bg-green-50 text-green-700"
+                    : "bg-red-50 text-red-700"
+                }`}
+              >
+                {redeemResult.message}
+              </div>
+            )}
+
+            <div className="mt-6 flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPrepayModal(false);
+                  setRedeemResult(null);
+                }}
+                disabled={isRedeeming}
+                className="flex-1 rounded-xl border-2 border-slate-200 px-4 py-3 font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmPrepay}
+                disabled={isRedeeming}
+                className="flex-1 rounded-xl bg-gradient-to-r from-[#1C1C78] to-[#0F0F5C] px-4 py-3 font-semibold text-white shadow-lg disabled:opacity-50"
+              >
+                {isRedeeming ? "Processing..." : "Confirm Prepay"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

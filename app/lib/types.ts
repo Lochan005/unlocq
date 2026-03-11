@@ -3,22 +3,20 @@
 // ============================================================
 
 export type RewardStatus =
-  | "tracked"
-  | "pending"
-  | "under_confirmation"
-  | "confirmed"
-  | "redeemed"
-  | "rejected";
+  | "ordered"
+  | "payment_pending"
+  | "payment_confirmed"
+  | "voucher_generated"
+  | "delivered"
+  | "confirmed" // cashback credited to pool (available for prepay/voucher)
+  | "redeemed"  // redeemed FROM pool (prepay/voucher)
+  | "expired"
+  | "refunded";
 
 export type RewardType =
-  | "affiliate"
+  | "coupon_cashback"
   | "platform_bonus"
   | "non_monetary";
-
-export type RewardBasis =
-  | "affiliate"
-  | "platform"
-  | "none";
 
 export type MerchantCategory =
   | "food"
@@ -32,55 +30,34 @@ export type MerchantCategory =
 
 export type UserTier = "bronze" | "silver" | "gold" | "platinum";
 
+export type OrderStatus =
+  | "initiated"
+  | "payment_pending"
+  | "payment_confirmed"
+  | "payment_failed"
+  | "voucher_generating"
+  | "voucher_generated"
+  | "delivered"
+  | "delivery_failed"
+  | "redeemed"
+  | "expired"
+  | "refund_initiated"
+  | "refund_completed";
+
 // ============================================================
 // DATA MODEL INTERFACES
 // ============================================================
 
-export interface MerchantRoute {
-  route_id: string;
-  merchant_id: string;
-  merchant_display_name: string;
-  merchant_logo_url: string; // For MVP, this will be an emoji string
-  category: MerchantCategory;
-  network: string; // e.g., "cuelinks", "admitad", "vcommission", "direct"
-  tracking_base_url: string; // Base URL for the affiliate tracking domain
-  priority: number; // 1 = highest
-  reward_active: boolean;
-  valid_from: string; // ISO date string
-  valid_till: string; // ISO date string
-  expected_commission_pct: number; // INTERNAL ONLY — never displayed to users
-  cap_amount: number; // Maximum reward per transaction in ₹
-  created_at: string;
-  updated_at: string;
-}
-
-export interface ClickEvent {
-  click_id: string;
-  user_id: string;
-  merchant_id: string;
-  route_id: string | null; // null when no active route exists
-  network: string | null;
-  reward_expected: boolean;
-  reward_basis: RewardBasis;
-  redirect_url: string;
-  timestamp: string; // ISO datetime
-  user_agent: string;
-  ip_hash: string;
-}
-
 export interface RewardEntry {
   reward_id: string;
   user_id: string;
-  click_id: string | null; // null for platform-funded bonuses
-  merchant_id: string | null; // null for platform-funded bonuses
-  network: string | null;
+  order_id: string | null;
+  merchant_id: string | null;
   reward_type: RewardType;
-  gross_commission: number; // What the network pays — 0 for platform-funded
-  platform_topup: number; // Streak/tier multiplier bonus funded by UNLOQ1
-  user_share: number; // gross_commission × share_pct + platform_topup
-  coins_credited: number; // user_share × 10
+  user_share: number;
+  coins_credited: number;
   status: RewardStatus;
-  campaign_ref: string; // Identifies the route or internal campaign
+  campaign_ref: string;
   status_history: Array<{ status: RewardStatus; timestamp: string }>;
   created_at: string;
   confirmed_at: string | null;
@@ -95,48 +72,83 @@ export interface UserRewardsProfile {
   coins_pending: number;
   current_tier: UserTier;
   current_streak_months: number;
-  streak_multiplier: number; // 1.0, 1.5, 2.0, 2.5, 3.0
+  streak_multiplier: number;
   total_prepayments_count: number;
+  total_cards_purchased: number;
   lifetime_earned: number;
   lifetime_prepaid_from_pool: number;
   auto_prepay_enabled: boolean;
   auto_prepay_threshold: number;
-  consent_affiliate_tracking: boolean;
-  consent_granted_at: string | null;
   profile_completed: boolean;
   created_at: string;
   updated_at: string;
 }
 
 // ============================================================
-// POSTBACK / AFFILIATE RECONCILIATION TYPES
+// COUPON MARKETPLACE TYPES
 // ============================================================
 
-export type PostbackStatus = "pending" | "approved" | "rejected";
-
-export interface PostbackEvent {
-  postback_id: string;
-  sub_id: string; // Maps 1-to-1 with user_id
-  click_id: string | null; // Correlates with the outbound ClickEvent
-  transaction_id: string | null; // Network-assigned transaction reference
-  merchant_id: string | null; // Resolved from click store when click_id is present
-  network: string | null;
-  amount: number; // Gross commission received (Decimal.js precision)
-  status: PostbackStatus;
-  raw_params: Record<string, string>; // Full query/body for audit
-  received_at: string; // ISO datetime
-  processed: boolean;
+export interface CatalogueItem {
+  item_id: string;
+  merchant_id: string;
+  merchant_display_name: string;
+  icon_key: string;
+  category: MerchantCategory;
+  face_value: number;
+  discount_pct: number;
+  discounted_price: number;
+  cashback_pct: number;
+  cashback_amount: number;
+  in_stock: boolean;
+  source: "aggregator" | "direct";
+  valid_till: string;
 }
 
-export interface PostbackLogEntry {
-  log_id: string;
-  postback_id: string;
-  click_id: string | null; // Links outbound click to inbound commission
+export interface CouponOrder {
+  order_id: string;
   user_id: string;
-  amount_credited: number; // Final amount written to pool (Decimal.js precision)
-  reward_id: string; // The RewardEntry created by creditToPool
-  network: string | null;
-  timestamp: string; // ISO datetime
+  item_id: string;
+  merchant_id: string;
+  merchant_display_name: string;
+  face_value: number;
+  discounted_price: number;
+  cashback_amount: number;
+  payment_method: "upi" | "card" | "net_banking";
+  payment_status: "pending" | "confirmed" | "failed" | "refunded";
+  voucher_code: string | null;
+  voucher_status:
+    | "pending_generation"
+    | "generated"
+    | "delivered"
+    | "delivery_failed"
+    | "redeemed"
+    | "expired";
+  delivery_channel: "on_screen" | "sms" | "email" | null;
+  deep_link: string | null;
+  expiry_date: string | null;
+  idempotency_key: string;
+  created_at: string;
+  payment_confirmed_at: string | null;
+  voucher_generated_at: string | null;
+  delivered_at: string | null;
+  redeemed_at: string | null;
+}
+
+export interface RefundEvent {
+  refund_id: string;
+  order_id: string;
+  user_id: string;
+  amount: number;
+  reason:
+    | "generation_failed"
+    | "invalid_code"
+    | "user_request"
+    | "expired_unredeemed";
+  refund_method: "upi" | "card" | "net_banking";
+  refund_status: "initiated" | "processing" | "completed" | "failed";
+  cashback_reversed: boolean;
+  created_at: string;
+  completed_at: string | null;
 }
 
 // ============================================================
@@ -152,7 +164,7 @@ export interface MerchantDisplayInfo {
 }
 
 export interface MerchantWithStatus extends MerchantDisplayInfo {
-  status: "active" | "inactive";
+  status: "in_stock" | "out_of_stock";
 }
 
 export interface EarnAction {
@@ -207,7 +219,7 @@ export interface EngagementData {
   profileCompleted: boolean;
   hasReferral: boolean;
   recentCalculatorUse: boolean;
-  hasRecentPostbackCredit?: boolean; // True when a postback credit hit the pool recently
+  hasRecentCouponPurchase?: boolean; // Optional for backward compat during migration
 }
 
 export interface ScoreTier {
@@ -215,3 +227,4 @@ export interface ScoreTier {
   color: string;
   icon_key: string;
 }
+

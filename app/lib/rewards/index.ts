@@ -1,5 +1,5 @@
 // Data
-export { merchantRoutes } from "./data/merchantRoutes";
+export { couponCatalogue } from "./data/couponCatalogue";
 export {
   rewardEntries,
   MOCK_USER_ID,
@@ -8,20 +8,27 @@ export {
 } from "./data/rewardsMock";
 export { mockUserProfile, mockLoanData } from "./data/userMock";
 
-// Engine
+// Engine - Catalogue
 export {
-  getActiveRoutes,
-  resolveRoute,
-  getMerchantStatus,
+  getCatalogue,
+  getCatalogueItem,
+  getMerchantDenominations,
+  getMerchantStock,
   getAllMerchantsWithStatus,
-} from "./engine/routingEngine";
+} from "./engine/catalogueEngine";
+
+// Engine - Purchase
 export {
-  handleMerchantClick,
-  generateTrackedLink,
-  getClickHistory,
-  getClickStore,
-  getClickById,
-} from "./engine/clickHandler";
+  initiatePurchase,
+  confirmPayment,
+  generateVoucher,
+  deliverVoucher,
+  getOrderById,
+  getUserOrders,
+  getOrderStore,
+} from "./engine/purchaseEngine";
+
+// Engine - Ledger
 export {
   getPoolBalance,
   getRecentActivity,
@@ -30,8 +37,6 @@ export {
   redeemFromPool,
   restoreRecentRedemption,
   addPlatformBonus,
-  creditToPool,
-  getPostbackLog,
-  hasRecentPostbackActivity,
+  creditCashback,
   resetLedger,
 } from "./engine/rewardsLedger";
