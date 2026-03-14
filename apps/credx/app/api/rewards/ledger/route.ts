@@ -4,7 +4,7 @@ import {
   getRecentActivity,
   getMonthlyEarnings,
   getLifetimeStats,
-} from "@/app/lib/rewards";
+} from "@credx/shared";
 
 export async function GET(request: Request) {
   try {

@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserTier } from "@/app/lib/types";
+import type { UserTier } from "@credx/shared";
 import { AppIcon } from "@/app/lib/iconMap";
 
 const tierConfig: Record<

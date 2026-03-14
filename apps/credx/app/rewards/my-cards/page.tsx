@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRewardsStore } from "@/app/lib/rewards/store";
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency } from "@credx/shared";
 import { AppIcon } from "@/app/lib/iconMap";
 import { StatusBadge } from "@/app/components/rewards";
 import { CreditCard, Copy, ArrowSquareOut } from "@phosphor-icons/react";
-import type { CouponOrder } from "@/app/lib/types";
+import type { CouponOrder } from "@credx/shared";
 
 type FilterTab = "all" | "active" | "redeemed" | "expired";
 

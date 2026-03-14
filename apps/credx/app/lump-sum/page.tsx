@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { calculatePrepaymentScenario, calculatePrepaymentScenario1B } from "../lib/calculator";
+import { calculatePrepaymentScenario, calculatePrepaymentScenario1B } from "@credx/shared";
 import LoanInputs from "../components/LoanInputs";
 import ExportButtons from "../components/ExportButtons";
 import ResultsReveal from "../components/ResultsReveal";

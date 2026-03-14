@@ -9,10 +9,10 @@ import {
   ComplianceFooter,
 } from "@/app/components/rewards";
 import { AppIcon } from "@/app/lib/iconMap";
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency } from "@credx/shared";
 import { ShoppingBag, Lightbulb, Coins, Check, Copy, ArrowSquareOut } from "@phosphor-icons/react";
 import { UNLOQ1Coin } from "@/app/components/icons";
-import type { CatalogueItem, MerchantCategory } from "@/app/lib/types";
+import type { CatalogueItem, MerchantCategory } from "@credx/shared";
 import { staggerContainer, staggerItem } from "@/app/lib/animation";
 
 const CATEGORIES: { value: MerchantCategory | "all"; label: string }[] = [

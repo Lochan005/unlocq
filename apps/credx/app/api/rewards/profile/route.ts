@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { mockUserProfile, getPoolBalance } from "@/app/lib/rewards";
+import { mockUserProfile, getPoolBalance } from "@credx/shared";
 
 export async function GET(request: Request) {
   try {

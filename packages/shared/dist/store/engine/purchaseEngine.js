@@ -1,13 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.initiatePurchase = initiatePurchase;
-exports.confirmPayment = confirmPayment;
-exports.generateVoucher = generateVoucher;
-exports.deliverVoucher = deliverVoucher;
-exports.getOrderById = getOrderById;
-exports.getUserOrders = getUserOrders;
-exports.getOrderStore = getOrderStore;
-const couponCatalogue_1 = require("../data/couponCatalogue");
+import { couponCatalogue } from "../data/couponCatalogue";
 const orderStore = [];
 function randomAlphanumeric(length) {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -17,8 +8,8 @@ function randomAlphanumeric(length) {
     }
     return result;
 }
-function initiatePurchase(userId, itemId, paymentMethod) {
-    const item = couponCatalogue_1.couponCatalogue.find((c) => c.item_id === itemId);
+export function initiatePurchase(userId, itemId, paymentMethod) {
+    const item = couponCatalogue.find((c) => c.item_id === itemId);
     if (!item) {
         throw new Error(`Catalogue item not found: ${itemId}`);
     }
@@ -54,16 +45,20 @@ function initiatePurchase(userId, itemId, paymentMethod) {
     orderStore.push(order);
     return order;
 }
-function confirmPayment(orderId) {
+export function confirmPayment(orderId) {
     const idx = orderStore.findIndex((o) => o.order_id === orderId);
     if (idx < 0) {
         throw new Error(`Order not found: ${orderId}`);
     }
     const now = new Date().toISOString();
-    orderStore[idx] = Object.assign(Object.assign({}, orderStore[idx]), { payment_status: "confirmed", payment_confirmed_at: now });
+    orderStore[idx] = {
+        ...orderStore[idx],
+        payment_status: "confirmed",
+        payment_confirmed_at: now,
+    };
     return generateVoucher(orderId);
 }
-function generateVoucher(orderId) {
+export function generateVoucher(orderId) {
     const idx = orderStore.findIndex((o) => o.order_id === orderId);
     if (idx < 0) {
         throw new Error(`Order not found: ${orderId}`);
@@ -74,27 +69,39 @@ function generateVoucher(orderId) {
     const expiryDate = new Date();
     expiryDate.setMonth(expiryDate.getMonth() + 6);
     const deepLink = `https://www.${order.merchant_id}.com/redeem?code=${encodeURIComponent(voucherCode)}`;
-    orderStore[idx] = Object.assign(Object.assign({}, order), { voucher_status: "generated", voucher_code: voucherCode, voucher_generated_at: now, deep_link: deepLink, expiry_date: expiryDate.toISOString().slice(0, 10) });
+    orderStore[idx] = {
+        ...order,
+        voucher_status: "generated",
+        voucher_code: voucherCode,
+        voucher_generated_at: now,
+        deep_link: deepLink,
+        expiry_date: expiryDate.toISOString().slice(0, 10),
+    };
     return deliverVoucher(orderId);
 }
-function deliverVoucher(orderId) {
+export function deliverVoucher(orderId) {
     const idx = orderStore.findIndex((o) => o.order_id === orderId);
     if (idx < 0) {
         throw new Error(`Order not found: ${orderId}`);
     }
     const now = new Date().toISOString();
-    orderStore[idx] = Object.assign(Object.assign({}, orderStore[idx]), { voucher_status: "delivered", delivery_channel: "on_screen", delivered_at: now });
+    orderStore[idx] = {
+        ...orderStore[idx],
+        voucher_status: "delivered",
+        delivery_channel: "on_screen",
+        delivered_at: now,
+    };
     return orderStore[idx];
 }
-function getOrderById(orderId) {
-    var _a;
-    return (_a = orderStore.find((o) => o.order_id === orderId)) !== null && _a !== void 0 ? _a : null;
+export function getOrderById(orderId) {
+    return orderStore.find((o) => o.order_id === orderId) ?? null;
 }
-function getUserOrders(userId) {
+export function getUserOrders(userId) {
     return orderStore
         .filter((o) => o.user_id === userId)
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
-function getOrderStore() {
+export function getOrderStore() {
     return [...orderStore];
 }
+//# sourceMappingURL=purchaseEngine.js.map

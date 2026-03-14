@@ -2,12 +2,12 @@
 
 import { useRef, useState } from "react";
 import { useRewardsStore } from "@/app/lib/rewards/store";
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency } from "@credx/shared";
 import { ComplianceFooter } from "@/app/components/rewards";
 import {
   calculateNewTenure,
   calculateInterestSaved,
-} from "@/app/lib/calculator";
+} from "@credx/shared";
 import { Bank, Gear, TrendUp, Coins, Storefront, Lightbulb } from "@phosphor-icons/react";
 import { UNLOQ1Coin } from "@/app/components/icons";
 

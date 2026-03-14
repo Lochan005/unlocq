@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { initiatePurchase, confirmPayment, creditCashback } from "@/app/lib/rewards";
+import { initiatePurchase, confirmPayment, creditCashback } from "@credx/shared";
 
 export async function POST(request: Request) {
   try {

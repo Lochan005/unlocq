@@ -1,14 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculateUNLOQ1Score = calculateUNLOQ1Score;
-exports.getScoreTier = getScoreTier;
-const calculator_1 = require("./calculator");
+import { calculateEMI } from "./calculator";
 /**
  * Adapter: calculator.ts uses tenure in months, here we use years.
  */
 function emiFromYears(principal, annualRate, years) {
     const tenureMonths = years * 12;
-    const emi = (0, calculator_1.calculateEMI)(principal, annualRate, tenureMonths);
+    const emi = calculateEMI(principal, annualRate, tenureMonths);
     return emi.toNumber();
 }
 /**
@@ -21,8 +17,7 @@ function emiFromYears(principal, annualRate, years) {
  *   - Financial Buffer:     max 200 points
  *   - Engagement:           max 100 points (driven by rewards activity)
  */
-function calculateUNLOQ1Score(loanData, engagement) {
-    var _a;
+export function calculateUNLOQ1Score(loanData, engagement) {
     const emi = emiFromYears(loanData.outstandingBalance, loanData.interestRate, loanData.remainingTenure);
     // 1. DTI Health (max 250)
     const dtiRatio = (emi + loanData.livingExpenses) /
@@ -51,14 +46,14 @@ function calculateUNLOQ1Score(loanData, engagement) {
         engagementScore += 10;
     if (engagement.recentCalculatorUse)
         engagementScore += 10;
-    if ((_a = engagement.hasRecentCouponPurchase) !== null && _a !== void 0 ? _a : false)
+    if (engagement.hasRecentCouponPurchase ?? false)
         engagementScore += 15;
     return Math.round(dtiScore + prepayScore + progressScore + bufferScore + engagementScore);
 }
 /**
  * Maps a score to its display tier.
  */
-function getScoreTier(score) {
+export function getScoreTier(score) {
     if (score >= 800)
         return { tier: "Excellent", color: "#10b981", icon_key: "excellent" };
     if (score >= 600)
@@ -67,3 +62,4 @@ function getScoreTier(score) {
         return { tier: "Fair", color: "#f59e0b", icon_key: "fair" };
     return { tier: "Needs Work", color: "#ef4444", icon_key: "needs_work" };
 }
+//# sourceMappingURL=score.js.map

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getCatalogue } from "@/app/lib/rewards";
-import type { MerchantCategory } from "@/app/lib/types";
+import { getCatalogue } from "@credx/shared";
+import type { MerchantCategory } from "@credx/shared";
 
 export async function GET(request: Request) {
   try {

@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.mockLoanData = exports.mockUserProfile = void 0;
-const rewardsMock_1 = require("./rewardsMock");
-exports.mockUserProfile = {
-    user_id: rewardsMock_1.MOCK_USER_ID,
-    pool_balance_confirmed: rewardsMock_1.COMPUTED_CONFIRMED_BALANCE,
-    pool_balance_pending: rewardsMock_1.COMPUTED_PENDING_BALANCE,
-    coins_confirmed: rewardsMock_1.COMPUTED_CONFIRMED_BALANCE * 10,
-    coins_pending: rewardsMock_1.COMPUTED_PENDING_BALANCE * 10,
+import { MOCK_USER_ID, COMPUTED_CONFIRMED_BALANCE, COMPUTED_PENDING_BALANCE, } from "./rewardsMock";
+export const mockUserProfile = {
+    user_id: MOCK_USER_ID,
+    pool_balance_confirmed: COMPUTED_CONFIRMED_BALANCE,
+    pool_balance_pending: COMPUTED_PENDING_BALANCE,
+    coins_confirmed: COMPUTED_CONFIRMED_BALANCE * 10,
+    coins_pending: COMPUTED_PENDING_BALANCE * 10,
     current_tier: "gold",
     current_streak_months: 4,
     streak_multiplier: 1.5,
@@ -21,7 +18,7 @@ exports.mockUserProfile = {
     created_at: "2026-01-01T00:00:00Z",
     updated_at: "2026-02-12T00:00:00Z",
 };
-exports.mockLoanData = {
+export const mockLoanData = {
     outstandingBalance: 4000000,
     originalAmount: 5000000,
     interestRate: 9.0,
@@ -30,3 +27,4 @@ exports.mockLoanData = {
     extraPayment: 10000,
     livingExpenses: 15000,
 };
+//# sourceMappingURL=userMock.js.map

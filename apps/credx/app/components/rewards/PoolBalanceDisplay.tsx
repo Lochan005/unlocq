@@ -1,6 +1,6 @@
 "use client";
 
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency } from "@credx/shared";
 
 interface PoolBalanceDisplayProps {
   confirmed: number;

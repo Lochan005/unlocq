@@ -85,25 +85,25 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
         fetch(`/api/rewards/my-cards?userId=${MOCK_USER_ID}`),
       ]);
 
-      const merchantsData = merchantsRes.ok ? await merchantsRes.json() : null;
-      const ledgerData = ledgerRes.ok ? await ledgerRes.json() : null;
-      const profileData = profileRes.ok ? await profileRes.json() : null;
-      const catalogueData = catalogueRes.ok ? await catalogueRes.json() : null;
-      const ordersData = ordersRes.ok ? await ordersRes.json() : null;
+      const merchantsData = merchantsRes.ok ? (await merchantsRes.json()) as { data?: unknown } : null;
+      const ledgerData = ledgerRes.ok ? (await ledgerRes.json()) as { data?: { poolBalance?: unknown; recentActivity?: unknown; monthlyEarnings?: unknown; lifetimeStats?: unknown } } : null;
+      const profileData = profileRes.ok ? (await profileRes.json()) as { data?: unknown } : null;
+      const catalogueData = catalogueRes.ok ? (await catalogueRes.json()) as { data?: unknown } : null;
+      const ordersData = ordersRes.ok ? (await ordersRes.json()) as { data?: unknown } : null;
 
       if (!merchantsRes.ok) throw new Error("Failed to fetch merchants");
       if (!ledgerRes.ok) throw new Error("Failed to fetch ledger");
       if (!profileRes.ok) throw new Error("Failed to fetch profile");
 
       set({
-        merchantGrid: merchantsData?.data ?? [],
-        poolBalance: ledgerData?.data?.poolBalance ?? { confirmed: 0, pending: 0 },
-        recentActivity: ledgerData?.data?.recentActivity ?? [],
-        monthlyEarnings: ledgerData?.data?.monthlyEarnings ?? [],
-        lifetimeStats: ledgerData?.data?.lifetimeStats ?? { totalEarned: 0, totalPrepaid: 0, totalRedeemed: 0 },
-        userProfile: profileData?.data ?? null,
-        catalogue: catalogueData?.data ?? [],
-        userOrders: ordersData?.data ?? [],
+        merchantGrid: (merchantsData?.data ?? []) as MerchantWithStatus[],
+        poolBalance: (ledgerData?.data?.poolBalance ?? { confirmed: 0, pending: 0 }) as PoolBalance,
+        recentActivity: (ledgerData?.data?.recentActivity ?? []) as RewardEntry[],
+        monthlyEarnings: (ledgerData?.data?.monthlyEarnings ?? []) as MonthlyEarning[],
+        lifetimeStats: (ledgerData?.data?.lifetimeStats ?? { totalEarned: 0, totalPrepaid: 0, totalRedeemed: 0 }) as LifetimeStats,
+        userProfile: (profileData?.data ?? null) as UserRewardsProfile | null,
+        catalogue: (catalogueData?.data ?? []) as CatalogueItem[],
+        userOrders: (ordersData?.data ?? []) as CouponOrder[],
       });
     } catch (err) {
       set({ error: err instanceof Error ? err.message : "Failed to load data" });
@@ -123,7 +123,7 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
           paymentMethod,
         }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as { data?: { order?: unknown }; error?: string };
 
       if (!res.ok) {
         return {
@@ -136,7 +136,7 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
 
       return {
         success: true,
-        order: data?.data?.order ?? null,
+        order: (data?.data?.order ?? null) as CouponOrder | undefined,
         message: "Purchase successful",
       };
     } catch (err) {
@@ -153,9 +153,9 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
         ? `/api/rewards/catalogue?category=${encodeURIComponent(category)}`
         : "/api/rewards/catalogue";
       const res = await fetch(url);
-      const data = await res.json();
+      const data = (await res.json()) as { data?: unknown };
       if (res.ok) {
-        set({ catalogue: data?.data ?? [] });
+        set({ catalogue: (data?.data ?? []) as CatalogueItem[] });
       }
     } catch {
       set({ catalogue: [] });
@@ -165,9 +165,9 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
   fetchUserOrders: async () => {
     try {
       const res = await fetch(`/api/rewards/my-cards?userId=${MOCK_USER_ID}`);
-      const data = await res.json();
+      const data = (await res.json()) as { data?: unknown };
       if (res.ok) {
-        set({ userOrders: data?.data ?? [] });
+        set({ userOrders: (data?.data ?? []) as CouponOrder[] });
       }
     } catch {
       set({ userOrders: [] });
@@ -185,16 +185,18 @@ export const useRewardsStore = create<RewardsState>((set, get) => ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: MOCK_USER_ID, amount, type }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as { data?: { success?: boolean; message?: string }; success?: boolean; message?: string; error?: string };
       const result = data.data ?? data;
+      const success = result?.success ?? data?.success ?? false;
+      const message = result?.message ?? data?.message ?? data?.error ?? "Redemption failed";
 
-      if (result?.success) {
+      if (success) {
         await get().refreshData();
       }
 
       return {
-        success: result?.success ?? false,
-        message: result?.message ?? (data?.error ?? "Redemption failed"),
+        success,
+        message,
       };
     } catch (err) {
       return {

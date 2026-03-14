@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.useRewardsStore = void 0;
-const zustand_1 = require("zustand");
-const userMock_1 = require("./data/userMock");
-const rewardsMock_1 = require("./data/rewardsMock");
+import { create } from "zustand";
+import { mockLoanData } from "./data/userMock";
+import { MOCK_USER_ID } from "./data/rewardsMock";
 // Earn actions: base set + first_card_purchase and purchase_streak from earn-actions.json
 const EARN_ACTIONS = [
     { action_id: "signup", action_name: "Sign up", coins: 100, type: "one-time", icon_key: "signup", description: "Create your UNLOQ1 account" },
@@ -17,9 +14,9 @@ const EARN_ACTIONS = [
     { action_id: "first_card_purchase", action_name: "First card purchase", coins: 200, type: "one-time", icon_key: "first_card_purchase", description: "Buy your first coupon card on UNLOQ1" },
     { action_id: "purchase_streak", action_name: "Weekly purchase streak", coins: 100, type: "bonus", icon_key: "purchase_streak", description: "Buy at least one card every week for 4 weeks" },
 ];
-exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
+export const useRewardsStore = create((set, get) => ({
     userProfile: null,
-    loanData: userMock_1.mockLoanData,
+    loanData: mockLoanData,
     poolBalance: { confirmed: 0, pending: 0 },
     recentActivity: [],
     merchantGrid: [],
@@ -32,21 +29,20 @@ exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
     isLoading: false,
     error: null,
     refreshData: async () => {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
         set({ isLoading: true, error: null });
         try {
             const [merchantsRes, ledgerRes, profileRes, catalogueRes, ordersRes] = await Promise.all([
                 fetch("/api/rewards/merchants"),
-                fetch(`/api/rewards/ledger?userId=${rewardsMock_1.MOCK_USER_ID}`),
-                fetch(`/api/rewards/profile?userId=${rewardsMock_1.MOCK_USER_ID}`),
+                fetch(`/api/rewards/ledger?userId=${MOCK_USER_ID}`),
+                fetch(`/api/rewards/profile?userId=${MOCK_USER_ID}`),
                 fetch("/api/rewards/catalogue"),
-                fetch(`/api/rewards/my-cards?userId=${rewardsMock_1.MOCK_USER_ID}`),
+                fetch(`/api/rewards/my-cards?userId=${MOCK_USER_ID}`),
             ]);
-            const merchantsData = merchantsRes.ok ? await merchantsRes.json() : null;
-            const ledgerData = ledgerRes.ok ? await ledgerRes.json() : null;
-            const profileData = profileRes.ok ? await profileRes.json() : null;
-            const catalogueData = catalogueRes.ok ? await catalogueRes.json() : null;
-            const ordersData = ordersRes.ok ? await ordersRes.json() : null;
+            const merchantsData = merchantsRes.ok ? (await merchantsRes.json()) : null;
+            const ledgerData = ledgerRes.ok ? (await ledgerRes.json()) : null;
+            const profileData = profileRes.ok ? (await profileRes.json()) : null;
+            const catalogueData = catalogueRes.ok ? (await catalogueRes.json()) : null;
+            const ordersData = ordersRes.ok ? (await ordersRes.json()) : null;
             if (!merchantsRes.ok)
                 throw new Error("Failed to fetch merchants");
             if (!ledgerRes.ok)
@@ -54,14 +50,14 @@ exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
             if (!profileRes.ok)
                 throw new Error("Failed to fetch profile");
             set({
-                merchantGrid: (_a = merchantsData === null || merchantsData === void 0 ? void 0 : merchantsData.data) !== null && _a !== void 0 ? _a : [],
-                poolBalance: (_c = (_b = ledgerData === null || ledgerData === void 0 ? void 0 : ledgerData.data) === null || _b === void 0 ? void 0 : _b.poolBalance) !== null && _c !== void 0 ? _c : { confirmed: 0, pending: 0 },
-                recentActivity: (_e = (_d = ledgerData === null || ledgerData === void 0 ? void 0 : ledgerData.data) === null || _d === void 0 ? void 0 : _d.recentActivity) !== null && _e !== void 0 ? _e : [],
-                monthlyEarnings: (_g = (_f = ledgerData === null || ledgerData === void 0 ? void 0 : ledgerData.data) === null || _f === void 0 ? void 0 : _f.monthlyEarnings) !== null && _g !== void 0 ? _g : [],
-                lifetimeStats: (_j = (_h = ledgerData === null || ledgerData === void 0 ? void 0 : ledgerData.data) === null || _h === void 0 ? void 0 : _h.lifetimeStats) !== null && _j !== void 0 ? _j : { totalEarned: 0, totalPrepaid: 0, totalRedeemed: 0 },
-                userProfile: (_k = profileData === null || profileData === void 0 ? void 0 : profileData.data) !== null && _k !== void 0 ? _k : null,
-                catalogue: (_l = catalogueData === null || catalogueData === void 0 ? void 0 : catalogueData.data) !== null && _l !== void 0 ? _l : [],
-                userOrders: (_m = ordersData === null || ordersData === void 0 ? void 0 : ordersData.data) !== null && _m !== void 0 ? _m : [],
+                merchantGrid: (merchantsData?.data ?? []),
+                poolBalance: (ledgerData?.data?.poolBalance ?? { confirmed: 0, pending: 0 }),
+                recentActivity: (ledgerData?.data?.recentActivity ?? []),
+                monthlyEarnings: (ledgerData?.data?.monthlyEarnings ?? []),
+                lifetimeStats: (ledgerData?.data?.lifetimeStats ?? { totalEarned: 0, totalPrepaid: 0, totalRedeemed: 0 }),
+                userProfile: (profileData?.data ?? null),
+                catalogue: (catalogueData?.data ?? []),
+                userOrders: (ordersData?.data ?? []),
             });
         }
         catch (err) {
@@ -72,28 +68,27 @@ exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
         }
     },
     purchaseCoupon: async (itemId, paymentMethod) => {
-        var _a, _b, _c;
         try {
             const res = await fetch("/api/rewards/purchase", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    userId: rewardsMock_1.MOCK_USER_ID,
+                    userId: MOCK_USER_ID,
                     itemId,
                     paymentMethod,
                 }),
             });
-            const data = await res.json();
+            const data = (await res.json());
             if (!res.ok) {
                 return {
                     success: false,
-                    message: (_a = data === null || data === void 0 ? void 0 : data.error) !== null && _a !== void 0 ? _a : "Purchase failed",
+                    message: data?.error ?? "Purchase failed",
                 };
             }
             await get().refreshData();
             return {
                 success: true,
-                order: (_c = (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.order) !== null && _c !== void 0 ? _c : null,
+                order: (data?.data?.order ?? null),
                 message: "Purchase successful",
             };
         }
@@ -105,31 +100,29 @@ exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
         }
     },
     fetchCatalogue: async (category) => {
-        var _a;
         try {
             const url = category
                 ? `/api/rewards/catalogue?category=${encodeURIComponent(category)}`
                 : "/api/rewards/catalogue";
             const res = await fetch(url);
-            const data = await res.json();
+            const data = (await res.json());
             if (res.ok) {
-                set({ catalogue: (_a = data === null || data === void 0 ? void 0 : data.data) !== null && _a !== void 0 ? _a : [] });
+                set({ catalogue: (data?.data ?? []) });
             }
         }
-        catch (_b) {
+        catch {
             set({ catalogue: [] });
         }
     },
     fetchUserOrders: async () => {
-        var _a;
         try {
-            const res = await fetch(`/api/rewards/my-cards?userId=${rewardsMock_1.MOCK_USER_ID}`);
-            const data = await res.json();
+            const res = await fetch(`/api/rewards/my-cards?userId=${MOCK_USER_ID}`);
+            const data = (await res.json());
             if (res.ok) {
-                set({ userOrders: (_a = data === null || data === void 0 ? void 0 : data.data) !== null && _a !== void 0 ? _a : [] });
+                set({ userOrders: (data?.data ?? []) });
             }
         }
-        catch (_b) {
+        catch {
             set({ userOrders: [] });
         }
     },
@@ -137,21 +130,22 @@ exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
         set({ selectedMerchant: merchantId });
     },
     redeemPool: async (amount, type) => {
-        var _a, _b, _c, _d;
         try {
             const res = await fetch("/api/rewards/redeem", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId: rewardsMock_1.MOCK_USER_ID, amount, type }),
+                body: JSON.stringify({ userId: MOCK_USER_ID, amount, type }),
             });
-            const data = await res.json();
-            const result = (_a = data.data) !== null && _a !== void 0 ? _a : data;
-            if (result === null || result === void 0 ? void 0 : result.success) {
+            const data = (await res.json());
+            const result = data.data ?? data;
+            const success = result?.success ?? data?.success ?? false;
+            const message = result?.message ?? data?.message ?? data?.error ?? "Redemption failed";
+            if (success) {
                 await get().refreshData();
             }
             return {
-                success: (_b = result === null || result === void 0 ? void 0 : result.success) !== null && _b !== void 0 ? _b : false,
-                message: (_c = result === null || result === void 0 ? void 0 : result.message) !== null && _c !== void 0 ? _c : ((_d = data === null || data === void 0 ? void 0 : data.error) !== null && _d !== void 0 ? _d : "Redemption failed"),
+                success,
+                message,
             };
         }
         catch (err) {
@@ -166,25 +160,28 @@ exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
             const res = await fetch("/api/rewards/redeem", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId: rewardsMock_1.MOCK_USER_ID, type: "restore" }),
+                body: JSON.stringify({ userId: MOCK_USER_ID, type: "restore" }),
             });
             if (res.ok) {
                 await get().refreshData();
             }
         }
-        catch (_a) {
+        catch {
             // Silent — best-effort restore on unmount
         }
     },
     addBonus: async (action, coins) => {
         try {
             set((state) => ({
-                poolBalance: Object.assign(Object.assign({}, state.poolBalance), { confirmed: state.poolBalance.confirmed + coins / 10 }),
+                poolBalance: {
+                    ...state.poolBalance,
+                    confirmed: state.poolBalance.confirmed + coins / 10,
+                },
             }));
             const res = await fetch("/api/rewards/bonus", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId: rewardsMock_1.MOCK_USER_ID, action, coins }),
+                body: JSON.stringify({ userId: MOCK_USER_ID, action, coins }),
             });
             if (!res.ok)
                 throw new Error("Failed to add bonus");
@@ -192,26 +189,32 @@ exports.useRewardsStore = (0, zustand_1.create)((set, get) => ({
         }
         catch (err) {
             set((state) => ({
-                poolBalance: Object.assign(Object.assign({}, state.poolBalance), { confirmed: Math.max(0, state.poolBalance.confirmed - coins / 10) }),
+                poolBalance: {
+                    ...state.poolBalance,
+                    confirmed: Math.max(0, state.poolBalance.confirmed - coins / 10),
+                },
             }));
             throw err;
         }
     },
     updateLoanData: (partial) => {
         set((state) => ({
-            loanData: Object.assign(Object.assign({}, state.loanData), partial),
+            loanData: { ...state.loanData, ...partial },
         }));
     },
     setAutoPrepayThreshold: (amount) => {
         set((state) => ({
             userProfile: state.userProfile
-                ? Object.assign(Object.assign({}, state.userProfile), { auto_prepay_threshold: amount }) : null,
+                ? { ...state.userProfile, auto_prepay_threshold: amount }
+                : null,
         }));
     },
     toggleAutoPrepay: () => {
         set((state) => ({
             userProfile: state.userProfile
-                ? Object.assign(Object.assign({}, state.userProfile), { auto_prepay_enabled: !state.userProfile.auto_prepay_enabled }) : null,
+                ? { ...state.userProfile, auto_prepay_enabled: !state.userProfile.auto_prepay_enabled }
+                : null,
         }));
     },
 }));
+//# sourceMappingURL=store.js.map

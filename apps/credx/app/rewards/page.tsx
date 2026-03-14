@@ -7,10 +7,10 @@ import { useRewardsStore } from "@/app/lib/rewards/store";
 import {
   StatusBadge,
 } from "@/app/components/rewards";
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency } from "@credx/shared";
 import { fadeIn } from "../lib/animation";
 import AnimatedNumber from "@/app/components/AnimatedNumber";
-import { calculateUNLOQ1Score, getScoreTier } from "@/app/lib/score";
+import { calculateUNLOQ1Score, getScoreTier } from "@credx/shared";
 import { AppIcon } from "@/app/lib/iconMap";
 import { Fire, ArrowRight } from "@phosphor-icons/react";
 import { UNLOQ1Coin } from "@/app/components/icons";

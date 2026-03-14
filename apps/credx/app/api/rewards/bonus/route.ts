@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addPlatformBonus } from "@/app/lib/rewards";
+import { addPlatformBonus } from "@credx/shared";
 
 export async function POST(request: Request) {
   try {

@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.COMPUTED_PENDING_BALANCE = exports.COMPUTED_CONFIRMED_BALANCE = exports.rewardEntries = exports.MOCK_USER_ID = void 0;
 const today = new Date().toISOString();
 const daysAgo = (d) => new Date(Date.now() - d * 24 * 60 * 60 * 1000).toISOString();
-exports.MOCK_USER_ID = "user_001";
-exports.rewardEntries = [
+export const MOCK_USER_ID = "user_001";
+export const rewardEntries = [
     // 2 delivered (recent card purchases, cashback pending confirmation)
     {
         reward_id: "rew_delivered_1",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_swiggy_001",
         merchant_id: "swiggy",
         reward_type: "coupon_cashback",
@@ -28,7 +25,7 @@ exports.rewardEntries = [
     },
     {
         reward_id: "rew_delivered_2",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_zomato_001",
         merchant_id: "zomato",
         reward_type: "coupon_cashback",
@@ -49,7 +46,7 @@ exports.rewardEntries = [
     // 2 voucher_generated (cards generated, awaiting delivery)
     {
         reward_id: "rew_voucher_1",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_blinkit_001",
         merchant_id: "blinkit",
         reward_type: "coupon_cashback",
@@ -68,7 +65,7 @@ exports.rewardEntries = [
     },
     {
         reward_id: "rew_voucher_2",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_zepto_001",
         merchant_id: "zepto",
         reward_type: "coupon_cashback",
@@ -88,7 +85,7 @@ exports.rewardEntries = [
     // 3 confirmed (cashback in pool) - Swiggy ₹10, Amazon ₹25, Flipkart ₹15
     {
         reward_id: "rew_redeemed_1",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_swiggy_002",
         merchant_id: "swiggy",
         reward_type: "coupon_cashback",
@@ -109,7 +106,7 @@ exports.rewardEntries = [
     },
     {
         reward_id: "rew_redeemed_2",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_amazon_001",
         merchant_id: "amazon",
         reward_type: "coupon_cashback",
@@ -130,7 +127,7 @@ exports.rewardEntries = [
     },
     {
         reward_id: "rew_redeemed_3",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_flipkart_001",
         merchant_id: "flipkart",
         reward_type: "coupon_cashback",
@@ -152,7 +149,7 @@ exports.rewardEntries = [
     // 2 confirmed - platform_bonus (streak bonus, signup bonus)
     {
         reward_id: "rew_redeemed_4",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: null,
         merchant_id: null,
         reward_type: "platform_bonus",
@@ -167,7 +164,7 @@ exports.rewardEntries = [
     },
     {
         reward_id: "rew_redeemed_5",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: null,
         merchant_id: null,
         reward_type: "platform_bonus",
@@ -183,7 +180,7 @@ exports.rewardEntries = [
     // 1 refunded (order refunded, cashback reversed)
     {
         reward_id: "rew_refunded_1",
-        user_id: exports.MOCK_USER_ID,
+        user_id: MOCK_USER_ID,
         order_id: "ord_myntra_001",
         merchant_id: "myntra",
         reward_type: "coupon_cashback",
@@ -204,9 +201,10 @@ exports.rewardEntries = [
 ];
 // Pre-computed from the entries above
 // Confirmed = entries with status "confirmed" (cashback credited to pool)
-const confirmedEntries = exports.rewardEntries.filter((e) => e.status === "confirmed");
+const confirmedEntries = rewardEntries.filter((e) => e.status === "confirmed");
 // Pending = delivered + voucher_generated (cashback pending confirmation)
 const pendingStatuses = ["delivered", "voucher_generated"];
-const pendingEntries = exports.rewardEntries.filter((e) => pendingStatuses.includes(e.status));
-exports.COMPUTED_CONFIRMED_BALANCE = confirmedEntries.reduce((sum, e) => sum + e.user_share, 0);
-exports.COMPUTED_PENDING_BALANCE = pendingEntries.reduce((sum, e) => sum + e.user_share, 0);
+const pendingEntries = rewardEntries.filter((e) => pendingStatuses.includes(e.status));
+export const COMPUTED_CONFIRMED_BALANCE = confirmedEntries.reduce((sum, e) => sum + e.user_share, 0);
+export const COMPUTED_PENDING_BALANCE = pendingEntries.reduce((sum, e) => sum + e.user_share, 0);
+//# sourceMappingURL=rewardsMock.js.map

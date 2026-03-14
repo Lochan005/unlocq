@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { redeemFromPool, restoreRecentRedemption } from "@/app/lib/rewards";
+import { redeemFromPool, restoreRecentRedemption } from "@credx/shared";
 
 export async function POST(request: Request) {
   try {

@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.couponCatalogue = void 0;
 const validTill = "2026-06-30";
-exports.couponCatalogue = [
+export const couponCatalogue = [
     // Swiggy - 3 denominations
     {
         item_id: "item_swiggy_250",
@@ -436,3 +433,4 @@ exports.couponCatalogue = [
         valid_till: validTill,
     },
 ];
+//# sourceMappingURL=couponCatalogue.js.map

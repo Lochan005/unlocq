@@ -8,7 +8,7 @@ import IFSCAutocomplete, {
   type BranchRecord,
 } from "../components/IFSCAutocomplete";
 import { useRewardsStore } from "@/app/lib/rewards/store";
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency } from "@credx/shared";
 import { ArrowLeft, Check } from "@phosphor-icons/react";
 
 function formatINR(value: number): string {

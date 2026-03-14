@@ -8,7 +8,7 @@ import AnimatedCard from "./components/AnimatedCard";
 import AnimatedNumber from "./components/AnimatedNumber";
 import LoanSlider from "./components/LoanSlider";
 import { fadeIn } from "./lib/animation";
-import { calculateEMI, calculateNewTenure } from "./lib/calculator";
+import { calculateEMI, calculateNewTenure } from "@credx/shared";
 import { Coins, CalendarBlank, ArrowsClockwise, ChartBar, Lightbulb } from "@phosphor-icons/react";
 import { FEATURE_FLAGS } from "./lib/featureFlags";
 

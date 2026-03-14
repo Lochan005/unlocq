@@ -1,25 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculateMonthlyRate = calculateMonthlyRate;
-exports.calculateEMI = calculateEMI;
-exports.calculateOutstandingPrincipal = calculateOutstandingPrincipal;
-exports.calculateNewTenure = calculateNewTenure;
-exports.calculateInterestSaved = calculateInterestSaved;
-exports.calculatePrepaymentScenario = calculatePrepaymentScenario;
-exports.calculatePrepaymentScenario1B = calculatePrepaymentScenario1B;
-exports.calculateScenario2 = calculateScenario2;
-exports.calculateScenario3 = calculateScenario3;
-const decimal_js_1 = __importDefault(require("decimal.js"));
+import Decimal from 'decimal.js';
 /**
  * Calculate monthly interest rate from annual rate
  * @param annualRate - Annual interest rate as a percentage (e.g., 10 for 10%)
  * @returns Monthly interest rate as a decimal
  */
-function calculateMonthlyRate(annualRate) {
-    const annual = new decimal_js_1.default(annualRate).div(100);
+export function calculateMonthlyRate(annualRate) {
+    const annual = new Decimal(annualRate).div(100);
     return annual.div(12);
 }
 /**
@@ -30,11 +16,11 @@ function calculateMonthlyRate(annualRate) {
  * @param tenureMonths - Loan tenure in months
  * @returns EMI amount
  */
-function calculateEMI(principal, annualRate, tenureMonths) {
-    const P = new decimal_js_1.default(principal);
+export function calculateEMI(principal, annualRate, tenureMonths) {
+    const P = new Decimal(principal);
     const i = calculateMonthlyRate(annualRate);
-    const N = new decimal_js_1.default(tenureMonths);
-    const onePlusI = new decimal_js_1.default(1).plus(i);
+    const N = new Decimal(tenureMonths);
+    const onePlusI = new Decimal(1).plus(i);
     const onePlusIToN = onePlusI.pow(N);
     const numerator = P.times(i).times(onePlusIToN);
     const denominator = onePlusIToN.minus(1);
@@ -49,12 +35,12 @@ function calculateEMI(principal, annualRate, tenureMonths) {
  * @param monthsPaid - Number of months already paid
  * @returns Outstanding principal amount
  */
-function calculateOutstandingPrincipal(originalPrincipal, annualRate, originalTenure, monthsPaid) {
-    const P = new decimal_js_1.default(originalPrincipal);
+export function calculateOutstandingPrincipal(originalPrincipal, annualRate, originalTenure, monthsPaid) {
+    const P = new Decimal(originalPrincipal);
     const i = calculateMonthlyRate(annualRate);
-    const N = new decimal_js_1.default(originalTenure);
-    const k = new decimal_js_1.default(monthsPaid);
-    const onePlusI = new decimal_js_1.default(1).plus(i);
+    const N = new Decimal(originalTenure);
+    const k = new Decimal(monthsPaid);
+    const onePlusI = new Decimal(1).plus(i);
     const onePlusIToN = onePlusI.pow(N);
     const onePlusIToK = onePlusI.pow(k);
     const numerator = P.times(onePlusIToN.minus(onePlusIToK));
@@ -71,21 +57,21 @@ function calculateOutstandingPrincipal(originalPrincipal, annualRate, originalTe
  * @param prepaymentAmount - Lump-sum prepayment amount
  * @returns New tenure in months
  */
-function calculateNewTenure(outstandingPrincipal, annualRate, emi, prepaymentAmount) {
-    const P_after = new decimal_js_1.default(outstandingPrincipal).minus(prepaymentAmount);
+export function calculateNewTenure(outstandingPrincipal, annualRate, emi, prepaymentAmount) {
+    const P_after = new Decimal(outstandingPrincipal).minus(prepaymentAmount);
     const i = calculateMonthlyRate(annualRate);
-    const E = new decimal_js_1.default(emi);
+    const E = new Decimal(emi);
     // If prepayment exceeds outstanding principal or results in zero/negative principal
     if (P_after.lte(0)) {
-        return new decimal_js_1.default(0);
+        return new Decimal(0);
     }
-    const onePlusI = new decimal_js_1.default(1).plus(i);
+    const onePlusI = new Decimal(1).plus(i);
     const P_afterTimesI = P_after.times(i);
     const denominatorInner = E.minus(P_afterTimesI);
     // Check if denominator is positive (valid scenario)
     // If EMI is not sufficient to cover interest, tenure cannot be calculated
     if (denominatorInner.lte(0)) {
-        return new decimal_js_1.default(0);
+        return new Decimal(0);
     }
     const ratio = E.div(denominatorInner);
     const lnRatio = ratio.ln();
@@ -100,11 +86,11 @@ function calculateNewTenure(outstandingPrincipal, annualRate, emi, prepaymentAmo
  * @param prepaymentAmount - Lump-sum prepayment amount
  * @returns Interest saved amount
  */
-function calculateInterestSaved(emi, originalRemainingTenure, newTenure, prepaymentAmount) {
-    const E = new decimal_js_1.default(emi);
-    const originalRemaining = new decimal_js_1.default(originalRemainingTenure);
-    const newTenureDecimal = new decimal_js_1.default(newTenure);
-    const prepayment = new decimal_js_1.default(prepaymentAmount);
+export function calculateInterestSaved(emi, originalRemainingTenure, newTenure, prepaymentAmount) {
+    const E = new Decimal(emi);
+    const originalRemaining = new Decimal(originalRemainingTenure);
+    const newTenureDecimal = new Decimal(newTenure);
+    const prepayment = new Decimal(prepaymentAmount);
     const totalCostWithoutPrepay = E.times(originalRemaining);
     const totalCostWithPrepay = E.times(newTenureDecimal).plus(prepayment);
     return totalCostWithoutPrepay.minus(totalCostWithPrepay);
@@ -118,7 +104,7 @@ function calculateInterestSaved(emi, originalRemainingTenure, newTenure, prepaym
  * @param prepaymentAmount - Lump-sum prepayment amount
  * @returns Object containing all calculated values
  */
-function calculatePrepaymentScenario(originalPrincipal, annualRate, originalTenure, monthsPaid, prepaymentAmount) {
+export function calculatePrepaymentScenario(originalPrincipal, annualRate, originalTenure, monthsPaid, prepaymentAmount) {
     // Calculate EMI based on original loan terms
     const emi = calculateEMI(originalPrincipal, annualRate, originalTenure);
     // Calculate outstanding principal after monthsPaid
@@ -157,7 +143,7 @@ function calculatePrepaymentScenario(originalPrincipal, annualRate, originalTenu
  * @param prepaymentAmount - Lump-sum prepayment amount
  * @returns Object containing all calculated values
  */
-function calculatePrepaymentScenario1B(originalPrincipal, annualRate, originalTenure, monthsPaid, prepaymentAmount) {
+export function calculatePrepaymentScenario1B(originalPrincipal, annualRate, originalTenure, monthsPaid, prepaymentAmount) {
     // Calculate original EMI based on original loan terms
     const emi = calculateEMI(originalPrincipal, annualRate, originalTenure);
     // Calculate outstanding principal after monthsPaid
@@ -184,8 +170,8 @@ function calculatePrepaymentScenario1B(originalPrincipal, annualRate, originalTe
     // Calculate new EMI after prepayment
     // Formula: E' = P_after × i × (1+i)^N_remaining / [(1+i)^N_remaining - 1]
     const i = calculateMonthlyRate(annualRate);
-    const N_remaining = new decimal_js_1.default(remainingTenure);
-    const onePlusI = new decimal_js_1.default(1).plus(i);
+    const N_remaining = new Decimal(remainingTenure);
+    const onePlusI = new Decimal(1).plus(i);
     const onePlusIToN = onePlusI.pow(N_remaining);
     const numerator = P_after.times(i).times(onePlusIToN);
     const denominator = onePlusIToN.minus(1);
@@ -236,7 +222,7 @@ function calculatePrepaymentScenario1B(originalPrincipal, annualRate, originalTe
  * @param monthlyExtraPayment - Extra amount paid each month on top of EMI
  * @returns Object containing all calculated values
  */
-function calculateScenario2(originalPrincipal, annualRate, originalTenure, monthsPaid, monthlyExtraPayment) {
+export function calculateScenario2(originalPrincipal, annualRate, originalTenure, monthsPaid, monthlyExtraPayment) {
     // Calculate original EMI based on original loan terms
     const emi = calculateEMI(originalPrincipal, annualRate, originalTenure);
     // Calculate outstanding principal after monthsPaid
@@ -283,10 +269,10 @@ function calculateScenario2(originalPrincipal, annualRate, originalTenure, month
             interestSaved: 0,
             totalExtraPaid: 0,
             totalCostWithoutExtra: emi.times(remainingTenure).toNumber(),
-            totalCostWithExtra: new decimal_js_1.default(0).toNumber(),
+            totalCostWithExtra: new Decimal(0).toNumber(),
         };
     }
-    const onePlusI = new decimal_js_1.default(1).plus(i);
+    const onePlusI = new Decimal(1).plus(i);
     const ratio = E_plus_extra.div(denominatorInner);
     const lnRatio = ratio.ln();
     const lnOnePlusI = onePlusI.ln();
@@ -295,10 +281,10 @@ function calculateScenario2(originalPrincipal, annualRate, originalTenure, month
     // Calculate tenure reduction
     const tenureReduced = remainingTenure - newTenure;
     // Calculate total extra paid
-    const totalExtraPaid = new decimal_js_1.default(monthlyExtraPayment).times(newTenure);
+    const totalExtraPaid = new Decimal(monthlyExtraPayment).times(newTenure);
     // Calculate total costs
     const totalCostWithoutExtra = emi.times(remainingTenure);
-    const totalCostWithExtra = effectiveMonthlyPayment.times(new decimal_js_1.default(newTenure));
+    const totalCostWithExtra = effectiveMonthlyPayment.times(new Decimal(newTenure));
     // Calculate interest saved
     const interestSaved = totalCostWithoutExtra.minus(totalCostWithExtra);
     return {
@@ -327,7 +313,7 @@ function calculateScenario2(originalPrincipal, annualRate, originalTenure, month
  * @param newTenure - Tenure for refinanced loan in months (usually same as remaining)
  * @returns Object containing comparison data for all 4 options
  */
-function calculateScenario3(originalPrincipal, currentRate, originalTenure, monthsPaid, prepaymentAmount, newRate, refinanceCost, newTenure) {
+export function calculateScenario3(originalPrincipal, currentRate, originalTenure, monthsPaid, prepaymentAmount, newRate, refinanceCost, newTenure) {
     // Calculate original EMI
     const emi = calculateEMI(originalPrincipal, currentRate, originalTenure);
     // Calculate outstanding principal after monthsPaid
@@ -349,7 +335,7 @@ function calculateScenario3(originalPrincipal, currentRate, originalTenure, mont
     let optionA_totalCost = alreadyPaid;
     let optionA_monthlyPayment = emi;
     let optionA_tenure = remainingTenure;
-    let optionA_totalInterest = new decimal_js_1.default(0);
+    let optionA_totalInterest = new Decimal(0);
     let optionA_hasBenefit = false;
     let optionA_status = undefined;
     if (prepaymentAmount > 0 && prepaymentAmount < outstandingPrincipal.toNumber()) {
@@ -357,7 +343,7 @@ function calculateScenario3(originalPrincipal, currentRate, originalTenure, mont
         const P_afterTimesI = P_after.times(i_current);
         const denominatorInner = emi.minus(P_afterTimesI);
         if (denominatorInner.gt(0)) {
-            const onePlusI = new decimal_js_1.default(1).plus(i_current);
+            const onePlusI = new Decimal(1).plus(i_current);
             const ratio = emi.div(denominatorInner);
             const lnRatio = ratio.ln();
             const lnOnePlusI = onePlusI.ln();
@@ -387,9 +373,9 @@ function calculateScenario3(originalPrincipal, currentRate, originalTenure, mont
         optionA_status = prepaymentAmount === 0 ? "No benefit (same as Stay)" : "Invalid prepayment amount";
     }
     // Option B: Refinance Only
-    const refinanceCostDecimal = new decimal_js_1.default(refinanceCost);
+    const refinanceCostDecimal = new Decimal(refinanceCost);
     const P_refi_B = outstandingPrincipal.plus(refinanceCostDecimal);
-    const onePlusI_new = new decimal_js_1.default(1).plus(i_new);
+    const onePlusI_new = new Decimal(1).plus(i_new);
     const onePlusI_newToN = onePlusI_new.pow(newTenure);
     const optionB_emi = P_refi_B.times(i_new).times(onePlusI_newToN).div(onePlusI_newToN.minus(1));
     const optionB_monthlyPayment = optionB_emi;
@@ -407,7 +393,7 @@ function calculateScenario3(originalPrincipal, currentRate, originalTenure, mont
     let optionC_totalCost = alreadyPaid;
     let optionC_monthlyPayment = emi;
     let optionC_tenure = remainingTenure;
-    let optionC_totalInterest = new decimal_js_1.default(0);
+    let optionC_totalInterest = new Decimal(0);
     let optionC_hasBenefit = false;
     let optionC_status = undefined;
     // If prepayment = 0, Option C is same as Option B
@@ -420,7 +406,7 @@ function calculateScenario3(originalPrincipal, currentRate, originalTenure, mont
         optionC_status = "Same as Option B (no prepayment)";
     }
     else if (P_refi_C.gt(0) && prepaymentAmount < outstandingPrincipal.toNumber()) {
-        const onePlusI_new_C = new decimal_js_1.default(1).plus(i_new);
+        const onePlusI_new_C = new Decimal(1).plus(i_new);
         const onePlusI_newToN_C = onePlusI_new_C.pow(newTenure);
         const optionC_emi = P_refi_C.times(i_new).times(onePlusI_newToN_C).div(onePlusI_newToN_C.minus(1));
         optionC_monthlyPayment = optionC_emi;
@@ -535,3 +521,4 @@ function calculateScenario3(originalPrincipal, currentRate, originalTenure, mont
         maxSavings,
     };
 }
+//# sourceMappingURL=calculator.js.map

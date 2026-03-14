@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRewardsStore } from "@/app/lib/rewards/store";
-import { formatCurrency } from "@/app/lib/currency";
+import { formatCurrency } from "@credx/shared";
 import TierBadge from "./TierBadge";
 import StreakBadge from "./StreakBadge";
 

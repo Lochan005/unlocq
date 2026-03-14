@@ -1,17 +1,9 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2017",
-    "strict": true,
-    "skipLibCheck": true,
     "composite": true,
-    "declaration": true,
-    "declarationMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true
+    "rootDir": "./src"
   },
   "include": ["src/**/*.ts", "src/**/*.json"],
   "exclude": ["node_modules", "dist"]

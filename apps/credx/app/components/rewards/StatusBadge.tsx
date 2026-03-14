@@ -1,6 +1,6 @@
 "use client";
 
-import type { RewardStatus } from "@/app/lib/types";
+import type { RewardStatus } from "@credx/shared";
 
 const statusConfig: Record<
   RewardStatus,

@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserTier } from "@/app/lib/types";
+import type { UserTier } from "@credx/shared";
 import { useRewardsStore } from "@/app/lib/rewards/store";
 import { AppIcon } from "@/app/lib/iconMap";
 import { Rocket, Confetti, Fire } from "@phosphor-icons/react";

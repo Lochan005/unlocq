@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUserOrders } from "@/app/lib/rewards";
+import { getUserOrders } from "@credx/shared";
 
 export async function GET(request: Request) {
   try {

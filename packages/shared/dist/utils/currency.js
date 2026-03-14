@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Unified currency formatter for the entire application.
  * Indian comma formatting below ₹1,00,000.
@@ -10,9 +9,7 @@
  *   formatCurrency(2847.5, { showPaise: true }) → "₹2,847.50"
  *   formatCurrency(-5000)         → "-₹5,000"
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatCurrency = formatCurrency;
-function formatCurrency(amount, options) {
+export function formatCurrency(amount, options) {
     const isNegative = amount < 0;
     const absAmount = Math.abs(amount);
     const prefix = isNegative ? "-₹" : "₹";
@@ -20,7 +17,7 @@ function formatCurrency(amount, options) {
         const lakhs = absAmount / 100000;
         return `${prefix}${lakhs.toFixed(2)}L`;
     }
-    const formatted = (options === null || options === void 0 ? void 0 : options.showPaise)
+    const formatted = options?.showPaise
         ? absAmount.toLocaleString("en-IN", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -28,3 +25,4 @@ function formatCurrency(amount, options) {
         : absAmount.toLocaleString("en-IN");
     return `${prefix}${formatted}`;
 }
+//# sourceMappingURL=currency.js.map

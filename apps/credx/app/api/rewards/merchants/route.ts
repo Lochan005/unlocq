@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllMerchantsWithStatus } from "@/app/lib/rewards";
+import { getAllMerchantsWithStatus } from "@credx/shared";
 
 export async function GET() {
   try {
