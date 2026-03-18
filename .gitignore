@@ -43,3 +43,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IFSC data - unused lookup files (not referenced in codebase)
+apps/credx/data/ifsc/npci_ifsc_lookup.json
+apps/credx/data/ifsc/npci_ifsc_lookup.min.json
+
+# compiled package output
+packages/shared/dist
