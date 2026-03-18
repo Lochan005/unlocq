@@ -65,6 +65,10 @@ export default function AnimatedInput({
     }
   };
 
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    handleChange(e as unknown as React.ChangeEvent<HTMLInputElement>);
+  };
+
   // Generate help text with min/max info
   const displayHelpText = helpText || (min !== undefined && max !== undefined
     ? `Min: ${prefix || ""}${min.toLocaleString("en-IN")}${suffix ? ` ${suffix}` : ""} - Max: ${prefix || ""}${max.toLocaleString("en-IN")}${suffix ? ` ${suffix}` : ""}`
@@ -137,7 +141,7 @@ export default function AnimatedInput({
             id={label.toLowerCase().replace(/\s+/g, "-")}
             value={type === "number" ? formatValue(value) : value}
             onChange={handleChange}
-            onInput={handleChange}
+            onInput={handleInput}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className={`
