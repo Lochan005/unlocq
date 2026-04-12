@@ -488,7 +488,7 @@ export default function SplashScreen1({
         }}
       >
         <h1 className="text-4xl font-extrabold tracking-tight text-[#2E2E8F] drop-shadow-sm">
-          UNLOQ1
+          Unloqs
         </h1>
         <p className="mt-1 text-sm font-medium text-[#0F0F5C] tracking-wide">
           Money Matters

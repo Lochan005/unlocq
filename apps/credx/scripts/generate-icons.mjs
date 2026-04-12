@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 /**
  * Generates PNG favicon variants and favicon.ico from app/icon.svg for full browser and PWA support.
- * Run: npm run icons
+ * Run: pnpm run icons (from apps/credx) or via build
  * Output: public/favicon.ico, favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png,
  *         android-chrome-192x192.png, android-chrome-512x512.png
  */
 
-import sharp from "sharp";
-import toIco from "to-ico";
+import { createRequire } from "module";
 import { readFileSync, mkdirSync, existsSync, writeFileSync } from "fs";
+
+const require = createRequire(import.meta.url);
+const sharp = require("sharp");
+const toIco = require("to-ico");
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 

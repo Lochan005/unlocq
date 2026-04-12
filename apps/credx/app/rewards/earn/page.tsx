@@ -11,7 +11,7 @@ import {
 import { AppIcon } from "@/app/lib/iconMap";
 import { formatCurrency } from "@credx/shared";
 import { ShoppingBag, Lightbulb, Coins, Check, Copy, ArrowSquareOut } from "@phosphor-icons/react";
-import { UNLOQ1Coin } from "@/app/components/icons";
+import { UnloqsCoin } from "@/app/components/icons";
 import type { CatalogueItem, MerchantCategory } from "@credx/shared";
 import { staggerContainer, staggerItem } from "@/app/lib/animation";
 
@@ -273,7 +273,7 @@ export default function EarnPage() {
                     {action.type}
                   </span>
                   <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                    +{action.coins} <UNLOQ1Coin size={14} color="#92400e" />
+                    +{action.coins} <UnloqsCoin size={14} color="#92400e" />
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-slate-500">{action.description}</p>

@@ -29,7 +29,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "UNLOQ1 - Smart Loan Prepayment Calculator",
+  title: "Unloqs - Smart Loan Prepayment Calculator",
   description: "Discover how much you can save on your loan by prepaying smartly",
   manifest: "/site.webmanifest",
   icons: {

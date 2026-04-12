@@ -10,10 +10,10 @@ import {
 import { formatCurrency } from "@credx/shared";
 import { fadeIn } from "../lib/animation";
 import AnimatedNumber from "@/app/components/AnimatedNumber";
-import { calculateUNLOQ1Score, getScoreTier } from "@credx/shared";
+import { calculateUnloqsScore, getScoreTier } from "@credx/shared";
 import { AppIcon } from "@/app/lib/iconMap";
 import { Fire, ArrowRight } from "@phosphor-icons/react";
-import { UNLOQ1Coin } from "@/app/components/icons";
+import { UnloqsCoin } from "@/app/components/icons";
 
 function getRewardSourceName(entry: {
   merchant_id: string | null;
@@ -62,7 +62,7 @@ export default function RewardsOverviewPage() {
     recentCalculatorUse: true,
     hasRecentCouponPurchase: (userProfile?.total_cards_purchased ?? 0) > 0,
   };
-  const score = calculateUNLOQ1Score(loanData, engagementData);
+  const score = calculateUnloqsScore(loanData, engagementData);
   const tier = getScoreTier(score);
 
   const monthlyTotal = useRewardsStore((s) =>
@@ -122,7 +122,7 @@ export default function RewardsOverviewPage() {
             COINS BALANCE
           </p>
           <p className="flex items-center justify-center gap-1.5 text-2xl font-extrabold text-[#1C1C78]">
-            <UNLOQ1Coin size={24} color="#f59e0b" /> {userProfile?.coins_confirmed?.toLocaleString() ?? 0}
+            <UnloqsCoin size={24} color="#f59e0b" /> {userProfile?.coins_confirmed?.toLocaleString() ?? 0}
           </p>
           <p className="mt-2 text-sm text-slate-500">
             ≈ {formatCurrency((userProfile?.coins_confirmed ?? 0) / 10)}{" "}
@@ -155,7 +155,7 @@ export default function RewardsOverviewPage() {
         </div>
       </motion.div>
 
-      {/* UNLOQ1 Score */}
+      {/* Unloqs Score */}
       <motion.div
         className="rounded-2xl border border-[#EEEDF8] bg-white p-6 shadow-sm"
         {...fadeIn}
@@ -164,7 +164,7 @@ export default function RewardsOverviewPage() {
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="mb-1 text-xs font-semibold uppercase text-slate-500">
-              UNLOQ1 Score
+              Unloqs Score
             </p>
             <div className="flex items-center gap-3">
               <span className="text-4xl font-extrabold text-slate-800">

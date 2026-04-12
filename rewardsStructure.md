@@ -13,7 +13,7 @@ Lump Sum & Monthly Extra: Added "Set Reminder" buttons that award +25 bonus coin
 3. UI/Branding Refresh
 Color scheme update: Header navigation shifted from purple tones (#9678CD, #B19CD7, #5B4B8A) to indigo tones (#5C6BC0, #9FA8DA, #303F9F)
 Icons overhaul: Replaced emoji icons (lightbulb, coins, calendar, arrows, chart) on the homepage with Phosphor Icons (@phosphor-icons/react@^2.1.10) — duotone style, consistent sizing
-Custom icon: New UnLoQ1Coin SVG component under app/components/icons/
+Custom icon: New UnloqsCoin SVG component under app/components/icons/
 4. About Us Page Rewrite
 Rewrote the placeholder "under development" copy into a full company description — founding year, Bengaluru HQ, mission, legal/compliance placeholders
 5. New Utility Libraries

@@ -8,7 +8,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>UnLoQ1 Mobile</Text>
+      <Text style={styles.title}>Unloqs Mobile</Text>
       <Text style={styles.subtitle}>
         Pool Balance: {formatCurrency(testBalance.confirmed)}
       </Text>

@@ -449,7 +449,7 @@ export default function Home() {
           style={{ fontFamily: "var(--font-roboto)" }}
           {...fadeIn}
         >
-          UNLOQ1
+          Unloqs
         </motion.h1>
         <p className="text-lg md:text-xl text-[#0F0F5C] max-w-2xl mx-auto">
           Discover how much interest you can reclaim today
@@ -690,7 +690,7 @@ export default function Home() {
             className="text-5xl md:text-6xl font-bold text-[#4A4ABF]"
           />
         </div>
-        <p className="text-lg text-gray-600 mt-4">using UNLOQ1</p>
+        <p className="text-lg text-gray-600 mt-4">using Unloqs</p>
       </motion.div>
 
       {FEATURE_FLAGS.SHOW_SCENARIO_OPTIONS && (

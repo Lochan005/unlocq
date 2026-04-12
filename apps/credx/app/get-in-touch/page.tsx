@@ -31,17 +31,17 @@ const CONTACT_INFO = [
 ];
 
 const CHANNELS = [
-  { icon: EnvelopeSimple, label: "Email us", desc: "Send us an email anytime", href: "mailto:hello@unloq1.in" },
+  { icon: EnvelopeSimple, label: "Email us", desc: "Send us an email anytime", href: "mailto:hello@unloqs.in" },
   { icon: ChatCircle, label: "WhatsApp", desc: "Chat with us instantly on WhatsApp", href: "https://wa.me/919876543210" },
-  { icon: LinkedinLogo, label: "LinkedIn", desc: "Connect with us on LinkedIn", href: "https://linkedin.com/company/unloq1" },
-  { icon: TwitterLogo, label: "Twitter / X", desc: "Follow us for updates", href: "https://x.com/unloq1" },
+  { icon: LinkedinLogo, label: "LinkedIn", desc: "Connect with us on LinkedIn", href: "https://linkedin.com/company/unloqs" },
+  { icon: TwitterLogo, label: "Twitter / X", desc: "Follow us for updates", href: "https://x.com/unloqs" },
 ];
 
 const FAQ_ITEMS = [
-  { q: "How does UNLOQ1 help me save on my home loan?", a: "UNLOQ1 analyzes your loan and suggests optimal prepayment strategies—whether lump sum, monthly extra, or refinancing—so you pay less interest and become debt-free faster." },
-  { q: "Is UNLOQ1 free to use?", a: "Yes. UNLOQ1's core calculator and insights are free. We may offer premium features later, but the core experience remains free for homeowners." },
+  { q: "How does Unloqs help me save on my home loan?", a: "Unloqs analyzes your loan and suggests optimal prepayment strategies—whether lump sum, monthly extra, or refinancing—so you pay less interest and become debt-free faster." },
+  { q: "Is Unloqs free to use?", a: "Yes. Unloqs's core calculator and insights are free. We may offer premium features later, but the core experience remains free for homeowners." },
   { q: "How do I connect my bank account?", a: "We don't connect to your bank directly. You enter your loan details manually, and we provide recommendations. Your data stays on your device." },
-  { q: "Can banks or NBFCs partner with UNLOQ1?", a: "Absolutely. We're open to partnerships with banks and NBFCs to help their customers save on home loans. Reach out via the form above." },
+  { q: "Can banks or NBFCs partner with Unloqs?", a: "Absolutely. We're open to partnerships with banks and NBFCs to help their customers save on home loans. Reach out via the form above." },
 ];
 
 export default function GetInTouch() {
@@ -67,7 +67,7 @@ export default function GetInTouch() {
       await new Promise((r) => setTimeout(r, 1500));
       setSuccess(true);
     } catch {
-      setError("Something went wrong. Please try again or email us directly at hello@unloq1.in");
+      setError("Something went wrong. Please try again or email us directly at hello@unloqs.in");
     } finally {
       setLoading(false);
     }

@@ -1,14 +1,14 @@
-interface UNLOQ1CoinProps {
+interface UnloqsCoinProps {
   size?: number;
   color?: string;
   className?: string;
 }
 
-export const UNLOQ1Coin = ({
+export const UnloqsCoin = ({
   size = 24,
   color = "currentColor",
   className,
-}: UNLOQ1CoinProps) => (
+}: UnloqsCoinProps) => (
   <svg
     width={size}
     height={size}
@@ -41,4 +41,4 @@ export const UNLOQ1Coin = ({
   </svg>
 );
 
-export default UNLOQ1Coin;
+export default UnloqsCoin;

@@ -20,7 +20,7 @@ export default function Blog() {
           transition={{ delay: 0.2 }}
         >
           <p className="text-[#0F0F5C] text-lg leading-relaxed mb-6">
-            Welcome to the UNLOQ1 Blog!
+            Welcome to the Unloqs Blog!
           </p>
           
           <p className="text-[#0F0F5C] text-lg leading-relaxed mb-6">

@@ -33,7 +33,7 @@ export default function Header() {
             className="text-2xl font-bold leading-tight text-white hover:text-[#E6E4F5] transition-colors"
             style={{ fontFamily: "var(--font-roboto)" }}
           >
-            UNLOQ1
+            Unloqs
           </Link>
           <span className="text-[11px] font-medium text-white/70 tracking-tight mt-0.5">
             Money Matters

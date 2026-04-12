@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-3">
           {/* Left: Copyright */}
           <div className="text-xs text-gray-600 order-1 md:order-none">
-            © 2026 UNLOQ1. All rights reserved.
+            © 2026 Unloqs. All rights reserved.
           </div>
 
           {/* Center: Data Privacy Message */}

@@ -1,4 +1,4 @@
-# UnLoQ1 — Monorepo Migration: Claude Code Prompts
+# Unloqs — Monorepo Migration: Claude Code Prompts
 
 Task 1 (Turborepo + pnpm init) is already complete. The current state is:
 - Root: pnpm-workspace.yaml, turbo.json, root package.json (credx-monorepo)
@@ -591,7 +591,7 @@ TASK:
 
 1. From the monorepo root, initialize an Expo app:
 ```bash
-npx create-expo-app@latest apps/mobile --template blank-typescript
+pnpm dlx create-expo-app@latest apps/mobile --template blank-typescript
 ```
 
 2. After creation, update apps/mobile/package.json:
@@ -635,7 +635,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>UnLoQ1 Mobile</Text>
+      <Text style={styles.title}>Unloqs Mobile</Text>
       <Text style={styles.subtitle}>
         Pool Balance: {formatCurrency(testBalance.confirmed)}
       </Text>

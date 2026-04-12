@@ -9,7 +9,7 @@ import {
   calculateInterestSaved,
 } from "@credx/shared";
 import { Bank, Gear, TrendUp, Coins, Storefront, Lightbulb } from "@phosphor-icons/react";
-import { UNLOQ1Coin } from "@/app/components/icons";
+import { UnloqsCoin } from "@/app/components/icons";
 
 export default function PoolPage() {
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -108,7 +108,7 @@ export default function PoolPage() {
               {formatCurrency(confirmed)}
             </p>
             <p className="mt-2 flex items-center gap-1 text-sm text-white/90">
-              <UNLOQ1Coin size={16} color="#fbbf24" /> {coinsConfirmed.toLocaleString()} coins ≈{" "}
+              <UnloqsCoin size={16} color="#fbbf24" /> {coinsConfirmed.toLocaleString()} coins ≈{" "}
               {formatCurrency(coinsConfirmed / 10)}
             </p>
             {pending > 0 && (

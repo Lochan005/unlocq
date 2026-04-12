@@ -264,7 +264,7 @@ export default function SplashScreen({
         }}
       >
         <h1 className="text-4xl font-extrabold tracking-tight text-[#5C6BC0] drop-shadow-sm">
-          UNLOQ1
+          Unloqs
         </h1>
         <p className="mt-1 text-sm font-medium text-[#4A4ABF] tracking-wide">
           Building your freedom

@@ -45,7 +45,7 @@ export default function AuthPage() {
         {/* Header */}
         <div className="text-center pt-8 pb-6 px-6">
           <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-[#1C1C78] via-[#2E2E8F] to-[#4A4ABF] bg-clip-text text-transparent tracking-tight">
-            UNLOQ1
+            Unloqs
           </h1>
           <p className="text-sm font-medium text-[#0F0F5C] mt-1 tracking-tight">
             Money Matters

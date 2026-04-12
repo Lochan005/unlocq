@@ -1,10 +1,10 @@
-# UnLoQ1 — "Get in Touch" Page UI Design Prompt
+# Unloqs — "Get in Touch" Page UI Design Prompt
 
 ---
 
 ## Context
 
-**Product**: UnLoQ1 — India's first intelligent mortgage repayment acceleration platform  
+**Product**: Unloqs — India's first intelligent mortgage repayment acceleration platform  
 **Tagline**: "Money Matters ₹"  
 **Brand Color Palette**: Midnight Blue (#1e3a5f) primary, with accents of Warm Gold (#d4a843), Soft Teal (#5ab0a8), and light slate backgrounds  
 **Design System**: Rounded cards, clean lines, gradient CTAs, warm and trustworthy tone  
@@ -14,7 +14,7 @@
 
 ## Page Objective
 
-Design a "Get in Touch" page that feels approachable and trustworthy — not corporate or cold. The page should serve anyone who wants to reach the UnLoQ1 team — whether it's a curious visitor, a potential bank partner, or an existing user needing help.
+Design a "Get in Touch" page that feels approachable and trustworthy — not corporate or cold. The page should serve anyone who wants to reach the Unloqs team — whether it's a curious visitor, a potential bank partner, or an existing user needing help.
 
 The design must make the visitor feel heard before they even type a word. Keep the form minimal and frictionless — three fields, no more.
 
@@ -26,7 +26,7 @@ The design must make the visitor feel heard before they even type a word. Keep t
 
 - **Heading**: A warm, inviting headline (e.g., "We'd Love to Hear From You" or "Let's Talk About Your Financial Freedom")
 - **Subheading**: A one-liner that sets expectations (e.g., "Drop us a line and we'll get back within 24 hours.")
-- **Visual element**: A subtle illustration or animation related to communication/connection — not a generic stock photo. Think: a stylized chat bubble with the UnLoQ1 logo, or a hand-drawn envelope motif.
+- **Visual element**: A subtle illustration or animation related to communication/connection — not a generic stock photo. Think: a stylized chat bubble with the Unloqs logo, or a hand-drawn envelope motif.
 
 ---
 
@@ -48,7 +48,7 @@ The form should be the visual centerpiece of the page. Clean, spacious, with cle
 - **Submit button**: Prominent gradient CTA (midnight blue → deep navy), full-width or large. Label: "Send Message" with a subtle send-arrow icon
 - **Loading state**: Button shows a spinner on submit
 - **Success state**: Replace the form with a confirmation card — "✅ Message Sent! We'll get back to you within 24 hours." Include a "Send another message" link to reset the form.
-- **Error state**: Toast notification or inline banner — "Something went wrong. Please try again or email us directly at hello@unloq1.in"
+- **Error state**: Toast notification or inline banner — "Something went wrong. Please try again or email us directly at hello@unloqs.in"
 
 ---
 
@@ -58,7 +58,7 @@ Display these details clearly with icons:
 
 | Info | Icon | Value |
 |---|---|---|
-| Email | ✉️ Mail icon | hello@unloq1.in |
+| Email | ✉️ Mail icon | hello@unloqs.in |
 | Phone | 📞 Phone icon | +91-XXXXX-XXXXX |
 | Office Address | 📍 Pin icon | [City, State, India — placeholder] |
 | Working Hours | 🕐 Clock icon | Mon–Fri: 10:00 AM – 7:00 PM IST |
@@ -83,10 +83,10 @@ Each with a recognizable icon and a one-line description (e.g., "Chat with us in
 
 A compact accordion or card grid with 3–4 common questions to reduce unnecessary inquiries:
 
-- "How does UnLoQ1 help me save on my home loan?"
-- "Is UnLoQ1 free to use?"
+- "How does Unloqs help me save on my home loan?"
+- "Is Unloqs free to use?"
 - "How do I connect my bank account?"
-- "Can banks or NBFCs partner with UnLoQ1?"
+- "Can banks or NBFCs partner with Unloqs?"
 
 Each expands to a 2–3 line answer. Include a "View All FAQs →" link.
 
@@ -111,7 +111,7 @@ A subtle strip showing:
 - Generous whitespace. No cramped fields. Each form field should breathe.
 
 ### Typography
-- Headings: Bold, warm, slightly rounded typeface (consistent with UnLoQ1 brand — e.g., Plus Jakarta Sans 700/800)
+- Headings: Bold, warm, slightly rounded typeface (consistent with Unloqs brand — e.g., Plus Jakarta Sans 700/800)
 - Body/labels: Clean, legible, 14–16px
 - Placeholder text: Light gray, italic optional
 
@@ -171,4 +171,4 @@ A subtle strip showing:
 
 ---
 
-*Use this prompt to generate a pixel-perfect, brand-consistent "Get in Touch" page for UnLoQ1 that converts visitors into engaged users and partners.*
+*Use this prompt to generate a pixel-perfect, brand-consistent "Get in Touch" page for Unloqs that converts visitors into engaged users and partners.*

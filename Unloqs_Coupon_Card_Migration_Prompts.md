@@ -1,6 +1,6 @@
-# UnLoQ1 — Coupon Card Migration: Claude Code Prompts
+# Unloqs — Coupon Card Migration: Claude Code Prompts
 
-Run these prompts **in order**, one layer at a time, inside Claude Code (via Cursor extension or terminal). After each layer, review the diffs and run `npx tsc --noEmit` before proceeding to the next.
+Run these prompts **in order**, one layer at a time, inside Claude Code (via Cursor extension or terminal). After each layer, review the diffs and run `pnpm typecheck` before proceeding to the next.
 
 ---
 
@@ -9,11 +9,11 @@ Run these prompts **in order**, one layer at a time, inside Claude Code (via Cur
 **Paste this prompt into Claude Code:**
 
 ```
-CONTEXT: I am migrating the UnLoQ1 rewards system from an affiliate marketing model to a coupon card marketplace model. This is Layer 1 of 7 — rewriting types and data files only. Do NOT touch engine files, store, API routes, components, or pages in this layer.
+CONTEXT: I am migrating the Unloqs rewards system from an affiliate marketing model to a coupon card marketplace model. This is Layer 1 of 7 — rewriting types and data files only. Do NOT touch engine files, store, API routes, components, or pages in this layer.
 
 BUSINESS MODEL CHANGE:
 - OLD: Users click affiliate tracked links → shop on merchant sites → affiliate network sends postback with commission → 85% credited to user's prepayment pool
-- NEW: Users buy discounted coupon cards on UnLoQ1 (e.g., pay ₹450 for a ₹500 Swiggy card) → voucher code is generated and delivered → cashback (e.g., 2% of face value) is credited to prepayment pool → pool balance is used toward home loan prepayment
+- NEW: Users buy discounted coupon cards on Unloqs (e.g., pay ₹450 for a ₹500 Swiggy card) → voucher code is generated and delivered → cashback (e.g., 2% of face value) is credited to prepayment pool → pool balance is used toward home loan prepayment
 
 TASK 1 — Rewrite @app/lib/types.ts:
 
@@ -51,7 +51,7 @@ Rename this file to couponCatalogue.ts. Delete all the old affiliate route code.
 
 TASK 3 — Update @data/rewards/earn-actions.json:
 
-Add a new action: { action_id: "first_card_purchase", action_name: "First card purchase", coins: 200, type: "one-time", icon_emoji: "🎫", description: "Buy your first coupon card on UnLoQ1" }. Add: { action_id: "purchase_streak", action_name: "Weekly purchase streak", coins: 100, type: "bonus", icon_emoji: "🔥", description: "Buy at least one card every week for 4 weeks" }. Keep all existing actions.
+Add a new action: { action_id: "first_card_purchase", action_name: "First card purchase", coins: 200, type: "one-time", icon_emoji: "🎫", description: "Buy your first coupon card on Unloqs" }. Add: { action_id: "purchase_streak", action_name: "Weekly purchase streak", coins: 100, type: "bonus", icon_emoji: "🔥", description: "Buy at least one card every week for 4 weeks" }. Keep all existing actions.
 
 TASK 4 — Update @data/rewards/merchants.json:
 
@@ -71,7 +71,7 @@ TASK 6 — Update @app/lib/rewards/data/userMock.ts:
 
 Remove consent_affiliate_tracking and consent_granted_at from mockUserProfile. Add total_cards_purchased: 12. Keep all other fields the same.
 
-After completing all tasks, run: npx tsc --noEmit
+After completing all tasks, run: pnpm typecheck
 Fix any type errors before finishing.
 ```
 
@@ -82,7 +82,7 @@ Fix any type errors before finishing.
 **Paste this prompt into Claude Code:**
 
 ```
-CONTEXT: I am migrating UnLoQ1 from affiliate rewards to coupon card rewards. Layer 1 (types + data) is complete. This is Layer 2 of 7 — rewriting the three engine files. Do NOT touch the store, API routes, components, or pages.
+CONTEXT: I am migrating Unloqs from affiliate rewards to coupon card rewards. Layer 1 (types + data) is complete. This is Layer 2 of 7 — rewriting the three engine files. Do NOT touch the store, API routes, components, or pages.
 
 Read @app/lib/types.ts first to understand the new type definitions from Layer 1.
 
@@ -108,7 +108,7 @@ This engine handles the coupon purchase flow. It should export these functions:
 
 3. generateVoucher(orderId: string): CouponOrder (internal, but exported for testing)
    - Finds order by order_id
-   - Generates a mock voucher code: "UNLOQ1-" + merchant_id.toUpperCase() + "-" + random 6 alphanumeric chars
+   - Generates a mock voucher code: "UNLOQS-" + merchant_id.toUpperCase() + "-" + random 6 alphanumeric chars
    - Sets voucher_status to "generated", voucher_code to the generated code, voucher_generated_at to now
    - Sets deep_link to "https://www." + merchant_id + ".com/redeem?code=" + voucher_code
    - Sets expiry_date to 6 months from now
@@ -184,7 +184,7 @@ Replace the old exports with the new function names:
 - Add: couponCatalogue (from data/couponCatalogue), getCatalogue, getCatalogueItem, getMerchantDenominations, getMerchantStock, getAllMerchantsWithStatus (from engine/catalogueEngine), initiatePurchase, confirmPayment, generateVoucher, deliverVoucher, getOrderById, getUserOrders, getOrderStore (from engine/purchaseEngine), creditCashback (from engine/rewardsLedger)
 - Keep all other existing exports from rewardsLedger and data files
 
-After completing all tasks, run: npx tsc --noEmit
+After completing all tasks, run: pnpm typecheck
 Fix any type errors before finishing.
 ```
 
@@ -195,7 +195,7 @@ Fix any type errors before finishing.
 **Paste this prompt into Claude Code:**
 
 ```
-CONTEXT: I am migrating UnLoQ1 from affiliate rewards to coupon card rewards. Layers 1-2 (types, data, engines) are complete. This is Layer 3 of 7 — rewriting the Zustand store and API routes. Do NOT touch components or pages.
+CONTEXT: I am migrating Unloqs from affiliate rewards to coupon card rewards. Layers 1-2 (types, data, engines) are complete. This is Layer 3 of 7 — rewriting the Zustand store and API routes. Do NOT touch components or pages.
 
 Read @app/lib/types.ts and @app/lib/rewards/index.ts first to understand the available types and engine functions.
 
@@ -281,7 +281,7 @@ TASK 11 — Update @app/api/rewards/redeem/route.ts:
 - Should still work since redeemFromPool and restoreRecentRedemption are kept
 - Verify imports are correct
 
-After completing all tasks, run: npx tsc --noEmit
+After completing all tasks, run: pnpm typecheck
 Fix any type errors before finishing.
 ```
 
@@ -292,7 +292,7 @@ Fix any type errors before finishing.
 **Paste this prompt into Claude Code:**
 
 ```
-CONTEXT: I am migrating UnLoQ1 from affiliate rewards to coupon card rewards. Layers 1-3 (types, data, engines, store, APIs) are complete. This is Layer 4 of 7 — updating UI components and the rewards layout. Do NOT touch pages yet.
+CONTEXT: I am migrating Unloqs from affiliate rewards to coupon card rewards. Layers 1-3 (types, data, engines, store, APIs) are complete. This is Layer 4 of 7 — updating UI components and the rewards layout. Do NOT touch pages yet.
 
 Read @app/lib/types.ts and @app/lib/rewards/store.ts to understand the current state shape.
 
@@ -332,7 +332,7 @@ TASK 6 — Keep these components UNCHANGED (verify they compile):
 TASK 7 — Update @app/rewards/layout.tsx:
 Add a new "My Cards" tab to the tab navigation. The current tabs are: Overview, Earn, Pool, Redeem, Tiers. Change to: Overview, Shop Cards, My Cards, Pool, Redeem, Tiers. The "Shop Cards" tab links to /rewards/earn (same route, just renamed label). The "My Cards" tab links to /rewards/my-cards (new route).
 
-After completing all tasks, run: npx tsc --noEmit
+After completing all tasks, run: pnpm typecheck
 Fix any type errors before finishing.
 ```
 
@@ -343,7 +343,7 @@ Fix any type errors before finishing.
 **Paste this prompt into Claude Code:**
 
 ```
-CONTEXT: I am migrating UnLoQ1 from affiliate rewards to coupon card rewards. Layers 1-4 are complete. This is Layer 5 of 7 — rewriting the rewards UI pages. The store, API routes, components, and types are all updated.
+CONTEXT: I am migrating Unloqs from affiliate rewards to coupon card rewards. Layers 1-4 are complete. This is Layer 5 of 7 — rewriting the rewards UI pages. The store, API routes, components, and types are all updated.
 
 Read @app/lib/rewards/store.ts to understand the available state and actions. Read @app/lib/types.ts for CatalogueItem and CouponOrder types.
 
@@ -389,11 +389,11 @@ Remove any affiliate-specific references in the recent activity feed. The activi
 - For reward_type "platform_bonus": show "Bonus: [campaign_ref readable]"
 - Status badges should use the new StatusBadge statuses
 
-Remove any reference to consentGranted or ConsentModal. The UNLOQ1 Score calculation should use hasRecentCouponPurchase instead of hasRecentPostbackCredit (update in the score computation section if it exists on this page).
+Remove any reference to consentGranted or ConsentModal. The Unloqs Score calculation should use hasRecentCouponPurchase instead of hasRecentPostbackCredit (update in the score computation section if it exists on this page).
 
 Keep: pool balance display, coins display, lifetime prepaid, streak display, tier badge.
 
-After completing all tasks, run: npx tsc --noEmit
+After completing all tasks, run: pnpm typecheck
 Fix any type errors before finishing.
 ```
 
@@ -404,7 +404,7 @@ Fix any type errors before finishing.
 **Paste this prompt into Claude Code:**
 
 ```
-CONTEXT: I am migrating UnLoQ1 from affiliate rewards to coupon card rewards. Layers 1-5 are complete. This is Layer 6 of 7 — updating the non-rewards pages that integrate with the rewards system.
+CONTEXT: I am migrating Unloqs from affiliate rewards to coupon card rewards. Layers 1-5 are complete. This is Layer 6 of 7 — updating the non-rewards pages that integrate with the rewards system.
 
 TASK 1 — Update @app/pay-now/page.tsx:
 
@@ -429,7 +429,7 @@ Same as lump-sum — uses addBonus from the store. Verify:
 - No stale imports from old engine files
 - TypeScript compiles clean
 
-After completing all tasks, run: npx tsc --noEmit
+After completing all tasks, run: pnpm typecheck
 Fix any type errors before finishing.
 ```
 
@@ -440,7 +440,7 @@ Fix any type errors before finishing.
 **Paste this prompt into Claude Code:**
 
 ```
-CONTEXT: I have completed the migration of UnLoQ1 from affiliate rewards to coupon card rewards (Layers 1-6). This is the final verification layer. Your job is to find and fix every remaining issue.
+CONTEXT: I have completed the migration of Unloqs from affiliate rewards to coupon card rewards (Layers 1-6). This is the final verification layer. Your job is to find and fix every remaining issue.
 
 TASK 1 — Search for stale affiliate references across the entire codebase:
 
@@ -479,7 +479,7 @@ TASK 3 — Verify new files exist:
 - app/rewards/my-cards/page.tsx
 
 TASK 4 — TypeScript compilation:
-Run: npx tsc --noEmit
+Run: pnpm typecheck
 Fix ALL errors. Do not leave any type errors.
 
 TASK 5 — Import graph check:
@@ -489,7 +489,7 @@ Verify that no file imports from deleted files. Specifically check:
 - All API routes import from correct engine files
 
 TASK 6 — Build test:
-Run: npm run build
+Run: pnpm turbo build --filter=credx
 If the build fails, fix the errors. Common issues at this stage:
 - Missing page exports (my-cards page needs "use client" and default export)
 - Broken imports in layout.tsx
@@ -507,10 +507,10 @@ Report a summary of everything you found and fixed.
 3. Open Claude Code panel (Spark icon or Cmd+Shift+P → "Claude Code")
 4. Set to **Plan mode** for Layer 1
 5. Paste Layer 1 prompt, review the plan, approve
-6. After Layer 1 completes, verify `npx tsc --noEmit` passes
+6. After Layer 1 completes, verify `pnpm typecheck` passes
 7. Review the git diff: `git diff --stat`
 8. If satisfied, commit: `git commit -am "Layer 1: Coupon card types and data"`
 9. Repeat for Layers 2-7
-10. After Layer 7, run `npm run build` for final verification
+10. After Layer 7, run `pnpm turbo build --filter=credx` for final verification
 
 **Estimated time per layer:** 5-15 minutes depending on complexity. Total: ~1-1.5 hours with review time.

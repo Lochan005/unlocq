@@ -1,6 +1,6 @@
 {
-  "name": "UNLOQ1 - Smart Loan Prepayment Calculator",
-  "short_name": "UNLOQ1",
+  "name": "Unloqs - Smart Loan Prepayment Calculator",
+  "short_name": "Unloqs",
   "description": "Discover how much you can save on your loan by prepaying smartly",
   "start_url": "/",
   "display": "standalone",

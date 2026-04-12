@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "UnLoQ1",
-    "slug": "unloq1",
+    "name": "Unloqs",
+    "slug": "unloqs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,13 +13,13 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "in.unloq1.app",
+      "bundleIdentifier": "in.unloqs.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
-      "package": "in.unloq1.app",
+      "package": "in.unloqs.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
