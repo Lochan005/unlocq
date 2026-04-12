@@ -70,6 +70,8 @@ export function calculateUNLOQ1Score(
   );
 }
 
+export const calculateUnloqsScore = calculateUNLOQ1Score;
+
 /**
  * Maps a score to its display tier.
  */
