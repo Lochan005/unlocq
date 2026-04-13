@@ -110,7 +110,7 @@ export default function AuthPage() {
           </button>
         </form>
 
-        <p className="px-6 pb-4 text-center text-xs text-[#0F0F5C]/90">
+        <p className="px-6 pb-6 text-center text-xs text-[#0F0F5C]/90">
           By continuing, you agree to our{" "}
           <Link href="/terms" className="underline hover:text-[#1C1C78]">
             Terms of Service
@@ -118,15 +118,6 @@ export default function AuthPage() {
           &{" "}
           <Link href="/privacy" className="underline hover:text-[#1C1C78]">
             Privacy Policy
-          </Link>
-        </p>
-        <p className="px-6 pb-6 text-center">
-          <Link
-            href="/"
-            className="text-xs text-[#0F0F5C]/80 hover:text-[#1C1C78] hover:underline"
-          >
-            Skip for now{" "}
-            <ArrowRight size={12} weight="bold" className="inline-block ml-0.5" />
           </Link>
         </p>
       </div>

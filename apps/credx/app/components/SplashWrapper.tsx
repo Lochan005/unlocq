@@ -1,11 +1,18 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, type CSSProperties } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import SplashScreen from "./SplashScreen1";
 
 type Phase = "animating" | "deciding" | "hidden";
+
+const decidingBackdropStyle: CSSProperties = {
+  backgroundColor: "#F8F6FD",
+  backgroundImage:
+    "radial-gradient(circle, #E2E8F0 1px, transparent 1px)",
+  backgroundSize: "24px 24px",
+};
 
 export default function SplashWrapper() {
   const [phase, setPhase] = useState<Phase>("animating");
@@ -40,5 +47,17 @@ export default function SplashWrapper() {
 
   if (phase === "hidden") return null;
 
-  return <SplashScreen onComplete={handleSplashComplete} />;
+  return (
+    <div className="fixed inset-0 z-[9999]">
+      {phase === "animating" ? (
+        <SplashScreen onComplete={handleSplashComplete} />
+      ) : (
+        <div
+          className="absolute inset-0"
+          style={decidingBackdropStyle}
+          aria-hidden
+        />
+      )}
+    </div>
+  );
 }
