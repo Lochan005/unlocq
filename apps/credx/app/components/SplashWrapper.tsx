@@ -1,16 +1,44 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import SplashScreen from "./SplashScreen1";
 
-export default function SplashWrapper() {
-  const [showSplash, setShowSplash] = useState(true);
+type Phase = "animating" | "deciding" | "hidden";
 
-  const handleComplete = useCallback(() => {
-    setShowSplash(false);
+export default function SplashWrapper() {
+  const [phase, setPhase] = useState<Phase>("animating");
+  const pathname = usePathname();
+  const router = useRouter();
+  const { status } = useSession();
+
+  const handleSplashComplete = useCallback(() => {
+    setPhase("deciding");
   }, []);
 
-  if (!showSplash) return null;
+  useEffect(() => {
+    if (phase !== "deciding") return;
+    if (pathname !== "/") {
+      setPhase("hidden");
+      return;
+    }
+    if (status === "loading") return;
+    if (status === "authenticated") {
+      setPhase("hidden");
+      return;
+    }
+    router.replace("/auth");
+  }, [phase, pathname, status, router]);
 
-  return <SplashScreen onComplete={handleComplete} />;
+  useEffect(() => {
+    if (phase !== "deciding") return;
+    if (pathname === "/auth") {
+      setPhase("hidden");
+    }
+  }, [phase, pathname]);
+
+  if (phase === "hidden") return null;
+
+  return <SplashScreen onComplete={handleSplashComplete} />;
 }

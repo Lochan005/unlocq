@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SplashWrapper from "./components/SplashWrapper";
+import { AuthSessionProvider } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,13 +53,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${roboto.variable} antialiased bg-gradient-purple min-h-screen`}
       >
-        <SplashWrapper />
-        <Header />
-        <main className="min-h-screen pt-20 pb-8">
-          {children}
-        </main>
-        <Footer />
-        <Analytics />
+        <AuthSessionProvider>
+          <SplashWrapper />
+          <Header />
+          <main className="min-h-screen pt-20 pb-8">
+            {children}
+          </main>
+          <Footer />
+          <Analytics />
+        </AuthSessionProvider>
       </body>
     </html>
   );

@@ -8,6 +8,11 @@ const CORS_HEADERS = {
 };
 
 export function proxy(request: NextRequest) {
+  // Auth.js must not get extra CORS headers on session/callback responses.
+  if (request.nextUrl.pathname.startsWith("/api/auth")) {
+    return NextResponse.next();
+  }
+
   // Only apply CORS to API routes
   if (!request.nextUrl.pathname.startsWith("/api/")) {
     return NextResponse.next();

@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { HeaderRewardsIndicator } from "./rewards";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { status } = useSession();
 
   const navLinks = [
     { href: "/about-us", label: "About us" },
@@ -43,6 +45,15 @@ export default function Header() {
         {/* Rewards Indicator + Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
           <HeaderRewardsIndicator />
+          {status === "authenticated" && pathname === "/" && (
+            <button
+              type="button"
+              onClick={() => void signOut({ callbackUrl: "/auth" })}
+              className="px-3 py-2 text-sm font-medium text-white/90 hover:text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors"
+            >
+              Log out
+            </button>
+          )}
           <nav className="flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
@@ -114,6 +125,18 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            {status === "authenticated" && pathname === "/" && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  void signOut({ callbackUrl: "/auth" });
+                }}
+                className="px-4 py-3 text-sm font-medium text-left text-white/90 border-t border-[#1C1C78] hover:bg-[#1C1C78]"
+              >
+                Log out
+              </button>
+            )}
           </nav>
         </div>
       )}
